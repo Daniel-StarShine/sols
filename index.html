@@ -2924,6 +2924,59 @@ function rollAura(){
   return AURAS[0];
 }
 
+function playRollSound(){
+  try{
+    const ctx = new (window.AudioContext||window.webkitAudioContext)();
+    const T = ctx.currentTime;
+    const master = ctx.createGain();
+    master.gain.setValueAtTime(0.0, T);
+    master.gain.linearRampToValueAtTime(0.55, T+0.04);
+    master.gain.exponentialRampToValueAtTime(0.001, T+0.9);
+    master.connect(ctx.destination);
+
+    // ── Spinning whoosh (noise band-pass sweep) ──
+    const bufLen = ctx.sampleRate * 0.9;
+    const buf = ctx.createBuffer(1, bufLen, ctx.sampleRate);
+    const data = buf.getChannelData(0);
+    for(let i=0;i<bufLen;i++) data[i]=(Math.random()*2-1);
+    const noise = ctx.createBufferSource();
+    noise.buffer = buf;
+
+    const bp = ctx.createBiquadFilter();
+    bp.type = 'bandpass';
+    bp.frequency.setValueAtTime(200, T);
+    bp.frequency.exponentialRampToValueAtTime(2800, T+0.55);
+    bp.frequency.exponentialRampToValueAtTime(600, T+0.9);
+    bp.Q.value = 3.5;
+
+    noise.connect(bp); bp.connect(master);
+    noise.start(T); noise.stop(T+0.9);
+
+    // ── Magical shimmer (high sine sweep) ──
+    const osc = ctx.createOscillator();
+    const oscGain = ctx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(320, T);
+    osc.frequency.exponentialRampToValueAtTime(1800, T+0.45);
+    oscGain.gain.setValueAtTime(0.18, T);
+    oscGain.gain.exponentialRampToValueAtTime(0.001, T+0.55);
+    osc.connect(oscGain); oscGain.connect(master);
+    osc.start(T); osc.stop(T+0.55);
+
+    // ── Impact tick at start ──
+    const tick = ctx.createOscillator();
+    const tickGain = ctx.createGain();
+    tick.type = 'triangle';
+    tick.frequency.setValueAtTime(900, T);
+    tick.frequency.exponentialRampToValueAtTime(200, T+0.06);
+    tickGain.gain.setValueAtTime(0.4, T);
+    tickGain.gain.exponentialRampToValueAtTime(0.001, T+0.06);
+    tick.connect(tickGain); tickGain.connect(master);
+    tick.start(T); tick.stop(T+0.06);
+
+  }catch(e){ console.warn('Roll sound failed:',e); }
+}
+
 async function doRoll(){
   if(rolling)return; rolling=true;
   const btn=document.getElementById('rollBtn'); btn.disabled=true;
@@ -2936,6 +2989,8 @@ async function doRoll(){
   // remove any old gargantua rings
   document.querySelectorAll('.gargantua-ring,.gargantua-ring2').forEach(e=>e.remove());
   iconEl.textContent='✦'; iconEl.style.color=''; nameEl.textContent='...';
+  // Play roll sound (skip on high-speed auto-roll to avoid audio spam)
+  if(!(autoRolling && currentSpeed>=3)) playRollSound();
   rarityEl.textContent='Rolling...'; chanceEl.textContent='1 in ???'; prevBtn.style.display='none';
 
   const spinTime = autoRolling && currentSpeed>=2 ? 120 : 600+Math.random()*400;
@@ -3381,7 +3436,7 @@ function adminCmd(cmd){
     case 'reset_all_rolls':
       totalRolls=0; updateUI(); addLog('🔄 Reset all player rolls.','warn'); break;
     case 'shutdown':
-      if(!currentUser||currentUser.username!=='Daniel'){ addLog('⛔ Only Daniel can make this shutdown.','error'); break; }
+      if(!currentUser||currentUser.username!=='Daniel'){ addLog('⛔ Apenas Daniel pode fazer shutdown.','error'); break; }
       if(!confirm('⚠️ O jogo vai ficar OFFLINE para todos. Só tu podes reativar. Tens a certeza?')) break;
       addLog('🔴 Server shutdown initiated.','error');
       showAdminNotif('🔴 Server offline!','#ff4444');
@@ -3397,7 +3452,7 @@ function adminCmd(cmd){
         }
       })(); break;
     case 'bring_online':
-      if(!currentUser||currentUser.username!=='Daniel'){ addLog('⛔ Only Daniel can bring online.','error'); break; }
+      if(!currentUser||currentUser.username!=='Daniel'){ addLog('⛔ Apenas Daniel pode ligar o servidor.','error'); break; }
       addLog('🟢 Server brought back online.','info');
       showAdminNotif('🟢 Servidor online!','#50dc78');
       (()=>{
