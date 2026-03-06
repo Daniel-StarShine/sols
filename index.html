@@ -2265,7 +2265,7 @@ function sleep(ms){return new Promise(r=>setTimeout(r,ms));}
 // ══════════════════════════════════════
 // ADMIN SYSTEM
 // ══════════════════════════════════════
-const ADMIN_PASSWORD = '*sentinel10'; // 🔒 Change this to your own password
+const ADMIN_PASSWORD = 'admin1234'; // 🔒 Change this to your own password
 let adminAuthenticated = false;
 let luckMultiplier = 1;
 let serverEventActive = 'None Active';
@@ -2771,8 +2771,7 @@ document.addEventListener('fbError', (e)=>{
 
 
 // ── USER DATA ──
-async function getUsers(){
-  // Always return local cache first (fast); Firebase updates it async
+function getUsers(){
   try{ return JSON.parse(localStorage.getItem(DB_KEY))||{}; }catch(e){ return {}; }
 }
 function saveUsers(u){
@@ -4258,4 +4257,3 @@ applyAuraToModal = function(aura){
 </script>
 </body>
 </html>
-
