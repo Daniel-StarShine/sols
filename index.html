@@ -1112,6 +1112,27 @@
 <div class="nebula"></div>
 <div id="flash"></div>
 
+<!-- ── GARGANTUA CUTSCENE ── -->
+<div id="gargCutscene">
+  <canvas id="gcCanvas"></canvas>
+  <div class="gc-bar-top"></div>
+  <div class="gc-bar-bot"></div>
+  <div class="gc-flash" id="gcFlash"></div>
+
+  <div class="gc-overlay">
+    <div class="gc-text-block">
+      <div class="gc-obtained">— you have obtained —</div>
+      <div class="gc-line"></div>
+      <div class="gc-name">GARGANTUA</div>
+      <div class="gc-subtitle">THE LIVING BLACK HOLE</div>
+      <div class="gc-line" style="animation-delay:3.2s"></div>
+      <div class="gc-desc">Born from the collapse of an entire galaxy.<br>It bends light, devours stars, warps spacetime.<br><span style="color:rgba(255,149,0,0.5);letter-spacing:0.2em;font-size:0.65rem;">1 IN 1,000,000</span></div>
+    </div>
+  </div>
+
+  <button class="gc-skip" onclick="skipGargCutscene()">SKIP ▶</button>
+</div>
+
 <div id="toast">
   <div class="toast-label">You rolled</div>
   <div class="toast-name" id="toastName">—</div>
@@ -1266,6 +1287,10 @@
     </div>
     <div style="display:flex;align-items:center;gap:10px;">
       <div class="luck-badge"><div class="luck-dot"></div><span id="luckText">Luck x1</span></div>
+      <div class="pity-bar-wrap" id="pityWrap" title="Pity: Gargantua guaranteed at 1,000,000 rolls without one">
+        🕳 <span id="pityCount">0</span>/<span id="pityMax">1000000</span>
+        <div class="pity-fill-track"><div class="pity-fill" id="pityFill" style="width:0%"></div></div>
+      </div>
       <div id="fbTopbarBtn" style="display:none;align-items:center;gap:5px;background:rgba(255,160,0,0.08);border:1px solid rgba(255,160,0,0.2);border-radius:20px;padding:4px 10px;cursor:pointer;font-size:0.68rem;font-weight:700;color:rgba(255,160,0,0.7);" onclick="openFbSetup()" title="Firebase Multiplayer">
         <div id="fbTopDot" style="width:7px;height:7px;border-radius:50%;background:#ff6666;flex-shrink:0;"></div>
         <span id="fbTopLabel">Firebase</span>
@@ -1849,6 +1874,108 @@
 </div>
 <style>@keyframes slideDown{from{opacity:0;transform:translateX(-50%) translateY(-20px);}to{opacity:1;transform:translateX(-50%) translateY(0);}}</style>
 
+<style>
+/* ── PITY COUNTER ── */
+.pity-bar-wrap {
+  display: flex; align-items: center; gap: 8px;
+  background: rgba(255,149,0,0.06); border: 1px solid rgba(255,149,0,0.18);
+  border-radius: 20px; padding: 4px 12px; font-size: 0.72rem; color: rgba(255,149,0,0.7);
+  letter-spacing: 0.06em;
+}
+.pity-bar-wrap span { color: #ff9500; font-weight: 700; }
+.pity-fill-track { width: 80px; height: 5px; background: rgba(255,149,0,0.15); border-radius: 3px; overflow: hidden; }
+.pity-fill { height: 100%; border-radius: 3px; background: linear-gradient(90deg,#ff6500,#ff9500); transition: width 0.4s ease; }
+
+/* ── GARGANTUA CUTSCENE ── */
+#gargCutscene {
+  position: fixed; inset: 0; z-index: 9999;
+  background: #000; display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  opacity: 0; pointer-events: none;
+  transition: opacity 1s ease; overflow: hidden;
+}
+#gargCutscene.active { opacity: 1; pointer-events: all; }
+
+/* Canvas fills the whole screen */
+#gcCanvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+
+/* Cinematic bars */
+.gc-bar-top, .gc-bar-bot {
+  position: absolute; left: 0; right: 0; background: #000; z-index: 10;
+  height: 0; transition: height 0.8s cubic-bezier(0.4,0,0.2,1);
+}
+.gc-bar-top { top: 0; }
+.gc-bar-bot { bottom: 0; }
+#gargCutscene.active .gc-bar-top,
+#gargCutscene.active .gc-bar-bot { height: 10vh; }
+
+/* Text overlay */
+.gc-overlay {
+  position: absolute; inset: 0; z-index: 20;
+  display: flex; flex-direction: column; align-items: center; justify-content: flex-end;
+  pointer-events: none;
+  padding-bottom: 8vh;
+}
+.gc-text-block {
+  display: flex; flex-direction: column; align-items: center; gap: 12px;
+}
+.gc-obtained {
+  font-size: 0.68rem; letter-spacing: 0.45em; text-transform: uppercase;
+  color: rgba(255,149,0,0.5);
+  opacity: 0; animation: gc-fade 1s ease forwards;
+  animation-delay: 2.5s;
+}
+.gc-name {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: clamp(2.4rem, 7vw, 5rem); font-weight: 900;
+  color: #fff; letter-spacing: 0.05em;
+  text-shadow: 0 0 60px #ff9500, 0 0 120px #ff6500bb, 0 0 200px #ff320066;
+  opacity: 0; transform: scale(0.6) translateY(20px);
+  animation: gc-name-rise 1s cubic-bezier(0.16,1,0.3,1) forwards;
+  animation-delay: 3s;
+}
+.gc-subtitle {
+  font-size: 0.82rem; letter-spacing: 0.28em; color: rgba(255,200,100,0.65);
+  opacity: 0; animation: gc-fade 0.8s ease forwards; animation-delay: 3.8s;
+}
+.gc-desc {
+  font-size: 0.72rem; color: rgba(255,255,255,0.28); letter-spacing: 0.1em;
+  opacity: 0; animation: gc-fade 0.8s ease forwards; animation-delay: 4.4s;
+  max-width: 340px; text-align: center; line-height: 1.7;
+}
+/* Divider lines */
+.gc-line {
+  width: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,149,0,0.5), transparent);
+  animation: gc-line-grow 1s ease forwards; animation-delay: 2.8s;
+}
+@keyframes gc-fade     { to { opacity: 1; } }
+@keyframes gc-name-rise { to { opacity: 1; transform: scale(1) translateY(0); } }
+@keyframes gc-line-grow { to { width: 280px; } }
+
+/* Screen flash on entry */
+.gc-flash {
+  position: absolute; inset: 0; background: #fff; opacity: 0; pointer-events: none; z-index: 30;
+  animation: gc-flash-anim 0.6s ease forwards;
+}
+@keyframes gc-flash-anim { 0%{opacity:1;} 100%{opacity:0;} }
+
+/* Skip button */
+.gc-skip {
+  position: absolute; bottom: calc(10vh + 18px); right: 28px; z-index: 25;
+  font-family: 'Rajdhani', sans-serif; font-size: 0.72rem; font-weight: 700;
+  letter-spacing: 0.14em; padding: 6px 18px; border-radius: 20px; cursor: pointer;
+  background: rgba(255,149,0,0.08); border: 1px solid rgba(255,149,0,0.25);
+  color: rgba(255,149,0,0.6); transition: all 0.2s;
+  opacity: 0; animation: gc-fade 0.5s ease 3s forwards;
+}
+.gc-skip:hover { background: rgba(255,149,0,0.18); color: #ff9500; }
+
+/* Pity counter pulse when close */
+.pity-bar-wrap.danger { border-color: rgba(255,149,0,0.5); animation: pity-danger 1s ease-in-out infinite; }
+@keyframes pity-danger { 50% { box-shadow: 0 0 12px rgba(255,149,0,0.4); } }
+</style>
+
 <script>
 // ── STARS ──
 const starsEl = document.getElementById('stars');
@@ -1943,6 +2070,10 @@ const RARITY_ORDER = ['Gargantua','Mythical','Legendary','Epic','Rare','Uncommon
 
 let inventory={}, totalRolls=0, rolling=false, bestAura=null, lastAura=null, previewAura=null;
 let autoRolling=false, autoTimer=null;
+
+// ── PITY SYSTEM ──
+const PITY_THRESHOLD = 1000000; // Gargantua guaranteed after this many rolls without one
+let pityCounter = 0; // rolls since last Gargantua (or ever)
 // Three.js globals — declared here so openPreview can reference them
 let threeScene, threeCamera, threeRenderer, threeAnimId;
 let bhMesh, diskMesh, diskMesh2, coronaParticles, jetMeshTop, jetMeshBot;
@@ -2162,9 +2293,614 @@ function buildBrowseGrid(){
 }
 
 // ── ROLL LOGIC ──
+// ══════════════════════════════════════
+// GARGANTUA CUTSCENE
+// ══════════════════════════════════════
+// ══════════════════════════════════════
+// GARGANTUA CUTSCENE — Canvas Engine
+// ══════════════════════════════════════
+let _gargCutsceneResolve = null;
+let _gcAnimId = null;
+let _gcAudioCtx = null;
+
+function gcPlaySound(){
+  try {
+    const ctx = new (window.AudioContext||window.webkitAudioContext)();
+    _gcAudioCtx = ctx;
+    const T = ctx.currentTime;
+
+    // ── MASTER BUS with subtle reverb simulation ──
+    const master = ctx.createGain(); master.gain.value = 0.0;
+    master.gain.linearRampToValueAtTime(0.72, T+0.1);
+    master.connect(ctx.destination);
+
+    // Simple reverb via delay network
+    function makeReverb(decaySec){
+      const conv = ctx.createConvolver();
+      const len = ctx.sampleRate * decaySec;
+      const rb = ctx.createBuffer(2, len, ctx.sampleRate);
+      for(let ch=0;ch<2;ch++){
+        const d2=rb.getChannelData(ch);
+        for(let i=0;i<len;i++) d2[i]=(Math.random()*2-1)*Math.pow(1-i/len,1.5);
+      }
+      conv.buffer=rb; return conv;
+    }
+    const reverb = makeReverb(4.5);
+    const reverbGain = ctx.createGain(); reverbGain.gain.value=0.38;
+    reverb.connect(reverbGain); reverbGain.connect(master);
+    // dry signal goes straight to master, wet through reverb
+
+    function connect(node){ node.connect(master); node.connect(reverb); }
+
+    // ══════════════════════════════════════════
+    // 1. WHOOSH — falling into BH (0s-3s)
+    // ══════════════════════════════════════════
+    const whooshBuf=ctx.createBuffer(1,ctx.sampleRate*3,ctx.sampleRate);
+    const wd=whooshBuf.getChannelData(0);
+    for(let i=0;i<wd.length;i++) wd[i]=(Math.random()*2-1);
+    const whoosh=ctx.createBufferSource(); whoosh.buffer=whooshBuf;
+    const wf=ctx.createBiquadFilter(); wf.type='bandpass';
+    wf.frequency.setValueAtTime(2200,T); wf.frequency.exponentialRampToValueAtTime(80,T+2.8);
+    wf.Q.value=1.4;
+    const wg=ctx.createGain();
+    wg.gain.setValueAtTime(0,T); wg.gain.linearRampToValueAtTime(0.5,T+0.25);
+    wg.gain.linearRampToValueAtTime(0.28,T+1.8); wg.gain.linearRampToValueAtTime(0,T+3.0);
+    whoosh.connect(wf); wf.connect(wg); connect(wg);
+    whoosh.start(T); whoosh.stop(T+3.2);
+
+    // ══════════════════════════════════════════
+    // 2. SUB BASS DRONE — gravitational rumble
+    // ══════════════════════════════════════════
+    [16,24,36,52].forEach((freq,i)=>{
+      const o=ctx.createOscillator(), g=ctx.createGain();
+      o.type = i<2 ? 'sine' : 'triangle';
+      o.frequency.setValueAtTime(freq, T);
+      // Slight frequency wobble — like spacetime warping
+      o.frequency.linearRampToValueAtTime(freq*0.93, T+6);
+      o.frequency.linearRampToValueAtTime(freq*0.97, T+12);
+      g.gain.setValueAtTime(0, T);
+      g.gain.linearRampToValueAtTime((0.20-i*0.04)*0.8, T+2.5);
+      g.gain.linearRampToValueAtTime((0.12-i*0.02)*0.8, T+8);
+      g.gain.linearRampToValueAtTime(0, T+14);
+      o.connect(g); connect(g);
+      o.start(T); o.stop(T+15);
+    });
+
+    // ══════════════════════════════════════════
+    // 3. AMBIENT PAD — ethereal space chords
+    //    Chord: Dm(add9) → Am → F → C  (cinematic minor)
+    //    Frequencies: D2,F2,A2,E3 → A2,C3,E3 → F2,A2,C3 → C3,E3,G3
+    // ══════════════════════════════════════════
+    const chords = [
+      { t: 2.5,  dur: 4.5, freqs: [73.4, 87.3, 110.0, 164.8, 220.0] },  // Dm9
+      { t: 5.5,  dur: 4.0, freqs: [55.0, 110.0, 130.8, 164.8, 220.0] }, // Am
+      { t: 8.5,  dur: 3.5, freqs: [87.3, 110.0, 130.8, 174.6] },         // F
+      { t: 11.0, dur: 3.0, freqs: [65.4, 130.8, 164.8, 196.0] },         // C
+    ];
+    chords.forEach(chord=>{
+      chord.freqs.forEach((freq, fi)=>{
+        const o=ctx.createOscillator(), g=ctx.createGain();
+        o.type='sine';
+        // Detune slightly for richness
+        o.frequency.value = freq * (1 + (fi%2===0 ? 0.002 : -0.002));
+        const vel = 0.055 - fi*0.008;
+        g.gain.setValueAtTime(0, T+chord.t);
+        g.gain.linearRampToValueAtTime(vel, T+chord.t+0.8);
+        g.gain.linearRampToValueAtTime(vel*0.75, T+chord.t+chord.dur-0.6);
+        g.gain.linearRampToValueAtTime(0, T+chord.t+chord.dur+0.4);
+        o.connect(g); connect(g);
+        o.start(T+chord.t); o.stop(T+chord.t+chord.dur+1);
+      });
+    });
+
+    // ══════════════════════════════════════════
+    // 4. SHIMMER — high freq overtones (like photon ring)
+    // ══════════════════════════════════════════
+    [523.3, 659.3, 783.9, 1046.5, 1318.5].forEach((freq, i)=>{
+      const o=ctx.createOscillator(), g=ctx.createGain();
+      o.type='sine'; o.frequency.value=freq;
+      // Slow tremolo
+      const lfo=ctx.createOscillator(); lfo.type='sine';
+      lfo.frequency.value=0.18+i*0.07;
+      const lfoG=ctx.createGain(); lfoG.gain.value=0.012;
+      lfo.connect(lfoG); lfoG.connect(g.gain);
+      const baseVol=0.018-i*0.003;
+      g.gain.setValueAtTime(0, T+3.5);
+      g.gain.linearRampToValueAtTime(baseVol, T+5.5);
+      g.gain.linearRampToValueAtTime(baseVol*0.6, T+11);
+      g.gain.linearRampToValueAtTime(0, T+14);
+      o.connect(g); connect(g);
+      o.start(T+3.5); lfo.start(T+3.5);
+      o.stop(T+15); lfo.stop(T+15);
+    });
+
+    // ══════════════════════════════════════════
+    // 5. SPACE TEXTURE — filtered noise (accretion disk hiss)
+    // ══════════════════════════════════════════
+    const texBuf=ctx.createBuffer(2, ctx.sampleRate*14, ctx.sampleRate);
+    for(let ch=0;ch<2;ch++){
+      const td=texBuf.getChannelData(ch);
+      for(let i=0;i<td.length;i++) td[i]=(Math.random()*2-1);
+    }
+    const tex=ctx.createBufferSource(); tex.buffer=texBuf;
+    // Multi-band filter for rich texture
+    const tf1=ctx.createBiquadFilter(); tf1.type='bandpass'; tf1.frequency.value=320; tf1.Q.value=0.8;
+    const tf2=ctx.createBiquadFilter(); tf2.type='bandpass'; tf2.frequency.value=85; tf2.Q.value=0.4;
+    const tg=ctx.createGain();
+    tg.gain.setValueAtTime(0,T); tg.gain.linearRampToValueAtTime(0.055,T+2.5);
+    tg.gain.linearRampToValueAtTime(0.038,T+9); tg.gain.linearRampToValueAtTime(0,T+14);
+    tex.connect(tf1); tex.connect(tf2); tf1.connect(tg); tf2.connect(tg); connect(tg);
+    tex.start(T); tex.stop(T+14);
+
+    // ══════════════════════════════════════════
+    // 6. IMPACT THUD at zoom end (~4s)
+    // ══════════════════════════════════════════
+    const impBuf=ctx.createBuffer(1,ctx.sampleRate*0.6,ctx.sampleRate);
+    const id2=impBuf.getChannelData(0);
+    for(let i=0;i<id2.length;i++) id2[i]=(Math.random()*2-1)*Math.exp(-i/(ctx.sampleRate*0.05));
+    const imp=ctx.createBufferSource(); imp.buffer=impBuf;
+    const if2=ctx.createBiquadFilter(); if2.type='lowpass'; if2.frequency.value=160;
+    const ig2=ctx.createGain(); ig2.gain.value=1.4;
+    imp.connect(if2); if2.connect(ig2); connect(ig2);
+    imp.start(T+4.0); imp.stop(T+4.8);
+
+    // ══════════════════════════════════════════
+    // 7. GRAVITATIONAL WAVE CHIRP
+    // ══════════════════════════════════════════
+    const ch2=ctx.createOscillator(), cg2=ctx.createGain(); ch2.type='sine';
+    ch2.frequency.setValueAtTime(48,T+0.8);
+    ch2.frequency.exponentialRampToValueAtTime(210,T+1.8);
+    ch2.frequency.exponentialRampToValueAtTime(22,T+3.2);
+    cg2.gain.setValueAtTime(0,T+0.8); cg2.gain.linearRampToValueAtTime(0.22,T+1.8);
+    cg2.gain.linearRampToValueAtTime(0,T+4.0);
+    ch2.connect(cg2); connect(cg2);
+    ch2.start(T+0.8); ch2.stop(T+4.5);
+
+    // ══════════════════════════════════════════
+    // 8. MELODIC STING — single haunting note at reveal
+    //    High cello/violin tone fading in
+    // ══════════════════════════════════════════
+    [293.7, 440.0, 587.3].forEach((freq, i)=>{
+      const o=ctx.createOscillator(), g=ctx.createGain();
+      o.type='triangle'; // warmer than sine
+      o.frequency.value=freq;
+      // Vibrato
+      const vib=ctx.createOscillator(); vib.frequency.value=4.8;
+      const vibG=ctx.createGain(); vibG.gain.value=2.5;
+      vib.connect(vibG); vibG.connect(o.frequency);
+      g.gain.setValueAtTime(0, T+4.2+i*0.15);
+      g.gain.linearRampToValueAtTime(0.05-i*0.012, T+5.2+i*0.15);
+      g.gain.linearRampToValueAtTime(0.03-i*0.008, T+10);
+      g.gain.linearRampToValueAtTime(0, T+14);
+      o.connect(g); connect(g);
+      o.start(T+4.2+i*0.15); vib.start(T+4.2+i*0.15);
+      o.stop(T+15); vib.stop(T+15);
+    });
+
+  } catch(e){ console.warn('Audio failed:', e); }
+}
+
+function showGargCutscene(){
+  return new Promise(resolve=>{
+    _gargCutsceneResolve=resolve;
+    const cs=document.getElementById('gargCutscene');
+    const cvs=document.getElementById('gcCanvas');
+
+    cs.querySelectorAll('.gc-obtained,.gc-name,.gc-subtitle,.gc-desc,.gc-line').forEach(el=>{
+      el.style.animation='none'; el.offsetHeight; el.style.animation='';
+    });
+    const flash=document.getElementById('gcFlash');
+    if(flash){flash.style.animation='none';flash.offsetHeight;flash.style.animation='gc-flash-anim 0.6s ease forwards';}
+    cs.classList.add('active');
+    gcPlaySound();
+
+    function resize(){ cvs.width=window.innerWidth; cvs.height=window.innerHeight; }
+    resize(); window.addEventListener('resize',resize);
+
+    const gl=cvs.getContext('webgl',{antialias:true,alpha:false});
+    if(!gl){ runCanvas2dFallback(cvs,cs); return; }
+
+    // ═══════════════════════════════════════════════
+    // WEBGL PATH — full shader-based black hole
+    // ═══════════════════════════════════════════════
+
+    const VS=`
+      attribute vec2 a_pos;
+      void main(){ gl_Position=vec4(a_pos,0,1); }
+    `;
+
+    const FS=`
+      precision highp float;
+      uniform vec2  u_res;
+      uniform float u_time;
+      uniform float u_bhr;   // BH radius in UV space
+      uniform float u_zoom;  // camera zoom (1=normal, >1=closer)
+      uniform vec2  u_camoff; // camera offset
+
+      #define PI 3.14159265358979
+
+      // Hash functions
+      float hash(float n){ return fract(sin(n)*43758.5453); }
+      float hash2(vec2 p){ return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453); }
+      vec2  hash2v(vec2 p){
+        p=vec2(dot(p,vec2(127.1,311.7)),dot(p,vec2(269.5,183.3)));
+        return fract(sin(p)*43758.5453);
+      }
+
+      // Smooth noise
+      float noise(vec2 p){
+        vec2 i=floor(p), f=fract(p);
+        f=f*f*(3.0-2.0*f);
+        float a=hash2(i), b=hash2(i+vec2(1,0)), c=hash2(i+vec2(0,1)), d=hash2(i+vec2(1,1));
+        return mix(mix(a,b,f.x),mix(c,d,f.x),f.y);
+      }
+      float fbm(vec2 p){
+        float v=0.0,a=0.5;
+        for(int i=0;i<5;i++){ v+=a*noise(p); p*=2.1; a*=0.5; }
+        return v;
+      }
+
+      // Starfield
+      float star(vec2 uv, float threshold){
+        vec2 id=floor(uv*220.0);
+        vec2 gv=fract(uv*220.0)-0.5;
+        float h=hash2(id);
+        if(h>threshold) return 0.0;
+        float tw=sin(u_time*2.0+h*PI*8.0)*0.5+0.5;
+        float sz=0.04+h*0.12;
+        return smoothstep(sz,sz*0.3,length(gv))*tw*(0.4+h*0.6);
+      }
+
+      // Disk temperature color (blackbody approximation)
+      vec3 blackbody(float t){
+        // t: 0=cool(dark red) → 1=hot(white)
+        vec3 col;
+        col.r = clamp(1.0, 0.0, 1.0);
+        col.g = clamp(t*t*(2.5-t*1.5), 0.0, 1.0);
+        col.b = clamp((t-0.5)*2.0*(t-0.5)*2.0, 0.0, 1.0)*t;
+        // Override with more physical colors
+        if(t>0.85) col=mix(vec3(1.0,0.95,0.88), vec3(1.0,1.0,1.0),  (t-0.85)/0.15);
+        else if(t>0.65) col=mix(vec3(1.0,0.70,0.15), vec3(1.0,0.95,0.88),(t-0.65)/0.20);
+        else if(t>0.42) col=mix(vec3(1.0,0.40,0.04), vec3(1.0,0.70,0.15),(t-0.42)/0.23);
+        else if(t>0.20) col=mix(vec3(0.75,0.12,0.01),vec3(1.0,0.40,0.04),(t-0.20)/0.22);
+        else            col=mix(vec3(0.18,0.02,0.00),vec3(0.75,0.12,0.01), t/0.20);
+        return col;
+      }
+
+      void main(){
+        vec2 uv=(gl_FragCoord.xy/u_res)*2.0-1.0;
+        uv.x*=u_res.x/u_res.y; // aspect correct
+
+        // Apply camera zoom — divide UV by zoom so everything appears closer when zoom>1
+        uv = (uv - u_camoff) / u_zoom;
+
+        float bhr=u_bhr;
+        vec2 bhPos=vec2(0.0, 0.0); // BH at centre
+
+        float dist=length(uv-bhPos);
+        float angle=atan(uv.y-bhPos.y, uv.x-bhPos.x);
+
+        // ── DEEP SPACE BACKGROUND ──
+        float bgFog=1.0-smoothstep(0.0,2.2,dist);
+        vec3 bgCol=vec3(0.06,0.02,0.0)*bgFog + vec3(0.02,0.008,0.002)*(1.0-bgFog);
+
+        // ── MILKY WAY BAND ──
+        float band=exp(-pow((uv.y+0.05)/0.55,2.0));
+        float mwNoise=fbm(uv*3.0+vec2(0.4,0.0));
+        bgCol+=vec3(0.04,0.035,0.06)*band*mwNoise*0.6;
+
+        // ── STARS ──
+        float stars=star(uv,0.012)+star(uv*0.5+0.3,0.018)*0.7+star(uv*0.25+0.8,0.025)*0.5;
+        // Lensing: bend stars near BH
+        vec2 lensUV=uv;
+        if(dist>bhr*1.2&&dist<1.8){
+          float lensStrength=bhr*bhr*0.6/(dist*dist);
+          vec2 lensDir=normalize(bhPos-uv);
+          lensUV=uv+lensDir*lensStrength;
+        }
+        float lensedStars=star(lensUV,0.012)+star(lensUV*0.5+0.3,0.018)*0.7+star(lensUV*0.25+0.8,0.025)*0.5;
+        vec3 starCol=vec3(0.85,0.88,1.0)*(dist<1.8?lensedStars:stars);
+
+        // ── ACCRETION DISK ──
+        // Transform to disk-plane coordinates (tilted ~70° from face-on)
+        float diskTilt=0.38;
+        vec2 diskUV=vec2(uv.x, uv.y/diskTilt);
+        float diskR=length(diskUV);
+        float diskAngle=atan(diskUV.y,diskUV.x);
+
+        vec3 diskCol=vec3(0.0);
+        float diskMask=0.0;
+
+        if(diskR>bhr*1.05&&diskR<bhr*10.0){
+          // Normalised radius (0=ISCO, 1=outer edge)
+          float nr=clamp((diskR-bhr)/(bhr*7.0),0.0,1.0);
+          float heat=pow(1.0-nr,1.8); // hotter closer to BH
+
+          // Spiral arm structure (two arms)
+          float arm0=fract((diskAngle/(PI*2.0))*1.0 + nr*2.2 + u_time*0.04);
+          float arm1=fract((diskAngle/(PI*2.0))*1.0 + nr*2.2 + 0.5 + u_time*0.04);
+          float armMask=max(
+            exp(-pow((arm0-0.5)*6.0,2.0)),
+            exp(-pow((arm1-0.5)*6.0,2.0))
+          );
+
+          // Turbulent clumping
+          float turb=fbm(diskUV*2.5+vec2(u_time*0.06,0.0));
+          float turb2=fbm(diskUV*5.0-vec2(0.0,u_time*0.04));
+          float density=armMask*(0.5+0.5*turb)*(0.6+0.4*turb2);
+
+          // Keplerian brightness falloff (1/r^2 from ISCO)
+          float keplerian=1.0/(1.0+nr*nr*5.0);
+          float outerFade=1.0-smoothstep(0.65,1.0,nr); // fade outer edge
+
+          // Doppler beaming: approaching side (left at ~270°) is much brighter
+          float dopplerAngle=diskAngle+PI*0.5;
+          float doppler=pow(max(0.0,0.5+0.5*cos(dopplerAngle+u_time*0.05)),2.5);
+          float brightness=density*keplerian*outerFade*(0.3+0.7*doppler);
+
+          // Flickering
+          float flicker=0.82+0.18*sin(u_time*4.0+diskAngle*3.0+diskR*2.0);
+
+          diskCol=blackbody(heat)*brightness*flicker*3.5;
+          diskMask=brightness*heat;
+
+          // Inner disk is extra bright (ISCO region)
+          if(nr<0.12){
+            float isco=exp(-nr/0.06)*(0.8+0.2*sin(u_time*5.0+diskAngle*5.0));
+            diskCol+=vec3(1.0,0.98,0.9)*isco*1.2;
+          }
+        }
+
+        // ── LARGE VOLUMETRIC DISK GLOW (the big warm orange halo) ──
+        float glowR=length(vec2(uv.x, uv.y/diskTilt));
+        // Smooth volumetric glow — no hard edges
+        float outerGlow=0.0;
+        {
+          float g1=exp(-pow((glowR-bhr*1.2)/(bhr*2.5),2.0))*0.70;
+          float g2=exp(-pow((glowR-bhr*3.0)/(bhr*3.5),2.0))*0.48;
+          float g3=exp(-pow((glowR-bhr*5.5)/(bhr*5.0),2.0))*0.30;
+          float g4=exp(-glowR/(bhr*9.0))*0.20; // very wide ambient
+          outerGlow=(g1+g2+g3+g4)*(0.88+0.12*sin(u_time*0.8));
+          outerGlow*=smoothstep(bhr*0.9,bhr*1.4,glowR); // only outside BH
+        }
+        vec3 glowCol=mix(vec3(0.6,0.08,0.0),vec3(1.0,0.88,0.35),clamp(outerGlow*1.8,0.0,1.0))*outerGlow*1.8;
+
+        // ── RELATIVISTIC JET ──
+        float jetX=abs(uv.x);
+        float jetY=-uv.y; // upward
+        vec3 jetCol=vec3(0.0);
+        if(jetY>0.0&&jetX<jetY*0.55+bhr*0.5){
+          float jetDist=jetX/(jetY*0.4+bhr*0.3);
+          float jetFade=exp(-jetDist*jetDist*2.5);
+          float jetLen=smoothstep(2.2,0.0,jetY);
+          // Inner bright spine
+          float spine=exp(-jetX*jetX/(bhr*bhr*0.04))*exp(-jetY*0.4);
+          float jetFlicker=0.8+0.2*sin(u_time*4.5+jetY*8.0);
+          jetCol=mix(vec3(0.5,0.7,1.0),vec3(1.0,1.0,1.0),spine)*jetFade*jetLen*jetFlicker*0.7;
+          jetCol+=vec3(1.0,1.0,1.0)*spine*exp(-jetY*0.8)*1.2*jetFlicker;
+        }
+
+        // ── PHOTON RING (Einstein ring) ──
+        float pr=bhr*1.48;
+        float photonRing=0.0;
+        // In tilted coords
+        float prDist=length(vec2(uv.x,(uv.y)/diskTilt));
+        float prBand=exp(-pow((prDist-pr)/( bhr*0.055),2.0));
+        // Doppler asymmetry
+        float prDoppler=pow(0.5+0.5*cos(angle-PI*1.6+u_time*0.05),2.2);
+        photonRing=prBand*(0.5+0.5*prDoppler)*(0.85+0.15*sin(u_time*3.5));
+        vec3 prCol=mix(vec3(1.0,0.65,0.1),vec3(1.0,0.97,0.85),prDoppler)*photonRing*1.6;
+
+        // ── EVENT HORIZON ──
+        float shadow=smoothstep(bhr*1.02,bhr*0.88,dist);
+        // Gravitational redshift at edge
+        float redshift=smoothstep(bhr*1.15,bhr*1.0,dist)*0.5;
+        vec3 ehEdge=vec3(0.4,0.05,0.0)*redshift;
+
+        // ── COMPOSE ──
+        vec3 col=bgCol;
+        col+=starCol*(1.0-shadow);
+        col+=glowCol*(1.0-shadow*0.6);
+        col+=diskCol*(1.0-shadow);
+        col+=prCol*(1.0-shadow);
+        col+=ehEdge;
+        col+=jetCol*(1.0-shadow*0.5);
+        // Black hole
+        col=mix(col,vec3(0.0),shadow);
+
+        // ── INNER GLOW (hot gas at ISCO) ──
+        float isco=exp(-pow((dist-bhr*1.1)/(bhr*0.28),2.0))*(0.22+0.1*sin(u_time*2.3));
+        col+=vec3(1.0,0.82,0.28)*isco*1.6*(1.0-shadow);
+
+        // ── VIGNETTE ──
+        float vign=1.0-smoothstep(0.6,1.4,dist*0.7);
+        col*=mix(0.12,1.0,vign);
+
+        // ── TONE MAPPING (Reinhard) ──
+        col=col/(col+vec3(0.75));
+        // Gamma
+        col=pow(max(col,vec3(0.0)),vec3(0.45));
+
+        gl_FragColor=vec4(col,1.0);
+      }
+    `;
+
+    function compileShader(type,src){
+      const s=gl.createShader(type); gl.shaderSource(s,src); gl.compileShader(s);
+      if(!gl.getShaderParameter(s,gl.COMPILE_STATUS)){
+        console.error(gl.getShaderInfoLog(s)); return null;
+      }
+      return s;
+    }
+    const vs=compileShader(gl.VERTEX_SHADER,VS);
+    const fs=compileShader(gl.FRAGMENT_SHADER,FS);
+    if(!vs||!fs){ runCanvas2dFallback(cvs,cs); return; }
+
+    const prog=gl.createProgram();
+    gl.attachShader(prog,vs); gl.attachShader(prog,fs); gl.linkProgram(prog);
+    if(!gl.getProgramParameter(prog,gl.LINK_STATUS)){
+      console.error(gl.getProgramInfoLog(prog)); runCanvas2dFallback(cvs,cs); return;
+    }
+    gl.useProgram(prog);
+
+    // Full-screen quad
+    const buf2=gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER,buf2);
+    gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,1,1]),gl.STATIC_DRAW);
+    const aPos=gl.getAttribLocation(prog,'a_pos');
+    gl.enableVertexAttribArray(aPos); gl.vertexAttribPointer(aPos,2,gl.FLOAT,false,0,0);
+
+    const uRes   = gl.getUniformLocation(prog,'u_res');
+    const uTime  = gl.getUniformLocation(prog,'u_time');
+    const uBhr   = gl.getUniformLocation(prog,'u_bhr');
+    const uZoom  = gl.getUniformLocation(prog,'u_zoom');
+    const uCamOff= gl.getUniformLocation(prog,'u_camoff');
+
+    let startTime=performance.now();
+
+    // ── ZOOM ANIMATION ──
+    // Start very close (zoom=3.5, camera offset slightly above BH)
+    // then pull back to normal (zoom=1) over ~4 seconds
+    const ZOOM_START   = 3.8;
+    const ZOOM_END     = 1.0;
+    const ZOOM_DURATION= 4.2; // seconds to pull back
+    // Camera starts pointed slightly toward the disk (y offset)
+    const CAM_Y_START  = 0.08;  // offset in UV space
+    const CAM_Y_END    = 0.0;
+
+    function easeOutExpo(t){ return t>=1?1:1-Math.pow(2,-8*t); }
+    function easeOutCubic(t){ return 1-Math.pow(1-t,3); }
+
+    function renderGL(){
+      _gcAnimId=requestAnimationFrame(renderGL);
+      const w=cvs.width, h=cvs.height;
+      gl.viewport(0,0,w,h);
+      const t2=(performance.now()-startTime)/1000;
+
+      // Zoom curve: fast pullback at start, then slow drift
+      const zp = Math.min(1, t2/ZOOM_DURATION);
+      const ze = easeOutExpo(zp);
+      const zoom = ZOOM_START + (ZOOM_END-ZOOM_START)*ze;
+      const camY = CAM_Y_START + (CAM_Y_END-CAM_Y_START)*easeOutCubic(zp);
+
+      const bhrUV=0.10;
+      gl.uniform2f(uRes,w,h);
+      gl.uniform1f(uTime,t2);
+      gl.uniform1f(uBhr,bhrUV);
+      gl.uniform1f(uZoom,zoom);
+      gl.uniform2f(uCamOff,0.0,camY);
+      gl.drawArrays(gl.TRIANGLE_STRIP,0,4);
+    }
+    renderGL();
+
+    cs._autoSkip=setTimeout(()=>skipGargCutscene(),14000);
+    cs._cleanup=()=>{
+      cancelAnimationFrame(_gcAnimId);
+      window.removeEventListener('resize',resize);
+      if(_gcAudioCtx){try{_gcAudioCtx.close();}catch(e){}_gcAudioCtx=null;}
+    };
+  });
+}
+
+// Canvas 2D fallback if WebGL unavailable
+function runCanvas2dFallback(cvs,cs){
+  const c=cvs.getContext('2d');
+  const W=()=>cvs.width,H=()=>cvs.height;
+  const CX=()=>W()*0.5,CY=()=>H()*0.5;
+  const BHR=72,TILT=0.34;
+  function makePt(rMin,rMax){
+    const frac=Math.pow(Math.random(),0.8);
+    const r=rMin+frac*(rMax-rMin);
+    const arm=Math.floor(Math.random()*2);
+    const angle=arm*Math.PI+frac*2.6*Math.PI+(Math.random()-0.5)*0.5;
+    const heat=Math.max(0,1-(r-rMin)/(rMax-rMin));
+    return{angle,r,heat,speed:(0.005+heat*0.016)*(0.6+Math.random()*0.8),
+      size:0.7+heat*3+Math.random()*1.5,op:0.25+heat*0.75,
+      fl:Math.random()*Math.PI*2,fls:0.03+Math.random()*0.07};
+  }
+  const DISK=[...Array.from({length:1800},()=>makePt(BHR*1.08,BHR*2.0)),
+              ...Array.from({length:2400},()=>makePt(BHR*2.0,BHR*3.8)),
+              ...Array.from({length:1400},()=>makePt(BHR*3.8,BHR*6.2))];
+  function diskCol(heat,flick){
+    const f=0.7+0.3*flick,a=(0.28+heat*0.72)*f;
+    if(heat>0.88)return`rgba(255,252,235,${a.toFixed(3)})`;
+    if(heat>0.70)return`rgba(255,235,140,${a.toFixed(3)})`;
+    if(heat>0.50)return`rgba(255,185,45,${a.toFixed(3)})`;
+    if(heat>0.28)return`rgba(255,110,10,${a.toFixed(3)})`;
+    if(heat>0.12)return`rgba(210,45,2,${a.toFixed(3)})`;
+    return`rgba(130,18,0,${a.toFixed(3)})`;
+  }
+  const STARS=Array.from({length:400},()=>({x:Math.random(),y:Math.random(),sz:Math.pow(Math.random(),3)*2.2+0.2,op:0.2+Math.random()*0.8,tw:Math.random()*Math.PI*2,tws:0.007+Math.random()*0.025}));
+  function makeJet(){return{t:Math.random(),spread:(Math.random()-0.5)*0.5,speed:0.004+Math.random()*0.009,op:0.35+Math.random()*0.65,sz:0.8+Math.random()*3,cold:Math.random()<0.4};}
+  const JETS=Array.from({length:260},()=>makeJet());
+  let t=0;
+  function frame(){
+    _gcAnimId=requestAnimationFrame(frame); t+=0.016;
+    const w=W(),h=H(),cx=CX(),cy=CY();
+    const bg=c.createRadialGradient(cx,cy,0,cx,cy,Math.max(w,h));
+    bg.addColorStop(0,'#110700');bg.addColorStop(0.3,'#060200');bg.addColorStop(1,'#000');
+    c.fillStyle=bg;c.fillRect(0,0,w,h);
+    STARS.forEach(s=>{s.tw+=s.tws;const op=s.op*(0.6+0.4*Math.sin(s.tw));c.beginPath();c.arc(s.x*w,s.y*h,s.sz,0,Math.PI*2);c.fillStyle=`rgba(200,210,255,${op})`;c.fill();});
+    const glows=[{r:BHR*7,col:'180,65,5',op:0.09},{r:BHR*5,col:'235,105,15',op:0.14},{r:BHR*3.5,col:'255,165,40',op:0.20},{r:BHR*2.4,col:'255,215,85',op:0.27},{r:BHR*1.7,col:'255,248,200',op:0.35}];
+    glows.forEach(gl=>{c.save();c.translate(cx,cy);c.scale(1,TILT);const gg=c.createRadialGradient(0,0,gl.r*0.15,0,0,gl.r);gg.addColorStop(0,`rgba(${gl.col},${gl.op*1.8})`);gg.addColorStop(0.5,`rgba(${gl.col},${gl.op})`);gg.addColorStop(1,'transparent');c.fillStyle=gg;c.beginPath();c.arc(0,0,gl.r,0,Math.PI*2);c.fill();c.restore();});
+    c.save();c.translate(cx,cy);
+    DISK.forEach(p=>{p.fl+=p.fls;p.angle+=p.speed;const x=Math.cos(p.angle)*p.r,y=Math.sin(p.angle)*p.r*TILT;const isFront=y<0;if(!isFront&&Math.abs(x)<BHR*1.3&&Math.abs(y)<BHR*TILT*1.2)return;if(isFront)return;c.beginPath();c.arc(x,y,p.size,0,Math.PI*2);c.fillStyle=diskCol(p.heat,Math.sin(p.fl));c.fill();});
+    c.restore();
+    const PR=BHR*1.44;
+    for(let a=0;a<Math.PI*2;a+=0.02){const dop=0.45+0.55*Math.pow(0.5+0.5*Math.cos(a-Math.PI*1.55+t*0.06),2.2);const prx=cx+Math.cos(a)*PR,pry=cy+Math.sin(a)*PR*TILT;c.beginPath();c.arc(prx,pry,1.4+dop*1.1,0,Math.PI*2);c.fillStyle=`rgba(255,${Math.round(200+dop*55)},${Math.round(dop*120)},${(0.7+0.25*dop).toFixed(2)})`;c.fill();}
+    c.save();c.translate(cx,cy);
+    DISK.forEach(p=>{const x=Math.cos(p.angle)*p.r,y=Math.sin(p.angle)*p.r*TILT;if(y>=0){c.beginPath();c.arc(x,y,p.size*(p.heat>0.5?1.2:1),0,Math.PI*2);c.fillStyle=diskCol(p.heat,Math.sin(p.fl));c.fill();}});
+    c.restore();
+    c.save();c.translate(cx,cy);c.scale(1,0.95);c.beginPath();c.arc(0,0,BHR,0,Math.PI*2);c.fillStyle='#000';c.fill();c.restore();
+    const she=c.createRadialGradient(cx,cy,BHR*0.87,cx,cy,BHR*1.06);she.addColorStop(0,'#000');she.addColorStop(0.7,'rgba(2,0,0,0.97)');she.addColorStop(1,'transparent');c.beginPath();c.arc(cx,cy,BHR*1.07,0,Math.PI*2);c.fillStyle=she;c.fill();
+    const ip=0.24+0.1*Math.sin(t*2.2);const ig=c.createRadialGradient(cx,cy,BHR*0.88,cx,cy,BHR*1.55);ig.addColorStop(0,'transparent');ig.addColorStop(0.25,`rgba(255,230,110,${ip})`);ig.addColorStop(0.6,`rgba(255,130,25,${ip*0.5})`);ig.addColorStop(1,'transparent');c.beginPath();c.arc(cx,cy,BHR*1.6,0,Math.PI*2);c.fillStyle=ig;c.fill();
+    const JL=Math.min(h*0.58,440);c.save();c.translate(cx,cy);
+    const jw=c.createLinearGradient(0,0,0,-JL);jw.addColorStop(0,`rgba(255,255,255,${0.42+0.14*Math.sin(t*2.2)})`);jw.addColorStop(0.08,`rgba(210,232,255,${0.24+0.08*Math.sin(t*1.9)})`);jw.addColorStop(0.3,'rgba(150,195,255,0.09)');jw.addColorStop(0.7,'rgba(90,140,220,0.03)');jw.addColorStop(1,'transparent');
+    c.beginPath();c.moveTo(-BHR*0.7,0);c.lineTo(BHR*0.7,0);c.lineTo(BHR*0.2,-JL);c.lineTo(-BHR*0.2,-JL);c.closePath();c.fillStyle=jw;c.fill();
+    const jc=c.createLinearGradient(0,0,0,-JL);jc.addColorStop(0,`rgba(255,255,255,${0.8+0.18*Math.sin(t*3)})`);jc.addColorStop(0.1,'rgba(230,245,255,0.48)');jc.addColorStop(0.4,'rgba(180,215,255,0.18)');jc.addColorStop(1,'transparent');
+    c.beginPath();c.moveTo(-6,0);c.lineTo(6,0);c.lineTo(2.5,-JL);c.lineTo(-2.5,-JL);c.closePath();c.fillStyle=jc;c.fill();
+    JETS.forEach((p,i)=>{p.t+=p.speed;if(p.t>1){JETS[i]=makeJet();return;}const jy=-p.t*JL,jx=p.spread*(1-Math.pow(1-p.t,1.6))*30;const op2=p.op*Math.pow(1-p.t,1.3);c.beginPath();c.arc(jx,jy,p.sz*(1-p.t*0.45),0,Math.PI*2);c.fillStyle=p.cold?`rgba(160,215,255,${op2*0.75})`:`rgba(245,252,255,${op2*0.85})`;c.fill();});
+    c.restore();
+    const jbg=c.createRadialGradient(cx,cy,0,cx,cy,BHR*2.2);jbg.addColorStop(0,`rgba(255,255,255,${0.65+0.18*Math.sin(t*2.6)})`);jbg.addColorStop(0.2,'rgba(220,238,255,0.22)');jbg.addColorStop(0.55,'rgba(170,205,255,0.06)');jbg.addColorStop(1,'transparent');c.fillStyle=jbg;c.fillRect(0,0,w,h);
+    const vr=Math.max(w,h)*0.72;const vg=c.createRadialGradient(cx,cy,vr*0.25,cx,cy,vr);vg.addColorStop(0,'transparent');vg.addColorStop(0.5,'rgba(0,0,0,0.1)');vg.addColorStop(1,'rgba(0,0,0,0.88)');c.fillStyle=vg;c.fillRect(0,0,w,h);
+  }
+  frame();
+}
+
+function skipGargCutscene(){
+  const cs=document.getElementById('gargCutscene');
+  clearTimeout(cs._autoSkip);
+  if(cs._cleanup)cs._cleanup();
+  cancelAnimationFrame(_gcAnimId);
+  cs.style.transition='opacity 0.5s ease'; cs.style.opacity='0';
+  setTimeout(()=>{
+    cs.classList.remove('active'); cs.style.opacity=''; cs.style.transition='';
+    if(_gargCutsceneResolve){_gargCutsceneResolve();_gargCutsceneResolve=null;}
+  },500);
+}
+
+
+// ── PITY UPDATE ──
+function updatePityDisplay(){
+  const wrap  = document.getElementById('pityWrap');
+  const count = document.getElementById('pityCount');
+  const fill  = document.getElementById('pityFill');
+  if(!wrap) return;
+  count.textContent = pityCounter.toLocaleString();
+  const pct = Math.min(100, (pityCounter / PITY_THRESHOLD) * 100);
+  fill.style.width = pct + '%';
+  // Pulse warning at 75%+
+  wrap.classList.toggle('danger', pct >= 75);
+}
+
 function rollAura(){
+  // Pity: force Gargantua if threshold reached
+  if(pityCounter >= PITY_THRESHOLD){
+    pityCounter = 0;
+    updatePityDisplay();
+    return AURAS.find(a => a.name === 'Gargantua');
+  }
+
   // Luck multiplier boosts the chance of every non-common aura
-  // e.g. luck x2 means Rare goes from 1/50 to 2/50, etc.
   const boosted = AURAS.map(a => ({
     ...a,
     effectiveChance: a.name === 'Common' ? a.chance : a.chance * luckMultiplier
@@ -2195,6 +2931,15 @@ async function doRoll(){
   const spinTime = autoRolling && currentSpeed>=2 ? 120 : 600+Math.random()*400;
   await sleep(spinTime);
   const result=rollAura(); ring.classList.remove('rolling');
+
+  // ── PITY UPDATE ──
+  if(result.glow === 'gargantua'){
+    pityCounter = 0;
+  } else {
+    pityCounter++;
+  }
+  updatePityDisplay();
+
   core.className=`aura-core glow-${result.glow}`;
   iconEl.textContent=result.icon; iconEl.style.color=result.color;
   nameEl.textContent=result.name;
@@ -2255,7 +3000,15 @@ async function doRoll(){
   updateUI();
   prevBtn.style.display='inline-block';
 
-  const endPause = autoRolling && currentSpeed>=2 ? 80 : result.glow==='gargantua'?5000:result.glow==='mythical'?2200:result.glow==='legendary'?1600:900;
+  // ── GARGANTUA CUTSCENE ── (only show if not in max-speed auto-roll)
+  if(result.glow==='gargantua'){
+    const wasAutoRolling = autoRolling;
+    if(wasAutoRolling){ autoRolling=false; clearTimeout(autoTimer); }
+    await showGargCutscene();
+    if(wasAutoRolling){ autoRolling=true; scheduleNextRoll(); }
+  }
+
+  const endPause = autoRolling && currentSpeed>=2 ? 80 : result.glow==='gargantua'?2000:result.glow==='mythical'?2200:result.glow==='legendary'?1600:900;
   await sleep(endPause);
   btn.disabled=false; rolling=false;
 }
@@ -2486,8 +3239,11 @@ function adminCmd(cmd){
       })){
         inventory['Gargantua']=(inventory['Gargantua']||0)+1;
         bestAura=AURAS.find(a=>a.name==='Gargantua'); updateUI();
+        pityCounter=0; updatePityDisplay();
         addLog('🕳 Force gave Gargantua to yourself.','cmd');
         showAdminNotif('🕳 GARGANTUA GRANTED!','#ff9500');
+        // Trigger the cutscene
+        showGargCutscene();
       } break;
     case 'give_mythical':
       if(!applyToStoredPlayer((users,d)=>{
@@ -2791,6 +3547,7 @@ async function fbSaveUser(username, data){
     createdAt:   data.createdAt || Date.now(),
     lastSaved:   Date.now(),
     inventory:   data.inventory || {},
+    pityCounter: data.pityCounter || 0,
     profile:     data.profile ? (({ profilePic, ...p }) => p)(data.profile) : {}
   };
   try{
@@ -2813,7 +3570,10 @@ async function fbSyncUsers(){
     // merge: keep local profilePic, use Firebase for everything else
     Object.entries(fbUsers).forEach(([u, d])=>{
       const localPic = local[u]?.profile?.profilePic || null;
+      // Preserve local pityCounter if Firebase doesn't have it yet
+      const localPity = local[u]?.pityCounter || 0;
       local[u] = d;
+      if(!d.pityCounter && localPity) local[u].pityCounter = localPity;
       if(localPic){ local[u].profile = local[u].profile || {}; local[u].profile.profilePic = localPic; }
     });
     localStorage.setItem(DB_KEY, JSON.stringify(local));
@@ -2896,6 +3656,7 @@ function saveCurrentProgress(){
   users[currentUser.username].totalRolls=totalRolls;
   users[currentUser.username].bestAura=bestAura?bestAura.name:null;
   users[currentUser.username].lastSaved=Date.now();
+  users[currentUser.username].pityCounter=pityCounter;
   saveUsers(users);
   // Push to Firebase async
   fbSaveUser(currentUser.username, users[currentUser.username]);
@@ -2907,8 +3668,10 @@ function loadUserProgress(username){
   inventory=d.inventory||{};
   totalRolls=d.totalRolls||0;
   bestAura=d.bestAura?AURAS.find(a=>a.name===d.bestAura):null;
+  pityCounter=d.pityCounter||0;
   lastAura=null;
   updateUI();
+  updatePityDisplay();
 }
 
 // ── SHOW / HIDE LOGIN SCREEN ──
