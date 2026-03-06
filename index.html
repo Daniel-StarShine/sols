@@ -1499,6 +1499,8 @@
         <button class="admin-cmd-btn" onclick="adminCmd('reset_luck')">↩ Reset Luck (x1)</button>
         <button class="admin-cmd-btn" onclick="adminCmd('give_all_player')">🎁 Give All Auras</button>
         <button class="admin-cmd-btn" onclick="adminCmd('clear_player_inv')">🗑 Clear Inventory</button>
+        <button class="admin-cmd-btn" style="border-color:rgba(255,149,0,0.5);color:#ff9500;" onclick="adminCmd('force_gargantua_player')">🕳 Force Gargantua</button>
+        <button class="admin-cmd-btn red" onclick="adminCmd('kick_player')">🚫 Kick Player</button>
         <button class="admin-cmd-btn red" onclick="adminCmd('reset_player')">💀 Full Reset</button>
       </div>
     </div>
@@ -1523,12 +1525,14 @@
         <button class="admin-cmd-btn" onclick="adminCmd('double_luck_event')">🍀 Double Luck Event</button>
         <button class="admin-cmd-btn" onclick="adminCmd('rare_boost')">✦ Rare Boost x5</button>
         <button class="admin-cmd-btn" onclick="adminCmd('mythical_event')">⚡ Mythical Event</button>
+        <button class="admin-cmd-btn" onclick="adminCmd('end_event')" style="border-color:rgba(150,150,150,0.4);color:#aaa;">⬛ End Event</button>
         <button class="admin-cmd-btn" onclick="adminCmd('reset_all_rolls')">🔄 Reset All Rolls</button>
         <button class="admin-cmd-btn red" onclick="adminCmd('shutdown')">🔴 Shutdown Server</button>
-        <button class="admin-cmd-btn red" onclick="adminCmd('kick_all')">🚫 Kick All Players</button>
+        <button class="admin-cmd-btn" style="border-color:rgba(80,220,120,0.4);color:#50dc78;" onclick="adminCmd('bring_online')">🟢 Bring Online</button>
       </div>
       <div class="admin-section-title" style="margin-top:14px;">Current Status</div>
       <div class="admin-player-card">
+        <div class="apc-row"><span class="apc-label">Server Status</span><span class="apc-val" id="serverStatusVal" style="color:#50dc78;">🟢 Online</span></div>
         <div class="apc-row"><span class="apc-label">Server Event</span><span class="apc-val" id="serverEvent" style="color:#50dc78;">None Active</span></div>
         <div class="apc-row"><span class="apc-label">Global Luck Boost</span><span class="apc-val" id="serverLuck">x1</span></div>
         <div class="apc-row"><span class="apc-label">Players Online</span><span class="apc-val">1</span></div>
@@ -3114,7 +3118,7 @@ function adminLogout(){
 // ── PANEL ──
 function showPanel(){
   refreshPlayerList();
-  syncAdminStats();
+  // refreshPlayerList already calls onAdminPlayerChange inside
   document.getElementById('adminPanelModal').style.display='flex';
 }
 function closeAdminPanel(){ document.getElementById('adminPanelModal').style.display='none'; }
@@ -3182,7 +3186,7 @@ function switchAdminTab(tab){
     document.getElementById('atab-'+t).classList.toggle('active',t===tab);
     document.getElementById('atab-'+t+'-content').style.display=t===tab?'block':'none';
   });
-  if(tab==='players') syncAdminStats();
+  if(tab==='players'){ const t=getSelectedPlayer(); if(t) onAdminPlayerChange(); else syncAdminStats(); }
 }
 
 // ── GIVE AURA ──
@@ -3190,12 +3194,47 @@ function adminGiveAura(){
   const name=document.getElementById('giveAuraSelect').value;
   const qty=parseInt(document.getElementById('giveAuraQty').value)||1;
   if(!name){addLog('⚠ No aura selected.','warn');return;}
-  inventory[name]=(inventory[name]||0)+qty;
   const aura=AURAS.find(a=>a.name===name);
-  if(!bestAura||RARITY_ORDER.indexOf(name)<RARITY_ORDER.indexOf(bestAura.name)) bestAura=aura;
-  updateUI();
-  addLog(`🎁 Gave ${qty}x ${name} to player.`,'cmd');
-  showAdminNotif(`Gave ${qty}x ${name}!`, aura.color);
+  const target=getSelectedPlayer();
+
+  if(target){
+    // Give to selected registered player
+    const users=getUsers();
+    if(!users[target]){ addLog(`⚠ Player "${target}" not found.`,'warn'); return; }
+    users[target].inventory=users[target].inventory||{};
+    users[target].inventory[name]=(users[target].inventory[name]||0)+qty;
+    if(!users[target].bestAura || RARITY_ORDER.indexOf(name)<RARITY_ORDER.indexOf(users[target].bestAura))
+      users[target].bestAura=name;
+    saveUsers(users);
+    addLog(`🎁 Gave ${qty}x ${name} to "${target}".`,'cmd');
+    showAdminNotif(`Gave ${qty}x ${name} to ${target}!`, aura?aura.color:'#ffc800');
+    onAdminPlayerChange();
+    // Firebase sync
+    const f=fb();
+    if(f){
+      const userRef=f.ref(f.db,'users/'+target);
+      f.get(userRef).then(snap=>{
+        const d=snap.val()||{};
+        const inv=d.inventory||{};
+        inv[name]=(inv[name]||0)+qty;
+        const bestIdx=RARITY_ORDER.indexOf(d.bestAura||'Common');
+        const newIdx=RARITY_ORDER.indexOf(name);
+        const newBest=newIdx<bestIdx?name:(d.bestAura||name);
+        f.update(userRef,{ inventory:inv, bestAura:newBest });
+        // Notify the player
+        f.set(f.ref(f.db,'admin/player_notify/'+target),{
+          type:'aura_given', aura:name, qty, ts:Date.now(), by:currentUser?currentUser.username:'Admin'
+        });
+      });
+    }
+  } else {
+    // Give to current session
+    inventory[name]=(inventory[name]||0)+qty;
+    if(!bestAura||RARITY_ORDER.indexOf(name)<RARITY_ORDER.indexOf(bestAura.name)) bestAura=aura;
+    updateUI();
+    addLog(`🎁 Gave ${qty}x ${name} to yourself.`,'cmd');
+    showAdminNotif(`Gave ${qty}x ${name}!`, aura?aura.color:'#ffc800');
+  }
 }
 
 // ── COMMANDS ──
@@ -3209,7 +3248,13 @@ function adminCmd(cmd){
     if(!users[target]){ addLog(`⚠ Player "${target}" not found.`,'warn'); return false; }
     fn(users, users[target]);
     saveUsers(users);
-    onAdminPlayerChange();
+    // Sync changed fields to Firebase
+    const f=fb();
+    if(f){
+      f.update(f.ref(f.db,'users/'+target), users[target])
+        .catch(e=>console.warn('Firebase sync failed:',e));
+    }
+    onAdminPlayerChange(); // always refresh panel with TARGET stats
     return true;
   }
 
@@ -3236,6 +3281,27 @@ function adminCmd(cmd){
       } break;
     case 'give_all_player': adminCmd('give_all'); break;
     case 'clear_player_inv': adminCmd('clear_inv'); break;
+    case 'force_gargantua_player':
+      if(!applyToStoredPlayer((users,d)=>{
+        d.inventory=d.inventory||{}; d.inventory['Gargantua']=(d.inventory['Gargantua']||0)+1;
+        d.bestAura='Gargantua'; d.pityCounter=0;
+        addLog(`🕳 Force gave Gargantua to "${target}".`,'cmd');
+        showAdminNotif(`🕳 GARGANTUA dado a ${target}!`,'#ff9500');
+        const f=fb();
+        if(f){
+          f.update(f.ref(f.db,'users/'+target),{ inventory:d.inventory, bestAura:'Gargantua', pityCounter:0 });
+          f.set(f.ref(f.db,'admin/player_notify/'+target),{
+            type:'aura_given', aura:'Gargantua', qty:1, ts:Date.now(), by:currentUser?currentUser.username:'Admin'
+          });
+        }
+      })){
+        inventory['Gargantua']=(inventory['Gargantua']||0)+1;
+        bestAura=AURAS.find(a=>a.name==='Gargantua');
+        pityCounter=0; updatePityDisplay(); updateUI();
+        addLog('🕳 Force gave Gargantua to yourself.','cmd');
+        showAdminNotif('🕳 GARGANTUA GRANTED!','#ff9500');
+        showGargCutscene();
+      } break;
     case 'give_gargantua':
       if(!applyToStoredPlayer((users,d)=>{
         d.inventory=d.inventory||{}; d.inventory['Gargantua']=(d.inventory['Gargantua']||0)+1;
@@ -3284,44 +3350,92 @@ function adminCmd(cmd){
         inventory={}; bestAura=null; updateUI(); addLog('♻ Reset your auras.','warn');
       } break;
     case 'reset_rolls':
-      if(!applyToStoredPlayer((users,d)=>{ d.totalRolls=0; addLog(`🔄 Reset "${target}" rolls.`,'warn'); })){
+      if(!applyToStoredPlayer((users,d)=>{
+        d.totalRolls=0; addLog(`🔄 Reset "${target}" roll count.`,'warn');
+        showAdminNotif(`🔄 ${target}'s rolls reset!`,'#5082ff');
+      })){
         totalRolls=0; updateUI(); addLog('🔄 Reset your roll count.','warn');
       } break;
     case 'max_luck': adminSetLuckVal(9999); break;
     case 'reset_luck': adminSetLuckVal(1); break;
     case 'reset_player':
-      if(!applyToStoredPlayer((users,d)=>{ d.inventory={}; d.bestAura=null; d.totalRolls=0; d.luck=1; addLog(`💀 Full reset for "${target}".`,'error'); })){
-        inventory={}; bestAura=null; lastAura=null; totalRolls=0; luckMultiplier=1; updateUI();
-        updateLuckDisplay(); addLog('💀 Full reset for yourself.','error');
+      if(!applyToStoredPlayer((users,d)=>{
+        d.inventory={}; d.bestAura=null; d.totalRolls=0; d.luck=1;
+        addLog(`💀 Full reset for "${target}".`,'error');
+        showAdminNotif(`💀 ${target} fully reset!`,'#ff6666');
+      })){
+        inventory={}; bestAura=null; lastAura=null; totalRolls=0; luckMultiplier=1;
+        updateUI(); updateLuckDisplay(); addLog('💀 Full reset for yourself.','error');
       } break;
     case 'double_luck_event':
-      serverEventActive='Double Luck Event';
-      document.getElementById('serverEvent').textContent='🍀 Double Luck Event';
-      document.getElementById('serverEvent').style.color='#50dc78';
-      addLog('🍀 Double Luck Event started.','info');
-      showAnnounce('🍀 DOUBLE LUCK EVENT is now ACTIVE! Roll now!','event'); break;
+      adminSetGlobalEvent('Double Luck Event','🍀 Double Luck Event','#50dc78',2,
+        '🍀 DOUBLE LUCK EVENT is now ACTIVE! Roll now!'); break;
     case 'rare_boost':
-      serverEventActive='Rare Boost x5';
-      document.getElementById('serverEvent').textContent='✦ Rare Boost x5';
-      document.getElementById('serverEvent').style.color='#5082ff';
-      addLog('✦ Rare Boost x5 started.','info');
-      showAnnounce('✦ RARE BOOST EVENT! x5 Rare chance for 10 minutes!','event'); break;
+      adminSetGlobalEvent('Rare Boost x5','✦ Rare Boost x5','#5082ff',1,
+        '✦ RARE BOOST EVENT! x5 Rare chance for 10 minutes!'); break;
     case 'mythical_event':
-      serverEventActive='Mythical Event';
-      document.getElementById('serverEvent').textContent='⚡ Mythical Event';
-      document.getElementById('serverEvent').style.color='#ff3232';
-      addLog('⚡ Mythical Event started.','info');
-      showAnnounce('⚡ MYTHICAL EVENT ACTIVE! Best of luck!','event'); break;
+      adminSetGlobalEvent('Mythical Event','⚡ Mythical Event','#ff3232',1,
+        '⚡ MYTHICAL EVENT ACTIVE! Best of luck!'); break;
+    case 'end_event':
+      adminSetGlobalEvent('None Active','None Active','#50dc78',1,''); break;
     case 'reset_all_rolls':
       totalRolls=0; updateUI(); addLog('🔄 Reset all player rolls.','warn'); break;
     case 'shutdown':
+      if(!currentUser||currentUser.username!=='Daniel'){ addLog('⛔ Only Daniel can make this shutdown.','error'); break; }
+      if(!confirm('⚠️ O jogo vai ficar OFFLINE para todos. Só tu podes reativar. Tens a certeza?')) break;
       addLog('🔴 Server shutdown initiated.','error');
-      showAnnounce('🔴 Server shutting down in 60 seconds. Please save your progress.','shutdown'); break;
-    case 'kick_all':
-      addLog('🚫 Kicked all players.','error');
-      showAnnounce('🚫 All players have been kicked by Admin.','warn'); break;
+      showAdminNotif('🔴 Server offline!','#ff4444');
+      (()=>{
+        const f=fb();
+        if(f){
+          f.set(f.ref(f.db,'admin/server_status'),{
+            status:'offline',
+            msg:'Servidor em manutenção. Volta mais tarde.',
+            ts:Date.now(),
+            by:currentUser?currentUser.username:'Admin'
+          });
+        }
+      })(); break;
+    case 'bring_online':
+      if(!currentUser||currentUser.username!=='Daniel'){ addLog('⛔ Only Daniel can bring online.','error'); break; }
+      addLog('🟢 Server brought back online.','info');
+      showAdminNotif('🟢 Servidor online!','#50dc78');
+      (()=>{
+        const f=fb();
+        if(f){
+          f.set(f.ref(f.db,'admin/server_status'),{
+            status:'online', ts:Date.now(), by:currentUser?currentUser.username:'Admin'
+          });
+        }
+        const sv=document.getElementById('serverStatusVal');
+        if(sv){ sv.textContent='🟢 Online'; sv.style.color='#50dc78'; }
+      })(); break;
+    case 'kick_player':
+      if(!target){ addLog('⚠ Seleciona um jogador primeiro.','warn'); break; }
+      if(!confirm(`⚠️ Expulsar "${target}"? Ele vai ser forçado a fazer login novamente.`)) break;
+      addLog(`🚫 Kicked "${target}".`,'error');
+      showAdminNotif(`🚫 ${target} foi expulso!`,'#ff6666');
+      (()=>{
+        const f=fb();
+        if(f){
+          f.set(f.ref(f.db,'admin/player_notify/'+target),{
+            type:'kick', ts:Date.now(), by:currentUser?currentUser.username:'Admin'
+          });
+        }
+      })(); break;
+    
+      addLog('🚫 Kick all initiated.','error');
+      adminGlobalBroadcast('🚫 Foste expulso pelo Admin.','warn');
+      (()=>{
+        const f=fb();
+        if(f){
+          f.set(f.ref(f.db,'admin/server_cmd'),{ cmd:'kick_all', ts:Date.now(), by:currentUser?currentUser.username:'Admin' });
+        }
+      })(); break;
   }
-  syncAdminStats();
+  // Refresh stats panel — show selected player if one is selected
+  const _tgt=getSelectedPlayer();
+  if(_tgt) onAdminPlayerChange(); else syncAdminStats();
 }
 
 // ── LUCK ──
@@ -3331,8 +3445,9 @@ function adminSetLuck(){
 }
 function adminSetLuckVal(val){
   const target=getSelectedPlayer();
+  val=Math.max(1,Math.min(99999,val));
   if(target){
-    // apply to another registered player
+    // ── Apply to stored player (localStorage + Firebase) ──
     const users=getUsers();
     if(!users[target]){ addLog(`⚠ Player "${target}" not found.`,'warn'); return; }
     users[target].luck=val;
@@ -3340,12 +3455,28 @@ function adminSetLuckVal(val){
     addLog(`🍀 Set luck for "${target}" to x${val}.`,'cmd');
     showAdminNotif(`Set ${target}'s luck to x${val}!`,'#50dc78');
     onAdminPlayerChange();
+    // Push to Firebase so the player's session updates in real-time
+    const f=fb();
+    if(f){
+      f.update(f.ref(f.db,'users/'+target),{ luck: val })
+        .then(()=>addLog(`✅ Firebase: luck x${val} synced for ${target}.`,'info'))
+        .catch(e=>addLog('⚠ Firebase luck sync failed: '+e.message,'warn'));
+      // Also send a notification to that player
+      f.set(f.ref(f.db,'admin/player_notify/'+target),{
+        type:'luck_set', val, ts:Date.now(), by: currentUser?currentUser.username:'Admin'
+      });
+    }
   } else {
-    // apply to current session
+    // Apply to current session
     luckMultiplier=val;
     updateLuckDisplay();
     addLog(`🍀 Set your luck to x${val}.`,'cmd');
     syncAdminStats();
+    // Sync own luck to Firebase
+    if(currentUser){
+      const f=fb();
+      if(f) f.update(f.ref(f.db,'users/'+currentUser.username),{ luck: val });
+    }
   }
 }
 function updateLuckDisplay(){
@@ -3363,9 +3494,20 @@ function adminAnnounce(){
   const msg=document.getElementById('announceInput').value.trim();
   const type=document.getElementById('announceType').value;
   if(!msg){addLog('⚠ No message entered.','warn');return;}
+  // Always show locally
   showAnnounce(msg,type);
   addLog(`📢 Broadcast: "${msg}"`, 'cmd');
   document.getElementById('announceInput').value='';
+  // Push to Firebase so ALL players see it
+  const f=fb();
+  if(f){
+    const r=f.ref(f.db,'admin/broadcast');
+    f.set(r,{ msg, type, ts: Date.now(), by: currentUser?currentUser.username:'Admin' })
+      .then(()=>addLog('✅ Broadcast sent globally via Firebase.','info'))
+      .catch(e=>addLog('⚠ Firebase broadcast failed: '+e.message,'warn'));
+  } else {
+    addLog('⚠ Firebase offline — announcement is local only.','warn');
+  }
 }
 
 function showAnnounce(msg,type){
@@ -3407,6 +3549,192 @@ function showAdminNotif(msg,color){
   document.getElementById('announceToastType').textContent='👑 Admin Action';
   document.getElementById('announceToastMsg').textContent=msg;
   setTimeout(()=>{ t.style.display='none'; },2500);
+}
+
+// ── GLOBAL EVENT HELPER (Firebase) ──
+function adminSetGlobalEvent(eventName, label, color, globalLuck, announceMsg){
+  serverEventActive=eventName;
+  const el=document.getElementById('serverEvent');
+  if(el){ el.textContent=label; el.style.color=color; }
+  addLog(`🌍 Global event set: ${eventName}`,'info');
+  if(announceMsg) showAnnounce(announceMsg,'event');
+
+  // Write to Firebase — all clients listening will pick it up
+  const f=fb();
+  if(f){
+    const payload={ name:eventName, label, color, globalLuck, ts:Date.now(), by:currentUser?currentUser.username:'Admin' };
+    f.set(f.ref(f.db,'admin/global_event'), payload)
+      .then(()=>addLog('✅ Event synced to Firebase globally.','info'))
+      .catch(e=>addLog('⚠ Firebase event sync failed: '+e.message,'warn'));
+    // Also broadcast announcement
+    if(announceMsg){
+      f.set(f.ref(f.db,'admin/broadcast'),{ msg:announceMsg, type:'event', ts:Date.now(), by:currentUser?currentUser.username:'Admin' });
+    }
+  } else {
+    addLog('⚠ Firebase offline — event is local only.','warn');
+  }
+}
+
+// Shows a banner INSIDE the login modal (above the form)
+function showMaintenanceBanner(msg){
+  // Remove old banner
+  const old=document.getElementById('maintenanceBanner'); if(old) old.remove();
+  const isOffline=msg.includes('offline') || msg.includes('🔴');
+  const banner=document.createElement('div');
+  banner.id='maintenanceBanner';
+  banner.style.cssText=`
+    position:absolute; top:0; left:0; right:0;
+    background:${isOffline ? 'rgba(255,40,40,0.12)' : 'rgba(80,220,120,0.12)'};
+    border-bottom:1px solid ${isOffline ? 'rgba(255,60,60,0.35)' : 'rgba(80,220,120,0.35)'};
+    color:${isOffline ? '#ff8888' : '#50dc78'};
+    font-family:'Rajdhani',sans-serif;
+    font-size:0.82rem; font-weight:600; letter-spacing:0.04em;
+    text-align:center; padding:10px 16px;
+    z-index:10;
+  `;
+  banner.textContent=msg;
+  // Insert at top of auth-box
+  const authBox=document.querySelector('.auth-box');
+  if(authBox){ authBox.style.position='relative'; authBox.insertBefore(banner, authBox.firstChild); }
+  // Disable/enable all auth submit buttons
+  document.querySelectorAll('.auth-submit-btn').forEach(btn=>{
+    btn.disabled=isOffline;
+    btn.style.opacity=isOffline?'0.35':'';
+    btn.style.cursor=isOffline?'not-allowed':'';
+  });
+}
+
+// Page load check is now handled by startServerStatusListener polling
+
+function adminGlobalBroadcast(msg, type){
+  showAnnounce(msg,type);
+  const f=fb();
+  if(f){
+    f.set(f.ref(f.db,'admin/broadcast'),{ msg, type, ts:Date.now(), by:currentUser?currentUser.username:'Admin' });
+  }
+}
+
+// ── LISTEN FOR ADMIN COMMANDS FROM FIREBASE (runs on every client) ──
+function forceKickLogout(){
+  // Clear session
+  try{ sessionStorage.removeItem('solsrng_session'); }catch(e){}
+  currentUser = null;
+  // Hide EVERY modal by ID first
+  ['adminPanelModal','adminLoginModal','previewModal','fbSetupModal','statsModal','profileModal'].forEach(id=>{
+    const el=document.getElementById(id); if(el) el.style.display='none';
+  });
+  // Force login modal visible with highest z-index
+  const lm=document.getElementById('loginModal');
+  if(lm){
+    lm.style.position='fixed';
+    lm.style.inset='0';
+    lm.style.zIndex='99999';
+    lm.style.display='flex';
+    lm.style.alignItems='center';
+    lm.style.justifyContent='center';
+  }
+  // Blur the game
+  const ui=document.querySelector('.ui-root');
+  if(ui){ ui.style.filter='blur(4px)'; ui.style.pointerEvents='none'; }
+  switchAuthTab('login');
+  const e=document.getElementById('loginError'); if(e) e.textContent='';
+}
+
+function setupAdminFirebaseListeners(){
+  const f=fb(); if(!f) return;
+
+  // Listen for global broadcasts
+  f.onValue(f.ref(f.db,'admin/broadcast'),(snap)=>{
+    const d=snap.val(); if(!d||!d.msg) return;
+    // Only show if message is recent (within last 10 seconds)
+    if(Date.now()-d.ts < 10000){
+      showAnnounce(d.msg, d.type||'info');
+    }
+  });
+
+  // Listen for global events (Double Luck, etc.)
+  f.onValue(f.ref(f.db,'admin/global_event'),(snap)=>{
+    const d=snap.val(); if(!d) return;
+    serverEventActive=d.name;
+    const el=document.getElementById('serverEvent');
+    if(el){ el.textContent=d.label||d.name; el.style.color=d.color||'#50dc78'; }
+    // Apply global luck boost
+    if(d.name==='Double Luck Event'){
+      if(!isAdmin){
+        luckMultiplier=Math.max(luckMultiplier*2, 2);
+        updateLuckDisplay();
+        addLog(`🍀 Double Luck Event: luck boosted to x${luckMultiplier}!`,'info');
+      }
+    } else if(d.name==='Rare Boost x5'){
+      if(!isAdmin){ luckMultiplier=Math.max(luckMultiplier*5, 5); updateLuckDisplay(); }
+    } else if(d.name==='Mythical Event'){
+      if(!isAdmin){ luckMultiplier=Math.max(luckMultiplier*10, 10); updateLuckDisplay(); }
+    } else if(d.name==='None Active'){
+      // Event ended — restore base luck from profile
+      if(!isAdmin && currentUser){
+        const d2=getUserData(currentUser.username);
+        luckMultiplier=d2?.luck||1;
+        updateLuckDisplay();
+      }
+    }
+  });
+
+  // Listen for server commands (shutdown, kick)
+  f.onValue(f.ref(f.db,'admin/server_cmd'),(snap)=>{
+    const d=snap.val(); if(!d||!d.ts) return;
+    if(Date.now()-d.ts > 8000) return; // ignore stale commands (8s window)
+    if(isAdmin) return; // admin issued it, don't apply to self
+    if(d.cmd==='shutdown'){
+      let t=d.countdown||10;
+      showAnnounce(`🔴 Server a desligar em ${t} segundos!`,'shutdown');
+      const iv=setInterval(()=>{
+        t--;
+        if(t<=0){
+          clearInterval(iv);
+          document.body.innerHTML='<div style="display:flex;align-items:center;justify-content:center;height:100vh;background:#000;color:#ff4444;font-family:sans-serif;font-size:1.5rem;flex-direction:column;gap:16px;"><div>🔴</div><div>Server Offline</div><div style="font-size:0.9rem;color:#666;">Recarrega a página para voltar.</div></div>';
+        }
+      },1000);
+    }
+  });
+
+  // Listen for player-specific notifications (luck set, etc.)
+  if(currentUser){
+    f.onValue(f.ref(f.db,'admin/player_notify/'+currentUser.username),(snap)=>{
+      const d=snap.val(); if(!d) return;
+      if(Date.now()-d.ts > 15000) return; // ignore old ones
+      if(d.type==='kick'){
+        if(Date.now()-d.ts > 8000) return;
+        showAnnounce('🚫 Foste expulso pelo Admin.','warn');
+        setTimeout(()=>{ forceKickLogout(); }, 2000);
+      } else if(d.type==='luck_set'){
+        luckMultiplier=d.val;
+        updateLuckDisplay();
+        // Also persist to localStorage so it survives page reload
+        if(currentUser){
+          const users=getUsers();
+          if(users[currentUser.username]){
+            users[currentUser.username].luck=d.val;
+            saveUsers(users);
+          }
+        }
+        showAnnounce(`👑 Admin definiu a tua luck para x${d.val}!`,'event');
+        addLog(`👑 Admin changed your luck to x${d.val}.`,'info');
+      } else if(d.type==='aura_given'){
+        inventory[d.aura]=(inventory[d.aura]||0)+d.qty;
+        const aura=AURAS.find(a=>a.name===d.aura);
+        if(aura&&(!bestAura||RARITY_ORDER.indexOf(d.aura)<RARITY_ORDER.indexOf(bestAura.name))) bestAura=aura;
+        updateUI();
+        addLog(`🎁 Admin gave you ${d.qty}x ${d.aura}.`,'info');
+        // Gargantua gets the full cutscene experience
+        if(d.aura==='Gargantua'){
+          lastAura=aura;
+          setTimeout(()=>showGargCutscene(), 800);
+        } else {
+          showAnnounce(`🎁 Admin gave you ${d.qty}x ${d.aura}!`,'event');
+        }
+      }
+    });
+  }
 }
 
 // ══════════════════════════════════════
@@ -3518,13 +3846,48 @@ function updateFbStatusPending(){
 
 // Show Firebase button only to Daniel, and update status
 document.addEventListener('DOMContentLoaded', ()=>{
-  // Check after a short delay to allow module to load
   setTimeout(updateFbStatusUI, 500);
+  // Start server status listener as early as possible
+  startServerStatusListener();
 });
 // Also update when Firebase connects
+function startServerStatusListener(){
+  // Try immediately, retry every 500ms until Firebase is ready
+  let _serverStatusUnsub = null;
+  function _tryAttach(){
+    const f=fb();
+    if(!f){ setTimeout(_tryAttach, 500); return; }
+    if(_serverStatusUnsub) return; // already attached
+    _serverStatusUnsub = f.onValue(f.ref(f.db,'admin/server_status'),(snap)=>{
+      const d=snap.val(); if(!d) return;
+      const isAdminUser = currentUser && currentUser.username === 'Daniel';
+      const statusEl=document.getElementById('serverStatusVal');
+      if(d.status==='offline'){
+        if(statusEl){ statusEl.textContent='🔴 Offline'; statusEl.style.color='#ff4444'; }
+        if(!isAdminUser){
+          forceKickLogout();
+          setTimeout(()=>{ showMaintenanceBanner('🔴 Servidor offline — '+(d.msg||'Volta mais tarde.')); }, 100);
+        }
+      } else if(d.status==='online'){
+        if(statusEl){ statusEl.textContent='🟢 Online'; statusEl.style.color='#50dc78'; }
+        if(!isAdminUser){
+          showMaintenanceBanner('🟢 Servidor online! Já podes fazer login.');
+          setTimeout(()=>{ const b=document.getElementById('maintenanceBanner'); if(b) b.remove(); },6000);
+        }
+      }
+    });
+    console.log('✅ Server status listener attached');
+  }
+  _tryAttach();
+}
+
 document.addEventListener('fbReady', ()=>{
   updateFbStatusUI();
   showAdminNotif('🔥 Firebase ligado! Multiplayer ativo.','#50dc78');
+  // Start server status listener IMMEDIATELY (works for logged-in players too)
+  startServerStatusListener();
+  // Start other admin listeners after short delay
+  setTimeout(setupAdminFirebaseListeners, 500);
 });
 document.addEventListener('fbError', (e)=>{
   updateFbStatusUI();
@@ -3554,6 +3917,8 @@ async function fbSaveUser(username, data){
     lastSaved:   Date.now(),
     inventory:   data.inventory || {},
     pityCounter: data.pityCounter || 0,
+    luck: data.luck || 1,
+    luck: data.luck || 1,
     profile:     data.profile ? (({ profilePic, ...p }) => p)(data.profile) : {}
   };
   try{
@@ -3663,6 +4028,7 @@ function saveCurrentProgress(){
   users[currentUser.username].bestAura=bestAura?bestAura.name:null;
   users[currentUser.username].lastSaved=Date.now();
   users[currentUser.username].pityCounter=pityCounter;
+  users[currentUser.username].luck=luckMultiplier; // ← persist luck
   saveUsers(users);
   // Push to Firebase async
   fbSaveUser(currentUser.username, users[currentUser.username]);
@@ -3676,6 +4042,8 @@ function loadUserProgress(username){
   bestAura=d.bestAura?AURAS.find(a=>a.name===d.bestAura):null;
   pityCounter=d.pityCounter||0;
   lastAura=null;
+  luckMultiplier=d.luck||1;  // ← load saved luck
+  updateLuckDisplay();
   updateUI();
   updatePityDisplay();
 }
@@ -3703,6 +4071,7 @@ function switchAuthTab(tab){
 
 // ── REGISTER ──
 function doRegister(){
+  if(document.getElementById('maintenanceBanner')?.textContent.includes('offline')) return;
   try{
     const username=document.getElementById('regUser').value.trim();
     const pass=document.getElementById('regPass').value;
@@ -3748,6 +4117,7 @@ function doRegister(){
 
 // ── LOGIN ──
 function doLogin(){
+  if(document.getElementById('maintenanceBanner')?.textContent.includes('offline')) return;
   try{
     const username=document.getElementById('loginUser').value.trim();
     const pass=document.getElementById('loginPass').value;
@@ -3806,6 +4176,8 @@ function loginUser(username){
     // Firebase: set presence + start real-time listeners
     const initFb = () => {
       fbSetPresence(username);
+  // Start admin command listeners for this player
+  setTimeout(setupAdminFirebaseListeners, 800);
       fbListenPresence();
       fbListenLeaderboard();
       // Push local data to Firebase immediately on login
@@ -3813,6 +4185,18 @@ function loginUser(username){
     };
     if(window._fbReady) initFb();
     else document.addEventListener('fbReady', initFb, { once: true });
+    // Also listen for own profile changes in Firebase (luck updated by admin, etc.)
+    document.addEventListener('fbReady', ()=>{
+      const f=fb(); if(!f||!currentUser) return;
+      f.onValue(f.ref(f.db,'users/'+currentUser.username),(snap)=>{
+        const d=snap.val(); if(!d) return;
+        // If admin changed our luck in Firebase, apply it live
+        if(typeof d.luck==='number' && d.luck!==luckMultiplier){
+          luckMultiplier=d.luck;
+          updateLuckDisplay();
+        }
+      });
+    }, { once: true });
   };
 
   // Pull user data from Firebase first
