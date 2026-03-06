@@ -2606,7 +2606,13 @@ function showGargCutscene(){
         float diskTilt=0.38;
         vec2 diskUV=vec2(uv.x, uv.y/diskTilt);
         float diskR=length(diskUV);
-        float diskAngle=atan(diskUV.y,diskUV.x);
+        // Rotate disk slowly — outer disk slower (Keplerian)
+        float spinBase = u_time * 0.06;
+        float spinR    = spinBase / max(diskR*2.5, 0.3); // inner spins faster
+        float cosS=cos(spinR), sinS=sin(spinR);
+        vec2 diskUVrot = vec2(diskUV.x*cosS - diskUV.y*sinS,
+                              diskUV.x*sinS + diskUV.y*cosS);
+        float diskAngle=atan(diskUVrot.y, diskUVrot.x);
 
         vec3 diskCol=vec3(0.0);
         float diskMask=0.0;
