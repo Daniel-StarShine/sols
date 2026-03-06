@@ -2783,13 +2783,23 @@ function getUserData(username){ const u = JSON.parse(localStorage.getItem(DB_KEY
 // Push a single user's data to Firebase
 async function fbSaveUser(username, data){
   const f = fb();
-  if(!f) return;
+  if(!f){ console.warn('fbSaveUser: Firebase not ready'); return; }
   // strip profilePic from Firebase (too large for RTDB free tier) — keep local only
-  const { profile, ...rest } = data;
-  const fbProfile = profile ? (({ profilePic, ...p }) => p)(profile) : {};
+  const saveData = {
+    password:    data.password || '',
+    totalRolls:  data.totalRolls || 0,
+    bestAura:    data.bestAura || null,
+    createdAt:   data.createdAt || Date.now(),
+    lastSaved:   Date.now(),
+    inventory:   data.inventory || {},
+    profile:     data.profile ? (({ profilePic, ...p }) => p)(data.profile) : {}
+  };
   try{
-    await f.set(f.ref(f.db, `users/${username}`), { ...rest, profile: fbProfile });
-  }catch(e){ console.warn('Firebase save user failed:', e); }
+    await f.set(f.ref(f.db, `users/${username}`), saveData);
+    console.log('✅ Saved to Firebase:', username, 'rolls:', saveData.totalRolls);
+  }catch(e){
+    console.error('❌ Firebase save failed:', e.message);
+  }
 }
 
 // Pull all users from Firebase and merge into localStorage
@@ -2861,12 +2871,15 @@ function fbListenLeaderboard(){
     const fbUsers = snap.val();
     const local = JSON.parse(localStorage.getItem(DB_KEY)||'{}');
     Object.entries(fbUsers).forEach(([u,d])=>{
+      // Never overwrite current user's data from Firebase listener —
+      // their data is always more up-to-date locally
+      if(currentUser && u === currentUser.username) return;
       const localPic = local[u]?.profile?.profilePic || null;
       local[u] = d;
       if(localPic){ local[u].profile = local[u].profile||{}; local[u].profile.profilePic = localPic; }
     });
     localStorage.setItem(DB_KEY, JSON.stringify(local));
-    // Refresh leaderboard if it's open
+    // Refresh leaderboard if open
     if(document.getElementById('leaderboardModal')?.style.display !== 'none'){
       buildLeaderboard(currentLbTab||'rarest');
     }
@@ -3009,26 +3022,49 @@ function doLogin(){
 function loginUser(username){
   currentUser={ username, color:avatarColor(username), guest:false };
   sessionStorage.setItem(SESSION_KEY, username);
-  loadUserProgress(username);
-  try{ loadProfileData(); }catch(e){ console.warn('Profile load error:',e); }
-  applyUserToUI();
-  hideLoginScreen();
-  setInterval(saveCurrentProgress, 30000);
-  // Show Firebase button for owner
-  if(username === 'Daniel'){
-    const btn = document.getElementById('fbTopbarBtn');
-    if(btn) btn.style.display = 'flex';
-    updateFbStatusUI();
-  }
-  // Firebase: set presence + start real-time listeners
-  const initFb = () => {
-    fbSetPresence(username);
-    fbListenPresence();
-    fbListenLeaderboard();
-    fbSyncUsers().then(()=>{ buildLeaderboard(currentLbTab||'rarest'); updateRankDisplay(); });
+  // First try to pull latest data from Firebase, then load
+  const startGame = () => {
+    loadUserProgress(username);
+    try{ loadProfileData(); }catch(e){ console.warn('Profile load error:',e); }
+    applyUserToUI();
+    hideLoginScreen();
+    setInterval(saveCurrentProgress, 30000);
+    // Show Firebase button for owner
+    if(username === 'Daniel'){
+      const btn = document.getElementById('fbTopbarBtn');
+      if(btn) btn.style.display = 'flex';
+      updateFbStatusUI();
+    }
+    // Firebase: set presence + start real-time listeners
+    const initFb = () => {
+      fbSetPresence(username);
+      fbListenPresence();
+      fbListenLeaderboard();
+      // Push local data to Firebase immediately on login
+      setTimeout(saveCurrentProgress, 1000);
+    };
+    if(window._fbReady) initFb();
+    else document.addEventListener('fbReady', initFb, { once: true });
   };
-  if(window._fbReady) initFb();
-  else document.addEventListener('fbReady', initFb, { once: true });
+
+  // Pull user data from Firebase first
+  const f = fb();
+  if(f){
+    f.get(f.ref(f.db, `users/${username}`)).then(snap=>{
+      if(snap.exists()){
+        const fbData = snap.val();
+        const local = JSON.parse(localStorage.getItem(DB_KEY)||'{}');
+        // Merge: keep local profilePic, use Firebase for game data
+        const localPic = local[username]?.profile?.profilePic || null;
+        local[username] = { ...local[username], ...fbData };
+        if(localPic){ local[username].profile = local[username].profile||{}; local[username].profile.profilePic = localPic; }
+        localStorage.setItem(DB_KEY, JSON.stringify(local));
+      }
+      startGame();
+    }).catch(()=>{ startGame(); });
+  } else {
+    startGame();
+  }
 }
 
 function playAsGuest(){
@@ -3076,8 +3112,26 @@ window.addEventListener('load',()=>{
 let currentLbTab='rarest';
 
 function openLeaderboard(){
-  buildLeaderboard(currentLbTab);
   document.getElementById('leaderboardModal').style.display='flex';
+  buildLeaderboard(currentLbTab);
+  // Also fetch fresh data from Firebase
+  const f = fb();
+  if(f){
+    f.get(f.ref(f.db, 'users')).then(snap=>{
+      if(!snap.exists()) return;
+      const fbUsers = snap.val();
+      const local = JSON.parse(localStorage.getItem(DB_KEY)||'{}');
+      Object.entries(fbUsers).forEach(([u,d])=>{
+        if(currentUser && u === currentUser.username) return; // don't overwrite self
+        const localPic = local[u]?.profile?.profilePic || null;
+        local[u] = d;
+        if(localPic){ local[u].profile = local[u].profile||{}; local[u].profile.profilePic = localPic; }
+      });
+      localStorage.setItem(DB_KEY, JSON.stringify(local));
+      buildLeaderboard(currentLbTab);
+      updateRankDisplay();
+    }).catch(()=>{});
+  }
 }
 function closeLeaderboard(){ document.getElementById('leaderboardModal').style.display='none'; }
 
