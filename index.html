@@ -257,6 +257,100 @@
   }
   @keyframes garg-spin { to { transform: rotate(360deg); } }
 
+  .glow-archangel {
+    background: radial-gradient(circle, #fffbe0 0%, #fff0a0 20%, rgba(255,220,80,0.18) 60%) !important;
+    border-color: #fff5c0 !important;
+    box-shadow: 0 0 0 3px #fff5c066, 0 0 50px #ffe97a, 0 0 100px #ffd700aa, 0 0 160px #ffaa0077, inset 0 0 30px rgba(255,240,150,0.4) !important;
+    animation: archangel-pulse 1.8s ease-in-out infinite !important;
+  }
+  @keyframes archangel-pulse {
+    0%,100% { box-shadow: 0 0 0 3px #fff5c066, 0 0 50px #ffe97a, 0 0 100px #ffd700aa, 0 0 160px #ffaa0077, inset 0 0 30px rgba(255,240,150,0.4); }
+    50%      { box-shadow: 0 0 0 8px #fff5c088, 0 0 90px #ffffff, 0 0 160px #ffd700cc, 0 0 240px #ffaa00aa, inset 0 0 50px rgba(255,255,220,0.6); }
+  }
+  .archangel-ring {
+    position: absolute; inset: -8px; border-radius: 50%;
+    border: 3px solid transparent;
+    border-top-color: #fff5c0; border-bottom-color: #ffd700;
+    animation: garg-spin 1s linear infinite;
+    box-shadow: 0 0 20px #fff5c0, 0 0 40px #ffd70088;
+    pointer-events: none; z-index: 5;
+  }
+  .archangel-ring2 {
+    position: absolute; inset: -20px; border-radius: 50%;
+    border: 2px solid transparent;
+    border-left-color: #fffae0aa; border-right-color: #ffcc44aa;
+    animation: garg-spin 1.6s linear infinite reverse;
+    pointer-events: none; z-index: 4;
+  }
+
+  /* Archangel cutscene */
+  #archangelCutscene {
+    position: fixed; inset: 0; z-index: 9999;
+    background: #000; display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    opacity: 0; pointer-events: none;
+    transition: opacity 1s ease; overflow: hidden;
+  }
+  #archangelCutscene.active { opacity: 1; pointer-events: all; }
+  #acCanvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .ac-bar-top, .ac-bar-bot {
+    position: absolute; left: 0; right: 0; background: #000; z-index: 10;
+    height: 0; transition: height 0.8s cubic-bezier(0.4,0,0.2,1);
+  }
+  .ac-bar-top { top: 0; }
+  .ac-bar-bot { bottom: 0; }
+  #archangelCutscene.active .ac-bar-top,
+  #archangelCutscene.active .ac-bar-bot { height: 10vh; }
+  .ac-overlay {
+    position: absolute; inset: 0; z-index: 20;
+    display: flex; flex-direction: column; align-items: center; justify-content: flex-end;
+    pointer-events: none; padding-bottom: 8vh;
+  }
+  .ac-text-block { display: flex; flex-direction: column; align-items: center; gap: 12px; }
+  .ac-obtained {
+    font-size: 0.68rem; letter-spacing: 0.45em; text-transform: uppercase;
+    color: rgba(255,245,180,0.6);
+    opacity: 0; animation: ac-fade 1s ease forwards; animation-delay: 2.5s;
+  }
+  .ac-name {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: clamp(2.4rem, 7vw, 5rem); font-weight: 900;
+    color: #fff; letter-spacing: 0.05em;
+    text-shadow: 0 0 60px #fff5c0, 0 0 120px #ffd700bb, 0 0 200px #ffaa0066;
+    opacity: 0; transform: scale(0.6) translateY(20px);
+    animation: ac-name-rise 1s cubic-bezier(0.16,1,0.3,1) forwards; animation-delay: 3s;
+  }
+  .ac-subtitle {
+    font-size: 0.82rem; letter-spacing: 0.28em; color: rgba(255,245,200,0.7);
+    opacity: 0; animation: ac-fade 0.8s ease forwards; animation-delay: 3.8s;
+  }
+  .ac-desc {
+    font-size: 0.72rem; color: rgba(255,255,255,0.3); letter-spacing: 0.1em;
+    opacity: 0; animation: ac-fade 0.8s ease forwards; animation-delay: 4.4s;
+    max-width: 360px; text-align: center; line-height: 1.7;
+  }
+  .ac-line {
+    width: 0; height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255,245,180,0.6), transparent);
+    animation: ac-line-grow 1s ease forwards; animation-delay: 2.8s;
+  }
+  @keyframes ac-fade { to { opacity: 1; } }
+  @keyframes ac-name-rise { to { opacity: 1; transform: scale(1) translateY(0); } }
+  @keyframes ac-line-grow { to { width: 320px; } }
+  .ac-flash {
+    position: absolute; inset: 0; background: #fff; opacity: 0; pointer-events: none; z-index: 30;
+    animation: ac-flash-anim 1.2s ease forwards;
+  }
+  @keyframes ac-flash-anim { 0%{opacity:1;} 40%{opacity:0.6;} 100%{opacity:0;} }
+  .ac-skip {
+    position: absolute; bottom: calc(10vh + 18px); right: 28px; z-index: 25;
+    background: rgba(255,245,180,0.08); border: 1px solid rgba(255,245,180,0.2);
+    color: rgba(255,245,180,0.5); padding: 8px 18px; border-radius: 20px;
+    font-size: 0.7rem; letter-spacing: 0.15em; cursor: pointer;
+    transition: all 0.2s;
+  }
+  .ac-skip:hover { background: rgba(255,245,180,0.15); color: rgba(255,245,180,0.9); }
+
   /* ── CHAT NOTIF DOT ── */
   .chat-notif-dot { position:absolute;top:8px;right:10px;width:8px;height:8px;border-radius:50%;background:#5082ff;box-shadow:0 0 6px #5082ff;animation:admin-blink 1s infinite; }
 
@@ -1133,6 +1227,27 @@
   <button class="gc-skip" onclick="skipGargCutscene()">SKIP ▶</button>
 </div>
 
+<!-- ══ ARCHANGEL CUTSCENE ══ -->
+<div id="archangelCutscene">
+  <canvas id="acCanvas"></canvas>
+  <div class="ac-bar-top"></div>
+  <div class="ac-bar-bot"></div>
+  <div class="ac-flash" id="acFlash"></div>
+
+  <div class="ac-overlay">
+    <div class="ac-text-block">
+      <div class="ac-obtained">— you have obtained —</div>
+      <div class="ac-line"></div>
+      <div class="ac-name">ARCHANGEL</div>
+      <div class="ac-subtitle">THE DIVINE HERALD</div>
+      <div class="ac-line" style="animation-delay:3.2s"></div>
+      <div class="ac-desc">Descended from beyond all heavens.<br>Wings of sacred fire. Grace beyond time.<br><span style="color:rgba(255,245,180,0.45);letter-spacing:0.2em;font-size:0.65rem;">1 IN 250,500,000</span></div>
+    </div>
+  </div>
+
+  <button class="ac-skip" onclick="skipArchangelCutscene()">SKIP ▶</button>
+</div>
+
 <div id="toast">
   <div class="toast-label">You rolled</div>
   <div class="toast-name" id="toastName">—</div>
@@ -1442,6 +1557,7 @@
           <option value="Legendary">★ Legendary</option>
           <option value="Mythical">⚡ Mythical</option>
           <option value="Gargantua">🕳 Gargantua</option>
+          <option value="Archangel">🪽 Archangel</option>
         </select>
         <input type="number" class="admin-input" id="giveAuraQty" value="1" min="1" max="9999" style="width:80px;" placeholder="Qty"/>
         <button class="admin-action-btn green" onclick="adminGiveAura()">Give</button>
@@ -1453,6 +1569,7 @@
         <button class="admin-cmd-btn" onclick="adminCmd('give_mythical')">⚡ Force Mythical Roll</button>
         <button class="admin-cmd-btn" onclick="adminCmd('give_legendary')">★ Force Legendary Roll</button>
         <button class="admin-cmd-btn" style="border-color:rgba(255,149,0,0.4);color:#ff9500;" onclick="adminCmd('give_gargantua')">🕳 Force Gargantua</button>
+        <button class="admin-cmd-btn" style="border-color:rgba(255,245,180,0.4);color:#fff5c0;" onclick="adminCmd('give_archangel')">🪽 Force Archangel</button>
         <button class="admin-cmd-btn" onclick="adminCmd('max_stack')">📦 Max Stack All</button>
         <button class="admin-cmd-btn red" onclick="adminCmd('reset_auras')">♻ Reset All Auras</button>
       </div>
@@ -1499,8 +1616,6 @@
         <button class="admin-cmd-btn" onclick="adminCmd('reset_luck')">↩ Reset Luck (x1)</button>
         <button class="admin-cmd-btn" onclick="adminCmd('give_all_player')">🎁 Give All Auras</button>
         <button class="admin-cmd-btn" onclick="adminCmd('clear_player_inv')">🗑 Clear Inventory</button>
-        <button class="admin-cmd-btn" style="border-color:rgba(255,149,0,0.5);color:#ff9500;" onclick="adminCmd('force_gargantua_player')">🕳 Force Gargantua</button>
-        <button class="admin-cmd-btn red" onclick="adminCmd('kick_player')">🚫 Kick Player</button>
         <button class="admin-cmd-btn red" onclick="adminCmd('reset_player')">💀 Full Reset</button>
       </div>
     </div>
@@ -1525,14 +1640,12 @@
         <button class="admin-cmd-btn" onclick="adminCmd('double_luck_event')">🍀 Double Luck Event</button>
         <button class="admin-cmd-btn" onclick="adminCmd('rare_boost')">✦ Rare Boost x5</button>
         <button class="admin-cmd-btn" onclick="adminCmd('mythical_event')">⚡ Mythical Event</button>
-        <button class="admin-cmd-btn" onclick="adminCmd('end_event')" style="border-color:rgba(150,150,150,0.4);color:#aaa;">⬛ End Event</button>
         <button class="admin-cmd-btn" onclick="adminCmd('reset_all_rolls')">🔄 Reset All Rolls</button>
         <button class="admin-cmd-btn red" onclick="adminCmd('shutdown')">🔴 Shutdown Server</button>
-        <button class="admin-cmd-btn" style="border-color:rgba(80,220,120,0.4);color:#50dc78;" onclick="adminCmd('bring_online')">🟢 Bring Online</button>
+        <button class="admin-cmd-btn red" onclick="adminCmd('kick_all')">🚫 Kick All Players</button>
       </div>
       <div class="admin-section-title" style="margin-top:14px;">Current Status</div>
       <div class="admin-player-card">
-        <div class="apc-row"><span class="apc-label">Server Status</span><span class="apc-val" id="serverStatusVal" style="color:#50dc78;">🟢 Online</span></div>
         <div class="apc-row"><span class="apc-label">Server Event</span><span class="apc-val" id="serverEvent" style="color:#50dc78;">None Active</span></div>
         <div class="apc-row"><span class="apc-label">Global Luck Boost</span><span class="apc-val" id="serverLuck">x1</span></div>
         <div class="apc-row"><span class="apc-label">Players Online</span><span class="apc-val">1</span></div>
@@ -2069,8 +2182,19 @@ const AURAS = [
     bonuses: ['+999% Luck', '+200% All Stats', 'Gravity Pull', 'Light Bend', 'Star Eater', 'Time Stop', 'Universe Reset', 'Absolute Zero', 'Infinite Mass'],
     discovered: '3 times'
   },
+  {
+    name: 'Archangel', chance: 1/250500000, color: '#fff5c0', glow: 'archangel', icon: '🪽', chanceStr: '1 in 250,500,000',
+    tier: 'DIVINE', power: 8, glowPowerStr: '✦✦✦✦✦✦',
+    type: 'Divine', origin: 'The Throne Above All Heavens', element: '✨ Sacred Light',
+    description: 'Beyond singularity. Beyond void. Beyond time itself. The Archangel does not belong to this universe — it descended from a realm so sacred that its mere presence turns darkness into eternal dawn. Wings of living fire carry the weight of all creation.',
+    lore: '"I heard no thunder. I saw no lightning. There was only warmth — the kind that reaches into your bones and erases every fear you have ever known. And then the wings unfolded." — The Last Prophet',
+    stats: { intensity: 100, spread: 100, duration: 100, stability: 1 },
+    effects: ['Divine Wings', 'Sacred Fire', 'Holy Radiance', 'Heaven Beam', 'Celestial Halo', 'Angel Feathers', 'God Ray', 'Eternal Dawn', 'Soul Purge', 'Holy Storm'],
+    bonuses: ['+∞ Luck', '+500% All Stats', 'Divine Shield', 'Sacred Fire Trail', 'Angel Summon', 'Death Ward', 'Heaven\'s Blessing', 'Eternal Light', 'Soul Ascension', 'Absolute Divinity'],
+    discovered: '1 time'
+  },
 ];
-const RARITY_ORDER = ['Gargantua','Mythical','Legendary','Epic','Rare','Uncommon','Common'];
+const RARITY_ORDER = ['Archangel','Gargantua','Mythical','Legendary','Epic','Rare','Uncommon','Common'];
 
 let inventory={}, totalRolls=0, rolling=false, bestAura=null, lastAura=null, previewAura=null;
 let autoRolling=false, autoTimer=null;
@@ -2888,6 +3012,308 @@ function skipGargCutscene(){
   },500);
 }
 
+// ══════════════════════════════════════
+// ARCHANGEL CUTSCENE
+// ══════════════════════════════════════
+let _archangelCutsceneResolve = null;
+let _acAnimId = null;
+let _acAudioCtx = null;
+
+function acPlaySound(){
+  try {
+    const ctx = new (window.AudioContext||window.webkitAudioContext)();
+    _acAudioCtx = ctx;
+    const T = ctx.currentTime;
+    const master = ctx.createGain(); master.gain.value = 0;
+    master.gain.linearRampToValueAtTime(0.65, T+0.15);
+    master.connect(ctx.destination);
+
+    // Heavenly choir shimmer (multiple sine waves)
+    [261.63, 329.63, 392, 523.25, 659.25].forEach((freq, i) => {
+      const osc = ctx.createOscillator();
+      const g = ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(freq, T);
+      osc.frequency.linearRampToValueAtTime(freq * 1.02, T + 8);
+      g.gain.setValueAtTime(0, T + i * 0.18);
+      g.gain.linearRampToValueAtTime(0.13, T + i * 0.18 + 0.5);
+      g.gain.linearRampToValueAtTime(0.08, T + 10);
+      osc.connect(g); g.connect(master);
+      osc.start(T + i * 0.18); osc.stop(T + 13);
+    });
+
+    // Divine horn sweep
+    const horn = ctx.createOscillator();
+    const hornG = ctx.createGain();
+    horn.type = 'sawtooth';
+    horn.frequency.setValueAtTime(110, T + 1.5);
+    horn.frequency.exponentialRampToValueAtTime(440, T + 3.5);
+    hornG.gain.setValueAtTime(0, T + 1.5);
+    hornG.gain.linearRampToValueAtTime(0.18, T + 2.2);
+    hornG.gain.linearRampToValueAtTime(0, T + 5);
+    const hornFilter = ctx.createBiquadFilter();
+    hornFilter.type = 'lowpass'; hornFilter.frequency.value = 1800;
+    horn.connect(hornFilter); hornFilter.connect(hornG); hornG.connect(master);
+    horn.start(T + 1.5); horn.stop(T + 6);
+
+    // Bell-like impact
+    const bell = ctx.createOscillator();
+    const bellG = ctx.createGain();
+    bell.type = 'sine'; bell.frequency.value = 880;
+    bellG.gain.setValueAtTime(0.5, T + 0.05);
+    bellG.gain.exponentialRampToValueAtTime(0.001, T + 4);
+    bell.connect(bellG); bellG.connect(master);
+    bell.start(T + 0.05); bell.stop(T + 5);
+
+    // Soft thunder boom
+    const bufLen = ctx.sampleRate * 2;
+    const buf = ctx.createBuffer(1, bufLen, ctx.sampleRate);
+    const d = buf.getChannelData(0);
+    for(let i=0;i<bufLen;i++) d[i]=(Math.random()*2-1)*Math.exp(-i/(ctx.sampleRate*0.5));
+    const noise = ctx.createBufferSource(); noise.buffer = buf;
+    const noiseG = ctx.createGain();
+    const noiseF = ctx.createBiquadFilter(); noiseF.type='lowpass'; noiseF.frequency.value=200;
+    noiseG.gain.setValueAtTime(0.4, T); noiseG.gain.linearRampToValueAtTime(0, T+2);
+    noise.connect(noiseF); noiseF.connect(noiseG); noiseG.connect(master);
+    noise.start(T); noise.stop(T+2);
+
+  } catch(e){}
+}
+
+function showArchangelCutscene(){
+  return new Promise(resolve => {
+    _archangelCutsceneResolve = resolve;
+    const cs = document.getElementById('archangelCutscene');
+    const cvs = document.getElementById('acCanvas');
+
+    cs.querySelectorAll('.ac-obtained,.ac-name,.ac-subtitle,.ac-desc,.ac-line').forEach(el=>{
+      el.style.animation='none'; el.offsetHeight; el.style.animation='';
+    });
+    const flash = document.getElementById('acFlash');
+    if(flash){flash.style.animation='none';flash.offsetHeight;flash.style.animation='ac-flash-anim 1.2s ease forwards';}
+    cs.classList.add('active');
+    acPlaySound();
+
+    function resize(){ cvs.width=window.innerWidth; cvs.height=window.innerHeight; }
+    resize(); window.addEventListener('resize',resize);
+
+    const gl = cvs.getContext('webgl',{antialias:true,alpha:false});
+    if(!gl){ runArchangelFallback(cvs,cs); return; }
+
+    const VS = `attribute vec2 a_pos; void main(){ gl_Position=vec4(a_pos,0,1); }`;
+
+    const FS = `
+      precision highp float;
+      uniform vec2  u_res;
+      uniform float u_time;
+
+      #define PI 3.14159265358979
+
+      float hash(float n){ return fract(sin(n)*43758.5453); }
+      float hash2(vec2 p){ return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453); }
+      float noise(vec2 p){
+        vec2 i=floor(p),f=fract(p); f=f*f*(3.0-2.0*f);
+        float a=hash2(i),b=hash2(i+vec2(1,0)),c=hash2(i+vec2(0,1)),d=hash2(i+vec2(1,1));
+        return mix(mix(a,b,f.x),mix(c,d,f.x),f.y);
+      }
+      float fbm(vec2 p){
+        float v=0.0,a=0.5;
+        for(int i=0;i<5;i++){v+=a*noise(p);p*=2.1;a*=0.5;}
+        return v;
+      }
+
+      // Stars
+      float star(vec2 uv){
+        vec2 id=floor(uv*200.0); vec2 gv=fract(uv*200.0)-0.5;
+        float h=hash2(id); if(h>0.04) return 0.0;
+        float tw=sin(u_time*1.5+h*PI*8.0)*0.5+0.5;
+        float sz=0.05+h*0.1;
+        return smoothstep(sz,sz*0.3,length(gv))*tw*(0.3+h*0.7);
+      }
+
+      // God ray from center-top
+      float godRay(vec2 uv, float angle, float width, float speed){
+        float a = atan(uv.x, -uv.y) - angle;
+        a = mod(a + PI, 2.0*PI) - PI;
+        float r = length(uv);
+        float ray = smoothstep(width, 0.0, abs(a));
+        float falloff = 1.0 / (1.0 + r * 2.5);
+        float flicker = 0.7 + 0.3*sin(u_time*speed + angle*7.0);
+        return ray * falloff * flicker;
+      }
+
+      // Wing shape
+      float wing(vec2 uv, float side, float t){
+        // side: 1=right, -1=left
+        vec2 p = uv;
+        p.x *= side;
+        // Wing spread animation
+        float spread = smoothstep(0.0, 3.0, t);
+        float wingX = p.x - 0.05;
+        float wingY = p.y + 0.05;
+
+        // Wing is roughly a curved region
+        float r = length(vec2(wingX*0.6, wingY));
+        float angle = atan(wingY, wingX);
+        // feather edge noise
+        float featherNoise = fbm(uv*4.0 + u_time*0.2) * 0.15;
+        float outerR = (0.35 + featherNoise) * spread;
+        float innerR = 0.04;
+
+        // Wing arc: only from about -0.3 to 1.2 radians
+        float inArc = smoothstep(-0.5, -0.2, angle) * smoothstep(1.8, 1.4, angle);
+        float inRadius = smoothstep(outerR, outerR*0.6, r) * smoothstep(innerR*0.5, innerR, r);
+        return inArc * inRadius;
+      }
+
+      void main(){
+        vec2 uv = (gl_FragCoord.xy - u_res*0.5) / min(u_res.x, u_res.y);
+        float t = u_time;
+
+        // -- Background: deep blue-black heavens --
+        vec3 bg = mix(vec3(0.0,0.0,0.04), vec3(0.02,0.01,0.08), length(uv));
+        bg += fbm(uv*1.2 + t*0.02) * 0.04 * vec3(0.8,0.7,1.0);
+
+        // -- Stars --
+        float s = star(uv + vec2(0.1, 0.05));
+        vec3 col = bg + s * vec3(1.0,0.97,0.9);
+
+        // -- Divine light source (center-top) --
+        vec2 lightPos = vec2(0.0, 0.28);
+        float distLight = length(uv - lightPos);
+        float divineGlow = exp(-distLight * 2.8) * (0.6 + 0.4*sin(t*1.2));
+        vec3 divineColor = mix(vec3(1.0,0.92,0.6), vec3(1.0,1.0,1.0), divineGlow);
+        col += divineGlow * divineColor * 1.4;
+
+        // -- Halo ring around light --
+        float haloDist = abs(distLight - 0.18);
+        float halo = smoothstep(0.025, 0.0, haloDist) * (0.5 + 0.5*sin(t*2.0));
+        col += halo * vec3(1.0,0.98,0.85) * 1.2;
+
+        // -- God rays fanning outward --
+        vec2 uvFromLight = uv - lightPos;
+        float rays = 0.0;
+        rays += godRay(uvFromLight, -0.5, 0.04, 2.3);
+        rays += godRay(uvFromLight, -0.25, 0.03, 1.7);
+        rays += godRay(uvFromLight,  0.0, 0.05, 2.8);
+        rays += godRay(uvFromLight,  0.25, 0.03, 1.9);
+        rays += godRay(uvFromLight,  0.5, 0.04, 2.1);
+        rays += godRay(uvFromLight, -0.75, 0.025, 3.1);
+        rays += godRay(uvFromLight,  0.75, 0.025, 2.7);
+        col += rays * vec3(1.0,0.95,0.7) * 0.55;
+
+        // -- Wings (fire-tipped feathers) --
+        float rightWing = wing(uv - lightPos, 1.0, t);
+        float leftWing  = wing(uv - lightPos, -1.0, t);
+        float wings = rightWing + leftWing;
+
+        // Wing base: white-gold
+        vec3 wingColor = mix(vec3(1.0,0.85,0.4), vec3(1.0,1.0,0.95), wings);
+        // Fire tips at wing edges: orange-red
+        float wingEdge = wings * (1.0 - smoothstep(0.0, 0.15, length(vec2((uv.x - lightPos.x)*0.6, uv.y - lightPos.y)) - 0.2));
+        vec3 fireTip = vec3(1.0, 0.35, 0.05) * wingEdge * 1.5;
+        col += wings * wingColor * 1.6 + fireTip;
+
+        // Wing inner glow
+        float wingGlow = exp(-length(uv - lightPos) * 3.5) * wings * 0.4;
+        col += wingGlow * vec3(1.0,0.9,0.6);
+
+        // -- Ground light pool --
+        float groundY = uv.y + 0.42;
+        float groundDist = length(vec2(uv.x * 0.5, groundY));
+        float ground = exp(-groundDist * 4.0) * 0.4;
+        col += ground * vec3(1.0,0.92,0.6);
+
+        // -- Embers/feather particles --
+        for(int i=0;i<12;i++){
+          float fi = float(i);
+          float speed = 0.15 + hash(fi)*0.2;
+          float px = hash(fi+0.1)*2.0-1.0;
+          float py = hash(fi+0.2)*2.0-1.0;
+          vec2 pPos = vec2(
+            px + sin(t*speed + fi)*0.08,
+            py + mod(t*speed*0.5 + hash(fi+0.3)*6.28, 2.0) - 1.0
+          );
+          float pd = length(uv - (lightPos + pPos*0.5));
+          float feather = smoothstep(0.018, 0.002, pd) * (0.3 + 0.7*hash(fi+0.5));
+          col += feather * mix(vec3(1.0,0.8,0.2), vec3(1.0,0.4,0.1), hash(fi+0.4));
+        }
+
+        // -- Vignette --
+        float vig = 1.0 - smoothstep(0.55, 1.1, length(uv));
+        col *= vig;
+
+        // -- Tone map --
+        col = col / (col + 0.8);
+        col = pow(col, vec3(0.88));
+
+        gl_FragColor = vec4(col, 1.0);
+      }
+    `;
+
+    function compileShader(type, src){
+      const s=gl.createShader(type); gl.shaderSource(s,src); gl.compileShader(s); return s;
+    }
+    const prog=gl.createProgram();
+    gl.attachShader(prog,compileShader(gl.VERTEX_SHADER,VS));
+    gl.attachShader(prog,compileShader(gl.FRAGMENT_SHADER,FS));
+    gl.linkProgram(prog); gl.useProgram(prog);
+
+    const buf=gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER,buf);
+    gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,3,-1,-1,3]),gl.STATIC_DRAW);
+    const loc=gl.getAttribLocation(prog,'a_pos');
+    gl.enableVertexAttribArray(loc); gl.vertexAttribPointer(loc,2,gl.FLOAT,false,0,0);
+
+    const uRes=gl.getUniformLocation(prog,'u_res');
+    const uTime=gl.getUniformLocation(prog,'u_time');
+
+    let start=null;
+    function renderGL(ts){
+      if(!start)start=ts;
+      const t=(ts-start)/1000;
+      gl.viewport(0,0,cvs.width,cvs.height);
+      gl.uniform2f(uRes,cvs.width,cvs.height);
+      gl.uniform1f(uTime,t);
+      gl.drawArrays(gl.TRIANGLES,0,3);
+      _acAnimId=requestAnimationFrame(renderGL);
+    }
+    _acAnimId=requestAnimationFrame(renderGL);
+
+    cs._autoSkip=setTimeout(()=>skipArchangelCutscene(),15000);
+    cs._cleanup=()=>{ window.removeEventListener('resize',resize); };
+  });
+}
+
+function runArchangelFallback(cvs,cs){
+  const ctx2=cvs.getContext('2d'); if(!ctx2)return;
+  let t=0;
+  function frame(){
+    const W=cvs.width,H=cvs.height,cx=W/2,cy=H*0.35;
+    ctx2.fillStyle='#000'; ctx2.fillRect(0,0,W,H);
+    // Golden glow
+    const g=ctx2.createRadialGradient(cx,cy,0,cx,cy,H*0.7);
+    g.addColorStop(0,'rgba(255,245,180,0.9)'); g.addColorStop(0.3,'rgba(255,215,50,0.4)');
+    g.addColorStop(1,'rgba(0,0,0,0)');
+    ctx2.fillStyle=g; ctx2.fillRect(0,0,W,H);
+    t+=0.016;
+    _acAnimId=requestAnimationFrame(frame);
+  }
+  frame();
+  cs._autoSkip=setTimeout(()=>skipArchangelCutscene(),14000);
+}
+
+function skipArchangelCutscene(){
+  const cs=document.getElementById('archangelCutscene');
+  clearTimeout(cs._autoSkip);
+  if(cs._cleanup)cs._cleanup();
+  cancelAnimationFrame(_acAnimId);
+  cs.style.transition='opacity 0.5s ease'; cs.style.opacity='0';
+  setTimeout(()=>{
+    cs.classList.remove('active'); cs.style.opacity=''; cs.style.transition='';
+    if(_archangelCutsceneResolve){_archangelCutsceneResolve();_archangelCutsceneResolve=null;}
+  },500);
+}
+
 
 // ── PITY UPDATE ──
 function updatePityDisplay(){
@@ -2924,59 +3350,6 @@ function rollAura(){
   return AURAS[0];
 }
 
-function playRollSound(){
-  try{
-    const ctx = new (window.AudioContext||window.webkitAudioContext)();
-    const T = ctx.currentTime;
-    const master = ctx.createGain();
-    master.gain.setValueAtTime(0.0, T);
-    master.gain.linearRampToValueAtTime(0.55, T+0.04);
-    master.gain.exponentialRampToValueAtTime(0.001, T+0.9);
-    master.connect(ctx.destination);
-
-    // ── Spinning whoosh (noise band-pass sweep) ──
-    const bufLen = ctx.sampleRate * 0.9;
-    const buf = ctx.createBuffer(1, bufLen, ctx.sampleRate);
-    const data = buf.getChannelData(0);
-    for(let i=0;i<bufLen;i++) data[i]=(Math.random()*2-1);
-    const noise = ctx.createBufferSource();
-    noise.buffer = buf;
-
-    const bp = ctx.createBiquadFilter();
-    bp.type = 'bandpass';
-    bp.frequency.setValueAtTime(200, T);
-    bp.frequency.exponentialRampToValueAtTime(2800, T+0.55);
-    bp.frequency.exponentialRampToValueAtTime(600, T+0.9);
-    bp.Q.value = 3.5;
-
-    noise.connect(bp); bp.connect(master);
-    noise.start(T); noise.stop(T+0.9);
-
-    // ── Magical shimmer (high sine sweep) ──
-    const osc = ctx.createOscillator();
-    const oscGain = ctx.createGain();
-    osc.type = 'sine';
-    osc.frequency.setValueAtTime(320, T);
-    osc.frequency.exponentialRampToValueAtTime(1800, T+0.45);
-    oscGain.gain.setValueAtTime(0.18, T);
-    oscGain.gain.exponentialRampToValueAtTime(0.001, T+0.55);
-    osc.connect(oscGain); oscGain.connect(master);
-    osc.start(T); osc.stop(T+0.55);
-
-    // ── Impact tick at start ──
-    const tick = ctx.createOscillator();
-    const tickGain = ctx.createGain();
-    tick.type = 'triangle';
-    tick.frequency.setValueAtTime(900, T);
-    tick.frequency.exponentialRampToValueAtTime(200, T+0.06);
-    tickGain.gain.setValueAtTime(0.4, T);
-    tickGain.gain.exponentialRampToValueAtTime(0.001, T+0.06);
-    tick.connect(tickGain); tickGain.connect(master);
-    tick.start(T); tick.stop(T+0.06);
-
-  }catch(e){ console.warn('Roll sound failed:',e); }
-}
-
 async function doRoll(){
   if(rolling)return; rolling=true;
   const btn=document.getElementById('rollBtn'); btn.disabled=true;
@@ -2989,8 +3362,6 @@ async function doRoll(){
   // remove any old gargantua rings
   document.querySelectorAll('.gargantua-ring,.gargantua-ring2').forEach(e=>e.remove());
   iconEl.textContent='✦'; iconEl.style.color=''; nameEl.textContent='...';
-  // Play roll sound (skip on high-speed auto-roll to avoid audio spam)
-  if(!(autoRolling && currentSpeed>=3)) playRollSound();
   rarityEl.textContent='Rolling...'; chanceEl.textContent='1 in ???'; prevBtn.style.display='none';
 
   const spinTime = autoRolling && currentSpeed>=2 ? 120 : 600+Math.random()*400;
@@ -2998,7 +3369,7 @@ async function doRoll(){
   const result=rollAura(); ring.classList.remove('rolling');
 
   // ── PITY UPDATE ──
-  if(result.glow === 'gargantua'){
+  if(result.glow === 'gargantua' || result.glow === 'archangel'){
     pityCounter = 0;
   } else {
     pityCounter++;
@@ -3026,8 +3397,22 @@ async function doRoll(){
     document.querySelector('.ui-root').style.animation='screen-shake 0.8s ease';
   }
 
+  // Archangel special: divine wings + sacred light
+  if(result.glow==='archangel'){
+    iconEl.textContent='🪽'; iconEl.style.color='#fff5c0'; iconEl.style.fontSize='2.2rem';
+    iconEl.style.textShadow='0 0 20px #fff5c0, 0 0 40px #ffd700';
+    core.style.background='radial-gradient(circle,#fffbe0 0%,#fff0a0 25%,rgba(255,220,80,0.15) 70%)';
+    const r1=document.createElement('div'); r1.className='archangel-ring';
+    const r2=document.createElement('div'); r2.className='archangel-ring2';
+    ring.appendChild(r1); ring.appendChild(r2);
+    // divine screen flash
+    document.querySelector('.ui-root').style.animation='none';
+    document.querySelector('.ui-root').offsetHeight;
+    document.querySelector('.ui-root').style.animation='screen-shake 1.2s ease';
+  }
+
   cancelAnimationFrame(animFrame);
-  spawnParticles(result.color, result.glow==='gargantua'?150:result.glow==='mythical'?80:result.glow==='legendary'?55:30);
+  spawnParticles(result.color, result.glow==='archangel'?200:result.glow==='gargantua'?150:result.glow==='mythical'?80:result.glow==='legendary'?55:30);
   // for gargantua, also spawn dark "inward" particles
   if(result.glow==='gargantua'){
     for(let i=0;i<80;i++){
@@ -3037,24 +3422,34 @@ async function doRoll(){
       particles.push({x:100+Math.cos(a)*r,y:100+Math.sin(a)*r,vx,vy,life:1,decay:Math.random()*0.025+0.01,size:Math.random()*2+1,color:'#ff9500'});
     }
   }
+  // archangel: golden feather bursts outward
+  if(result.glow==='archangel'){
+    for(let i=0;i<120;i++){
+      const a=Math.random()*Math.PI*2, r=20+Math.random()*30;
+      const speed=Math.random()*3+1;
+      particles.push({x:100+Math.cos(a)*r,y:100+Math.sin(a)*r,vx:Math.cos(a)*speed,vy:Math.sin(a)*speed,life:1,decay:Math.random()*0.015+0.008,size:Math.random()*3+1,color:Math.random()>0.5?'#fff5c0':'#ffd700'});
+    }
+  }
   animParticles();
 
-  if(['rare','epic','legendary','mythical','gargantua'].includes(result.glow)){
+  if(['rare','epic','legendary','mythical','gargantua','archangel'].includes(result.glow)){
     const fl=document.getElementById('flash');
-    fl.style.background=result.glow==='gargantua'
+    fl.style.background=result.glow==='archangel'
+      ? `radial-gradient(ellipse at 50% 50%,#fff5c099 0%,#ffd70055 30%,transparent 70%)`
+      : result.glow==='gargantua'
       ? `radial-gradient(ellipse at 50% 50%,#ff950066 0%,#00000099 40%,transparent 70%)`
       : `radial-gradient(ellipse at 50% 50%,${result.color}88 0%,transparent 70%)`;
-    fl.style.opacity=result.glow==='gargantua'?0.7:result.glow==='mythical'?0.45:result.glow==='legendary'?0.35:0.2;
-    setTimeout(()=>{fl.style.opacity=0;},result.glow==='gargantua'?1200:350);
+    fl.style.opacity=result.glow==='archangel'?0.9:result.glow==='gargantua'?0.7:result.glow==='mythical'?0.45:result.glow==='legendary'?0.35:0.2;
+    setTimeout(()=>{fl.style.opacity=0;},result.glow==='archangel'?2000:result.glow==='gargantua'?1200:350);
   }
-  if(['epic','legendary','mythical','gargantua'].includes(result.glow)){
+  if(['epic','legendary','mythical','gargantua','archangel'].includes(result.glow)){
     const t=document.getElementById('toast');
     document.getElementById('toastName').textContent=result.name;
     document.getElementById('toastName').style.color=result.color;
     document.getElementById('toastRarity').textContent=result.name.toUpperCase();
     document.getElementById('toastChance').textContent=result.chanceStr;
     t.classList.add('show');
-    setTimeout(()=>t.classList.remove('show'),result.glow==='gargantua'?6000:2200);
+    setTimeout(()=>t.classList.remove('show'),result.glow==='archangel'?8000:result.glow==='gargantua'?6000:2200);
   }
 
   totalRolls++; inventory[result.name]=(inventory[result.name]||0)+1;
@@ -3065,6 +3460,14 @@ async function doRoll(){
   updateUI();
   prevBtn.style.display='inline-block';
 
+  // ── ARCHANGEL CUTSCENE ──
+  if(result.glow==='archangel'){
+    const wasAutoRolling = autoRolling;
+    if(wasAutoRolling){ autoRolling=false; clearTimeout(autoTimer); }
+    await showArchangelCutscene();
+    if(wasAutoRolling){ autoRolling=true; scheduleNextRoll(); }
+  }
+
   // ── GARGANTUA CUTSCENE ── (only show if not in max-speed auto-roll)
   if(result.glow==='gargantua'){
     const wasAutoRolling = autoRolling;
@@ -3073,7 +3476,7 @@ async function doRoll(){
     if(wasAutoRolling){ autoRolling=true; scheduleNextRoll(); }
   }
 
-  const endPause = autoRolling && currentSpeed>=2 ? 80 : result.glow==='gargantua'?2000:result.glow==='mythical'?2200:result.glow==='legendary'?1600:900;
+  const endPause = autoRolling && currentSpeed>=2 ? 80 : result.glow==='archangel'?2500:result.glow==='gargantua'?2000:result.glow==='mythical'?2200:result.glow==='legendary'?1600:900;
   await sleep(endPause);
   btn.disabled=false; rolling=false;
 }
@@ -3173,7 +3576,7 @@ function adminLogout(){
 // ── PANEL ──
 function showPanel(){
   refreshPlayerList();
-  // refreshPlayerList already calls onAdminPlayerChange inside
+  syncAdminStats();
   document.getElementById('adminPanelModal').style.display='flex';
 }
 function closeAdminPanel(){ document.getElementById('adminPanelModal').style.display='none'; }
@@ -3241,7 +3644,7 @@ function switchAdminTab(tab){
     document.getElementById('atab-'+t).classList.toggle('active',t===tab);
     document.getElementById('atab-'+t+'-content').style.display=t===tab?'block':'none';
   });
-  if(tab==='players'){ const t=getSelectedPlayer(); if(t) onAdminPlayerChange(); else syncAdminStats(); }
+  if(tab==='players') syncAdminStats();
 }
 
 // ── GIVE AURA ──
@@ -3249,47 +3652,12 @@ function adminGiveAura(){
   const name=document.getElementById('giveAuraSelect').value;
   const qty=parseInt(document.getElementById('giveAuraQty').value)||1;
   if(!name){addLog('⚠ No aura selected.','warn');return;}
+  inventory[name]=(inventory[name]||0)+qty;
   const aura=AURAS.find(a=>a.name===name);
-  const target=getSelectedPlayer();
-
-  if(target){
-    // Give to selected registered player
-    const users=getUsers();
-    if(!users[target]){ addLog(`⚠ Player "${target}" not found.`,'warn'); return; }
-    users[target].inventory=users[target].inventory||{};
-    users[target].inventory[name]=(users[target].inventory[name]||0)+qty;
-    if(!users[target].bestAura || RARITY_ORDER.indexOf(name)<RARITY_ORDER.indexOf(users[target].bestAura))
-      users[target].bestAura=name;
-    saveUsers(users);
-    addLog(`🎁 Gave ${qty}x ${name} to "${target}".`,'cmd');
-    showAdminNotif(`Gave ${qty}x ${name} to ${target}!`, aura?aura.color:'#ffc800');
-    onAdminPlayerChange();
-    // Firebase sync
-    const f=fb();
-    if(f){
-      const userRef=f.ref(f.db,'users/'+target);
-      f.get(userRef).then(snap=>{
-        const d=snap.val()||{};
-        const inv=d.inventory||{};
-        inv[name]=(inv[name]||0)+qty;
-        const bestIdx=RARITY_ORDER.indexOf(d.bestAura||'Common');
-        const newIdx=RARITY_ORDER.indexOf(name);
-        const newBest=newIdx<bestIdx?name:(d.bestAura||name);
-        f.update(userRef,{ inventory:inv, bestAura:newBest });
-        // Notify the player
-        f.set(f.ref(f.db,'admin/player_notify/'+target),{
-          type:'aura_given', aura:name, qty, ts:Date.now(), by:currentUser?currentUser.username:'Admin'
-        });
-      });
-    }
-  } else {
-    // Give to current session
-    inventory[name]=(inventory[name]||0)+qty;
-    if(!bestAura||RARITY_ORDER.indexOf(name)<RARITY_ORDER.indexOf(bestAura.name)) bestAura=aura;
-    updateUI();
-    addLog(`🎁 Gave ${qty}x ${name} to yourself.`,'cmd');
-    showAdminNotif(`Gave ${qty}x ${name}!`, aura?aura.color:'#ffc800');
-  }
+  if(!bestAura||RARITY_ORDER.indexOf(name)<RARITY_ORDER.indexOf(bestAura.name)) bestAura=aura;
+  updateUI();
+  addLog(`🎁 Gave ${qty}x ${name} to player.`,'cmd');
+  showAdminNotif(`Gave ${qty}x ${name}!`, aura.color);
 }
 
 // ── COMMANDS ──
@@ -3303,13 +3671,7 @@ function adminCmd(cmd){
     if(!users[target]){ addLog(`⚠ Player "${target}" not found.`,'warn'); return false; }
     fn(users, users[target]);
     saveUsers(users);
-    // Sync changed fields to Firebase
-    const f=fb();
-    if(f){
-      f.update(f.ref(f.db,'users/'+target), users[target])
-        .catch(e=>console.warn('Firebase sync failed:',e));
-    }
-    onAdminPlayerChange(); // always refresh panel with TARGET stats
+    onAdminPlayerChange();
     return true;
   }
 
@@ -3336,27 +3698,6 @@ function adminCmd(cmd){
       } break;
     case 'give_all_player': adminCmd('give_all'); break;
     case 'clear_player_inv': adminCmd('clear_inv'); break;
-    case 'force_gargantua_player':
-      if(!applyToStoredPlayer((users,d)=>{
-        d.inventory=d.inventory||{}; d.inventory['Gargantua']=(d.inventory['Gargantua']||0)+1;
-        d.bestAura='Gargantua'; d.pityCounter=0;
-        addLog(`🕳 Force gave Gargantua to "${target}".`,'cmd');
-        showAdminNotif(`🕳 GARGANTUA dado a ${target}!`,'#ff9500');
-        const f=fb();
-        if(f){
-          f.update(f.ref(f.db,'users/'+target),{ inventory:d.inventory, bestAura:'Gargantua', pityCounter:0 });
-          f.set(f.ref(f.db,'admin/player_notify/'+target),{
-            type:'aura_given', aura:'Gargantua', qty:1, ts:Date.now(), by:currentUser?currentUser.username:'Admin'
-          });
-        }
-      })){
-        inventory['Gargantua']=(inventory['Gargantua']||0)+1;
-        bestAura=AURAS.find(a=>a.name==='Gargantua');
-        pityCounter=0; updatePityDisplay(); updateUI();
-        addLog('🕳 Force gave Gargantua to yourself.','cmd');
-        showAdminNotif('🕳 GARGANTUA GRANTED!','#ff9500');
-        showGargCutscene();
-      } break;
     case 'give_gargantua':
       if(!applyToStoredPlayer((users,d)=>{
         d.inventory=d.inventory||{}; d.inventory['Gargantua']=(d.inventory['Gargantua']||0)+1;
@@ -3371,6 +3712,20 @@ function adminCmd(cmd){
         showAdminNotif('🕳 GARGANTUA GRANTED!','#ff9500');
         // Trigger the cutscene
         showGargCutscene();
+      } break;
+    case 'give_archangel':
+      if(!applyToStoredPlayer((users,d)=>{
+        d.inventory=d.inventory||{}; d.inventory['Archangel']=(d.inventory['Archangel']||0)+1;
+        d.bestAura='Archangel';
+        addLog(`🪽 Gave Archangel to "${target}".`,'cmd');
+        showAdminNotif(`🪽 ARCHANGEL given to ${target}!`,'#fff5c0');
+      })){
+        inventory['Archangel']=(inventory['Archangel']||0)+1;
+        bestAura=AURAS.find(a=>a.name==='Archangel'); updateUI();
+        pityCounter=0; updatePityDisplay();
+        addLog('🪽 Force gave Archangel to yourself.','cmd');
+        showAdminNotif('🪽 ARCHANGEL GRANTED!','#fff5c0');
+        showArchangelCutscene();
       } break;
     case 'give_mythical':
       if(!applyToStoredPlayer((users,d)=>{
@@ -3405,92 +3760,44 @@ function adminCmd(cmd){
         inventory={}; bestAura=null; updateUI(); addLog('♻ Reset your auras.','warn');
       } break;
     case 'reset_rolls':
-      if(!applyToStoredPlayer((users,d)=>{
-        d.totalRolls=0; addLog(`🔄 Reset "${target}" roll count.`,'warn');
-        showAdminNotif(`🔄 ${target}'s rolls reset!`,'#5082ff');
-      })){
+      if(!applyToStoredPlayer((users,d)=>{ d.totalRolls=0; addLog(`🔄 Reset "${target}" rolls.`,'warn'); })){
         totalRolls=0; updateUI(); addLog('🔄 Reset your roll count.','warn');
       } break;
     case 'max_luck': adminSetLuckVal(9999); break;
     case 'reset_luck': adminSetLuckVal(1); break;
     case 'reset_player':
-      if(!applyToStoredPlayer((users,d)=>{
-        d.inventory={}; d.bestAura=null; d.totalRolls=0; d.luck=1;
-        addLog(`💀 Full reset for "${target}".`,'error');
-        showAdminNotif(`💀 ${target} fully reset!`,'#ff6666');
-      })){
-        inventory={}; bestAura=null; lastAura=null; totalRolls=0; luckMultiplier=1;
-        updateUI(); updateLuckDisplay(); addLog('💀 Full reset for yourself.','error');
+      if(!applyToStoredPlayer((users,d)=>{ d.inventory={}; d.bestAura=null; d.totalRolls=0; d.luck=1; addLog(`💀 Full reset for "${target}".`,'error'); })){
+        inventory={}; bestAura=null; lastAura=null; totalRolls=0; luckMultiplier=1; updateUI();
+        updateLuckDisplay(); addLog('💀 Full reset for yourself.','error');
       } break;
     case 'double_luck_event':
-      adminSetGlobalEvent('Double Luck Event','🍀 Double Luck Event','#50dc78',2,
-        '🍀 DOUBLE LUCK EVENT is now ACTIVE! Roll now!'); break;
+      serverEventActive='Double Luck Event';
+      document.getElementById('serverEvent').textContent='🍀 Double Luck Event';
+      document.getElementById('serverEvent').style.color='#50dc78';
+      addLog('🍀 Double Luck Event started.','info');
+      showAnnounce('🍀 DOUBLE LUCK EVENT is now ACTIVE! Roll now!','event'); break;
     case 'rare_boost':
-      adminSetGlobalEvent('Rare Boost x5','✦ Rare Boost x5','#5082ff',1,
-        '✦ RARE BOOST EVENT! x5 Rare chance for 10 minutes!'); break;
+      serverEventActive='Rare Boost x5';
+      document.getElementById('serverEvent').textContent='✦ Rare Boost x5';
+      document.getElementById('serverEvent').style.color='#5082ff';
+      addLog('✦ Rare Boost x5 started.','info');
+      showAnnounce('✦ RARE BOOST EVENT! x5 Rare chance for 10 minutes!','event'); break;
     case 'mythical_event':
-      adminSetGlobalEvent('Mythical Event','⚡ Mythical Event','#ff3232',1,
-        '⚡ MYTHICAL EVENT ACTIVE! Best of luck!'); break;
-    case 'end_event':
-      adminSetGlobalEvent('None Active','None Active','#50dc78',1,''); break;
+      serverEventActive='Mythical Event';
+      document.getElementById('serverEvent').textContent='⚡ Mythical Event';
+      document.getElementById('serverEvent').style.color='#ff3232';
+      addLog('⚡ Mythical Event started.','info');
+      showAnnounce('⚡ MYTHICAL EVENT ACTIVE! Best of luck!','event'); break;
     case 'reset_all_rolls':
       totalRolls=0; updateUI(); addLog('🔄 Reset all player rolls.','warn'); break;
     case 'shutdown':
-      if(!currentUser||currentUser.username!=='Daniel'){ addLog('⛔ Apenas Daniel pode fazer shutdown.','error'); break; }
-      if(!confirm('⚠️ O jogo vai ficar OFFLINE para todos. Só tu podes reativar. Tens a certeza?')) break;
       addLog('🔴 Server shutdown initiated.','error');
-      showAdminNotif('🔴 Server offline!','#ff4444');
-      (()=>{
-        const f=fb();
-        if(f){
-          f.set(f.ref(f.db,'admin/server_status'),{
-            status:'offline',
-            msg:'Servidor em manutenção. Volta mais tarde.',
-            ts:Date.now(),
-            by:currentUser?currentUser.username:'Admin'
-          });
-        }
-      })(); break;
-    case 'bring_online':
-      if(!currentUser||currentUser.username!=='Daniel'){ addLog('⛔ Apenas Daniel pode ligar o servidor.','error'); break; }
-      addLog('🟢 Server brought back online.','info');
-      showAdminNotif('🟢 Servidor online!','#50dc78');
-      (()=>{
-        const f=fb();
-        if(f){
-          f.set(f.ref(f.db,'admin/server_status'),{
-            status:'online', ts:Date.now(), by:currentUser?currentUser.username:'Admin'
-          });
-        }
-        const sv=document.getElementById('serverStatusVal');
-        if(sv){ sv.textContent='🟢 Online'; sv.style.color='#50dc78'; }
-      })(); break;
-    case 'kick_player':
-      if(!target){ addLog('⚠ Seleciona um jogador primeiro.','warn'); break; }
-      if(!confirm(`⚠️ Expulsar "${target}"? Ele vai ser forçado a fazer login novamente.`)) break;
-      addLog(`🚫 Kicked "${target}".`,'error');
-      showAdminNotif(`🚫 ${target} foi expulso!`,'#ff6666');
-      (()=>{
-        const f=fb();
-        if(f){
-          f.set(f.ref(f.db,'admin/player_notify/'+target),{
-            type:'kick', ts:Date.now(), by:currentUser?currentUser.username:'Admin'
-          });
-        }
-      })(); break;
-    
-      addLog('🚫 Kick all initiated.','error');
-      adminGlobalBroadcast('🚫 Foste expulso pelo Admin.','warn');
-      (()=>{
-        const f=fb();
-        if(f){
-          f.set(f.ref(f.db,'admin/server_cmd'),{ cmd:'kick_all', ts:Date.now(), by:currentUser?currentUser.username:'Admin' });
-        }
-      })(); break;
+      showAnnounce('🔴 Server shutting down in 60 seconds. Please save your progress.','shutdown'); break;
+    case 'kick_all':
+      addLog('🚫 Kicked all players.','error');
+      showAnnounce('🚫 All players have been kicked by Admin.','warn'); break;
   }
-  // Refresh stats panel — show selected player if one is selected
-  const _tgt=getSelectedPlayer();
-  if(_tgt) onAdminPlayerChange(); else syncAdminStats();
+  syncAdminStats();
 }
 
 // ── LUCK ──
@@ -3500,9 +3807,8 @@ function adminSetLuck(){
 }
 function adminSetLuckVal(val){
   const target=getSelectedPlayer();
-  val=Math.max(1,Math.min(99999,val));
   if(target){
-    // ── Apply to stored player (localStorage + Firebase) ──
+    // apply to another registered player
     const users=getUsers();
     if(!users[target]){ addLog(`⚠ Player "${target}" not found.`,'warn'); return; }
     users[target].luck=val;
@@ -3510,28 +3816,12 @@ function adminSetLuckVal(val){
     addLog(`🍀 Set luck for "${target}" to x${val}.`,'cmd');
     showAdminNotif(`Set ${target}'s luck to x${val}!`,'#50dc78');
     onAdminPlayerChange();
-    // Push to Firebase so the player's session updates in real-time
-    const f=fb();
-    if(f){
-      f.update(f.ref(f.db,'users/'+target),{ luck: val })
-        .then(()=>addLog(`✅ Firebase: luck x${val} synced for ${target}.`,'info'))
-        .catch(e=>addLog('⚠ Firebase luck sync failed: '+e.message,'warn'));
-      // Also send a notification to that player
-      f.set(f.ref(f.db,'admin/player_notify/'+target),{
-        type:'luck_set', val, ts:Date.now(), by: currentUser?currentUser.username:'Admin'
-      });
-    }
   } else {
-    // Apply to current session
+    // apply to current session
     luckMultiplier=val;
     updateLuckDisplay();
     addLog(`🍀 Set your luck to x${val}.`,'cmd');
     syncAdminStats();
-    // Sync own luck to Firebase
-    if(currentUser){
-      const f=fb();
-      if(f) f.update(f.ref(f.db,'users/'+currentUser.username),{ luck: val });
-    }
   }
 }
 function updateLuckDisplay(){
@@ -3549,20 +3839,9 @@ function adminAnnounce(){
   const msg=document.getElementById('announceInput').value.trim();
   const type=document.getElementById('announceType').value;
   if(!msg){addLog('⚠ No message entered.','warn');return;}
-  // Always show locally
   showAnnounce(msg,type);
   addLog(`📢 Broadcast: "${msg}"`, 'cmd');
   document.getElementById('announceInput').value='';
-  // Push to Firebase so ALL players see it
-  const f=fb();
-  if(f){
-    const r=f.ref(f.db,'admin/broadcast');
-    f.set(r,{ msg, type, ts: Date.now(), by: currentUser?currentUser.username:'Admin' })
-      .then(()=>addLog('✅ Broadcast sent globally via Firebase.','info'))
-      .catch(e=>addLog('⚠ Firebase broadcast failed: '+e.message,'warn'));
-  } else {
-    addLog('⚠ Firebase offline — announcement is local only.','warn');
-  }
 }
 
 function showAnnounce(msg,type){
@@ -3604,192 +3883,6 @@ function showAdminNotif(msg,color){
   document.getElementById('announceToastType').textContent='👑 Admin Action';
   document.getElementById('announceToastMsg').textContent=msg;
   setTimeout(()=>{ t.style.display='none'; },2500);
-}
-
-// ── GLOBAL EVENT HELPER (Firebase) ──
-function adminSetGlobalEvent(eventName, label, color, globalLuck, announceMsg){
-  serverEventActive=eventName;
-  const el=document.getElementById('serverEvent');
-  if(el){ el.textContent=label; el.style.color=color; }
-  addLog(`🌍 Global event set: ${eventName}`,'info');
-  if(announceMsg) showAnnounce(announceMsg,'event');
-
-  // Write to Firebase — all clients listening will pick it up
-  const f=fb();
-  if(f){
-    const payload={ name:eventName, label, color, globalLuck, ts:Date.now(), by:currentUser?currentUser.username:'Admin' };
-    f.set(f.ref(f.db,'admin/global_event'), payload)
-      .then(()=>addLog('✅ Event synced to Firebase globally.','info'))
-      .catch(e=>addLog('⚠ Firebase event sync failed: '+e.message,'warn'));
-    // Also broadcast announcement
-    if(announceMsg){
-      f.set(f.ref(f.db,'admin/broadcast'),{ msg:announceMsg, type:'event', ts:Date.now(), by:currentUser?currentUser.username:'Admin' });
-    }
-  } else {
-    addLog('⚠ Firebase offline — event is local only.','warn');
-  }
-}
-
-// Shows a banner INSIDE the login modal (above the form)
-function showMaintenanceBanner(msg){
-  // Remove old banner
-  const old=document.getElementById('maintenanceBanner'); if(old) old.remove();
-  const isOffline=msg.includes('offline') || msg.includes('🔴');
-  const banner=document.createElement('div');
-  banner.id='maintenanceBanner';
-  banner.style.cssText=`
-    position:absolute; top:0; left:0; right:0;
-    background:${isOffline ? 'rgba(255,40,40,0.12)' : 'rgba(80,220,120,0.12)'};
-    border-bottom:1px solid ${isOffline ? 'rgba(255,60,60,0.35)' : 'rgba(80,220,120,0.35)'};
-    color:${isOffline ? '#ff8888' : '#50dc78'};
-    font-family:'Rajdhani',sans-serif;
-    font-size:0.82rem; font-weight:600; letter-spacing:0.04em;
-    text-align:center; padding:10px 16px;
-    z-index:10;
-  `;
-  banner.textContent=msg;
-  // Insert at top of auth-box
-  const authBox=document.querySelector('.auth-box');
-  if(authBox){ authBox.style.position='relative'; authBox.insertBefore(banner, authBox.firstChild); }
-  // Disable/enable all auth submit buttons
-  document.querySelectorAll('.auth-submit-btn').forEach(btn=>{
-    btn.disabled=isOffline;
-    btn.style.opacity=isOffline?'0.35':'';
-    btn.style.cursor=isOffline?'not-allowed':'';
-  });
-}
-
-// Page load check is now handled by startServerStatusListener polling
-
-function adminGlobalBroadcast(msg, type){
-  showAnnounce(msg,type);
-  const f=fb();
-  if(f){
-    f.set(f.ref(f.db,'admin/broadcast'),{ msg, type, ts:Date.now(), by:currentUser?currentUser.username:'Admin' });
-  }
-}
-
-// ── LISTEN FOR ADMIN COMMANDS FROM FIREBASE (runs on every client) ──
-function forceKickLogout(){
-  // Clear session
-  try{ sessionStorage.removeItem('solsrng_session'); }catch(e){}
-  currentUser = null;
-  // Hide EVERY modal by ID first
-  ['adminPanelModal','adminLoginModal','previewModal','fbSetupModal','statsModal','profileModal'].forEach(id=>{
-    const el=document.getElementById(id); if(el) el.style.display='none';
-  });
-  // Force login modal visible with highest z-index
-  const lm=document.getElementById('loginModal');
-  if(lm){
-    lm.style.position='fixed';
-    lm.style.inset='0';
-    lm.style.zIndex='99999';
-    lm.style.display='flex';
-    lm.style.alignItems='center';
-    lm.style.justifyContent='center';
-  }
-  // Blur the game
-  const ui=document.querySelector('.ui-root');
-  if(ui){ ui.style.filter='blur(4px)'; ui.style.pointerEvents='none'; }
-  switchAuthTab('login');
-  const e=document.getElementById('loginError'); if(e) e.textContent='';
-}
-
-function setupAdminFirebaseListeners(){
-  const f=fb(); if(!f) return;
-
-  // Listen for global broadcasts
-  f.onValue(f.ref(f.db,'admin/broadcast'),(snap)=>{
-    const d=snap.val(); if(!d||!d.msg) return;
-    // Only show if message is recent (within last 10 seconds)
-    if(Date.now()-d.ts < 10000){
-      showAnnounce(d.msg, d.type||'info');
-    }
-  });
-
-  // Listen for global events (Double Luck, etc.)
-  f.onValue(f.ref(f.db,'admin/global_event'),(snap)=>{
-    const d=snap.val(); if(!d) return;
-    serverEventActive=d.name;
-    const el=document.getElementById('serverEvent');
-    if(el){ el.textContent=d.label||d.name; el.style.color=d.color||'#50dc78'; }
-    // Apply global luck boost
-    if(d.name==='Double Luck Event'){
-      if(!isAdmin){
-        luckMultiplier=Math.max(luckMultiplier*2, 2);
-        updateLuckDisplay();
-        addLog(`🍀 Double Luck Event: luck boosted to x${luckMultiplier}!`,'info');
-      }
-    } else if(d.name==='Rare Boost x5'){
-      if(!isAdmin){ luckMultiplier=Math.max(luckMultiplier*5, 5); updateLuckDisplay(); }
-    } else if(d.name==='Mythical Event'){
-      if(!isAdmin){ luckMultiplier=Math.max(luckMultiplier*10, 10); updateLuckDisplay(); }
-    } else if(d.name==='None Active'){
-      // Event ended — restore base luck from profile
-      if(!isAdmin && currentUser){
-        const d2=getUserData(currentUser.username);
-        luckMultiplier=d2?.luck||1;
-        updateLuckDisplay();
-      }
-    }
-  });
-
-  // Listen for server commands (shutdown, kick)
-  f.onValue(f.ref(f.db,'admin/server_cmd'),(snap)=>{
-    const d=snap.val(); if(!d||!d.ts) return;
-    if(Date.now()-d.ts > 8000) return; // ignore stale commands (8s window)
-    if(isAdmin) return; // admin issued it, don't apply to self
-    if(d.cmd==='shutdown'){
-      let t=d.countdown||10;
-      showAnnounce(`🔴 Server a desligar em ${t} segundos!`,'shutdown');
-      const iv=setInterval(()=>{
-        t--;
-        if(t<=0){
-          clearInterval(iv);
-          document.body.innerHTML='<div style="display:flex;align-items:center;justify-content:center;height:100vh;background:#000;color:#ff4444;font-family:sans-serif;font-size:1.5rem;flex-direction:column;gap:16px;"><div>🔴</div><div>Server Offline</div><div style="font-size:0.9rem;color:#666;">Recarrega a página para voltar.</div></div>';
-        }
-      },1000);
-    }
-  });
-
-  // Listen for player-specific notifications (luck set, etc.)
-  if(currentUser){
-    f.onValue(f.ref(f.db,'admin/player_notify/'+currentUser.username),(snap)=>{
-      const d=snap.val(); if(!d) return;
-      if(Date.now()-d.ts > 15000) return; // ignore old ones
-      if(d.type==='kick'){
-        if(Date.now()-d.ts > 8000) return;
-        showAnnounce('🚫 Foste expulso pelo Admin.','warn');
-        setTimeout(()=>{ forceKickLogout(); }, 2000);
-      } else if(d.type==='luck_set'){
-        luckMultiplier=d.val;
-        updateLuckDisplay();
-        // Also persist to localStorage so it survives page reload
-        if(currentUser){
-          const users=getUsers();
-          if(users[currentUser.username]){
-            users[currentUser.username].luck=d.val;
-            saveUsers(users);
-          }
-        }
-        showAnnounce(`👑 Admin definiu a tua luck para x${d.val}!`,'event');
-        addLog(`👑 Admin changed your luck to x${d.val}.`,'info');
-      } else if(d.type==='aura_given'){
-        inventory[d.aura]=(inventory[d.aura]||0)+d.qty;
-        const aura=AURAS.find(a=>a.name===d.aura);
-        if(aura&&(!bestAura||RARITY_ORDER.indexOf(d.aura)<RARITY_ORDER.indexOf(bestAura.name))) bestAura=aura;
-        updateUI();
-        addLog(`🎁 Admin gave you ${d.qty}x ${d.aura}.`,'info');
-        // Gargantua gets the full cutscene experience
-        if(d.aura==='Gargantua'){
-          lastAura=aura;
-          setTimeout(()=>showGargCutscene(), 800);
-        } else {
-          showAnnounce(`🎁 Admin gave you ${d.qty}x ${d.aura}!`,'event');
-        }
-      }
-    });
-  }
 }
 
 // ══════════════════════════════════════
@@ -3901,48 +3994,13 @@ function updateFbStatusPending(){
 
 // Show Firebase button only to Daniel, and update status
 document.addEventListener('DOMContentLoaded', ()=>{
+  // Check after a short delay to allow module to load
   setTimeout(updateFbStatusUI, 500);
-  // Start server status listener as early as possible
-  startServerStatusListener();
 });
 // Also update when Firebase connects
-function startServerStatusListener(){
-  // Try immediately, retry every 500ms until Firebase is ready
-  let _serverStatusUnsub = null;
-  function _tryAttach(){
-    const f=fb();
-    if(!f){ setTimeout(_tryAttach, 500); return; }
-    if(_serverStatusUnsub) return; // already attached
-    _serverStatusUnsub = f.onValue(f.ref(f.db,'admin/server_status'),(snap)=>{
-      const d=snap.val(); if(!d) return;
-      const isAdminUser = currentUser && currentUser.username === 'Daniel';
-      const statusEl=document.getElementById('serverStatusVal');
-      if(d.status==='offline'){
-        if(statusEl){ statusEl.textContent='🔴 Offline'; statusEl.style.color='#ff4444'; }
-        if(!isAdminUser){
-          forceKickLogout();
-          setTimeout(()=>{ showMaintenanceBanner('🔴 Servidor offline — '+(d.msg||'Volta mais tarde.')); }, 100);
-        }
-      } else if(d.status==='online'){
-        if(statusEl){ statusEl.textContent='🟢 Online'; statusEl.style.color='#50dc78'; }
-        if(!isAdminUser){
-          showMaintenanceBanner('🟢 Servidor online! Já podes fazer login.');
-          setTimeout(()=>{ const b=document.getElementById('maintenanceBanner'); if(b) b.remove(); },6000);
-        }
-      }
-    });
-    console.log('✅ Server status listener attached');
-  }
-  _tryAttach();
-}
-
 document.addEventListener('fbReady', ()=>{
   updateFbStatusUI();
   showAdminNotif('🔥 Firebase ligado! Multiplayer ativo.','#50dc78');
-  // Start server status listener IMMEDIATELY (works for logged-in players too)
-  startServerStatusListener();
-  // Start other admin listeners after short delay
-  setTimeout(setupAdminFirebaseListeners, 500);
 });
 document.addEventListener('fbError', (e)=>{
   updateFbStatusUI();
@@ -3972,8 +4030,6 @@ async function fbSaveUser(username, data){
     lastSaved:   Date.now(),
     inventory:   data.inventory || {},
     pityCounter: data.pityCounter || 0,
-    luck: data.luck || 1,
-    luck: data.luck || 1,
     profile:     data.profile ? (({ profilePic, ...p }) => p)(data.profile) : {}
   };
   try{
@@ -4083,7 +4139,6 @@ function saveCurrentProgress(){
   users[currentUser.username].bestAura=bestAura?bestAura.name:null;
   users[currentUser.username].lastSaved=Date.now();
   users[currentUser.username].pityCounter=pityCounter;
-  users[currentUser.username].luck=luckMultiplier; // ← persist luck
   saveUsers(users);
   // Push to Firebase async
   fbSaveUser(currentUser.username, users[currentUser.username]);
@@ -4097,8 +4152,6 @@ function loadUserProgress(username){
   bestAura=d.bestAura?AURAS.find(a=>a.name===d.bestAura):null;
   pityCounter=d.pityCounter||0;
   lastAura=null;
-  luckMultiplier=d.luck||1;  // ← load saved luck
-  updateLuckDisplay();
   updateUI();
   updatePityDisplay();
 }
@@ -4126,7 +4179,6 @@ function switchAuthTab(tab){
 
 // ── REGISTER ──
 function doRegister(){
-  if(document.getElementById('maintenanceBanner')?.textContent.includes('offline')) return;
   try{
     const username=document.getElementById('regUser').value.trim();
     const pass=document.getElementById('regPass').value;
@@ -4172,7 +4224,6 @@ function doRegister(){
 
 // ── LOGIN ──
 function doLogin(){
-  if(document.getElementById('maintenanceBanner')?.textContent.includes('offline')) return;
   try{
     const username=document.getElementById('loginUser').value.trim();
     const pass=document.getElementById('loginPass').value;
@@ -4231,8 +4282,6 @@ function loginUser(username){
     // Firebase: set presence + start real-time listeners
     const initFb = () => {
       fbSetPresence(username);
-  // Start admin command listeners for this player
-  setTimeout(setupAdminFirebaseListeners, 800);
       fbListenPresence();
       fbListenLeaderboard();
       // Push local data to Firebase immediately on login
@@ -4240,18 +4289,6 @@ function loginUser(username){
     };
     if(window._fbReady) initFb();
     else document.addEventListener('fbReady', initFb, { once: true });
-    // Also listen for own profile changes in Firebase (luck updated by admin, etc.)
-    document.addEventListener('fbReady', ()=>{
-      const f=fb(); if(!f||!currentUser) return;
-      f.onValue(f.ref(f.db,'users/'+currentUser.username),(snap)=>{
-        const d=snap.val(); if(!d) return;
-        // If admin changed our luck in Firebase, apply it live
-        if(typeof d.luck==='number' && d.luck!==luckMultiplier){
-          luckMultiplier=d.luck;
-          updateLuckDisplay();
-        }
-      });
-    }, { once: true });
   };
 
   // Pull user data from Firebase first
@@ -5034,7 +5071,7 @@ function sendChat(){
 // broadcast aura roll to chat (rare+)
 function broadcastRollToChat(aura){
   if(!currentUser||currentUser.guest) return;
-  if(!['epic','legendary','mythical','gargantua'].includes(aura.glow)) return;
+  if(!['epic','legendary','mythical','gargantua','archangel'].includes(aura.glow)) return;
   const msg = {
     system: true,
     text: `🎲 ${currentUser.username} rolled a ${aura.icon} ${aura.name}! (${aura.chanceStr})`,
