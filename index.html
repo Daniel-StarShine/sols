@@ -1043,6 +1043,110 @@
   .inspect-inv-row{display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:9px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);}
   .inspect-section-title{font-size:0.68rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-dim);margin-bottom:8px;font-weight:700;}
 
+  /* ── INSPECT TABS ── */
+  .inspect-tab{background:rgba(100,140,255,0.06);border:1px solid var(--border);border-radius:8px;padding:5px 12px;font-size:0.72rem;font-weight:700;color:var(--text-dim);cursor:pointer;transition:all 0.2s;letter-spacing:0.05em;margin-bottom:10px;}
+  .inspect-tab.active{background:rgba(100,140,255,0.15);border-color:rgba(100,140,255,0.4);color:var(--text);}
+  .inspect-tab:hover{background:rgba(100,140,255,0.12);color:var(--text);}
+
+  /* ── ROLL HISTORY ROW ── */
+  .inspect-history-row{display:flex;align-items:center;gap:8px;padding:6px 10px;border-radius:8px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.05);}
+  .inspect-history-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+  .inspect-history-name{flex:1;font-size:0.8rem;font-weight:600;}
+  .inspect-history-time{font-size:0.65rem;color:var(--text-dim);}
+
+  /* ── BREAKDOWN BAR ── */
+  .breakdown-row{display:flex;align-items:center;gap:8px;}
+  .breakdown-label{font-size:0.7rem;width:72px;text-align:right;flex-shrink:0;}
+  .breakdown-track{flex:1;height:6px;background:rgba(255,255,255,0.06);border-radius:3px;overflow:hidden;}
+  .breakdown-fill{height:100%;border-radius:3px;transition:width 0.6s cubic-bezier(0.4,0,0.2,1);}
+  .breakdown-count{font-size:0.65rem;color:var(--text-dim);width:30px;flex-shrink:0;}
+
+  /* ── SPEED RECORDS ── */
+  .speed-record-row{display:flex;align-items:center;gap:10px;padding:7px 10px;border-radius:9px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.05);}
+  .speed-record-icon{font-size:1.1rem;flex-shrink:0;}
+  .speed-record-info{flex:1;}
+  .speed-record-name{font-size:0.8rem;font-weight:700;}
+  .speed-record-sub{font-size:0.65rem;color:var(--text-dim);margin-top:1px;}
+  .speed-record-val{font-size:0.88rem;font-weight:900;color:#a0c4ff;}
+
+  /* ── DUEL ── */
+  .duel-btn{width:100%;padding:11px;border-radius:12px;background:linear-gradient(135deg,rgba(255,60,60,0.15),rgba(255,100,0,0.1));border:1px solid rgba(255,80,30,0.35);color:#ff8060;font-family:'Cinzel Decorative',serif;font-size:0.82rem;font-weight:700;cursor:pointer;letter-spacing:0.06em;transition:all 0.2s;margin-bottom:8px;}
+  .duel-btn:hover{background:linear-gradient(135deg,rgba(255,60,60,0.25),rgba(255,100,0,0.18));transform:translateY(-1px);box-shadow:0 4px 20px rgba(255,60,0,0.2);}
+  .duel-btn:disabled{opacity:0.4;cursor:not-allowed;transform:none;}
+  .duel-result{padding:12px;border-radius:10px;text-align:center;font-size:0.82rem;line-height:1.6;}
+  .duel-result.win{background:rgba(80,220,120,0.1);border:1px solid rgba(80,220,120,0.3);color:#50dc78;}
+  .duel-result.lose{background:rgba(255,60,60,0.08);border:1px solid rgba(255,60,60,0.25);color:#ff8888;}
+  .duel-result.tie{background:rgba(255,200,0,0.08);border:1px solid rgba(255,200,0,0.25);color:#ffc800;}
+
+  /* ── SEASON RANKING ── */
+  .season-banner{background:linear-gradient(135deg,rgba(255,180,0,0.12),rgba(100,60,255,0.08));border:1px solid rgba(255,180,0,0.25);border-radius:12px;padding:12px 14px;margin-bottom:12px;}
+  .season-title{font-family:'Cinzel Decorative',serif;font-size:0.78rem;color:#ffc800;letter-spacing:0.08em;margin-bottom:6px;}
+  .season-rank-row{display:flex;align-items:center;gap:10px;}
+  .season-rank-medal{font-size:1.4rem;}
+  .season-rank-num{font-size:1.6rem;font-weight:900;color:#ffc800;font-family:'Cinzel Decorative',serif;}
+  .season-rank-info{font-size:0.68rem;color:var(--text-dim);line-height:1.5;}
+  .season-podium{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-top:10px;}
+  .season-podium-slot{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:10px;padding:8px;text-align:center;cursor:pointer;transition:all 0.2s;}
+  .season-podium-slot:hover{background:rgba(100,140,255,0.08);border-color:rgba(100,140,255,0.2);}
+  .season-podium-pos{font-size:1rem;margin-bottom:3px;}
+  .season-podium-name{font-size:0.65rem;font-weight:700;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .season-podium-aura{font-size:0.58rem;color:var(--text-dim);}
+  .season-timer{font-size:0.65rem;color:var(--text-dim);text-align:right;margin-top:6px;}
+
+  /* ── HISTORY TIMELINE ── */
+  .hist-timeline{position:relative;padding-left:18px;}
+  .hist-timeline::before{content:'';position:absolute;left:6px;top:0;bottom:0;width:2px;background:linear-gradient(to bottom,rgba(100,140,255,0.3),rgba(100,140,255,0.05));}
+  .hist-entry{position:relative;margin-bottom:8px;}
+  .hist-entry::before{content:'';position:absolute;left:-14px;top:8px;width:8px;height:8px;border-radius:50%;border:2px solid;}
+  .hist-entry-card{background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:9px;padding:7px 10px;display:flex;align-items:center;gap:8px;transition:background 0.2s;}
+  .hist-entry-card:hover{background:rgba(100,140,255,0.06);}
+  .hist-entry-icon{font-size:1rem;flex-shrink:0;}
+  .hist-entry-info{flex:1;min-width:0;}
+  .hist-entry-name{font-size:0.82rem;font-weight:700;}
+  .hist-entry-sub{font-size:0.62rem;color:var(--text-dim);}
+  .hist-entry-time{font-size:0.62rem;color:var(--text-dim);flex-shrink:0;}
+  .hist-filter-bar{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:10px;}
+  .hist-filter-btn{font-size:0.65rem;padding:3px 9px;border-radius:20px;border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.04);color:var(--text-dim);cursor:pointer;transition:all 0.15s;}
+  .hist-filter-btn.active{background:rgba(100,140,255,0.18);border-color:rgba(100,140,255,0.4);color:var(--text);}
+
+  /* ── COMPARE TAB ── */
+  .compare-header{display:grid;grid-template-columns:1fr auto 1fr;gap:6px;align-items:center;margin-bottom:12px;}
+  .compare-player{text-align:center;padding:8px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:10px;}
+  .compare-player-name{font-size:0.72rem;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .compare-vs{font-size:0.9rem;font-weight:900;color:var(--text-dim);}
+  .compare-stat-row{display:grid;grid-template-columns:1fr auto 1fr;gap:6px;align-items:center;margin-bottom:5px;}
+  .compare-val{font-size:0.85rem;font-weight:700;padding:5px 8px;border-radius:7px;text-align:center;}
+  .compare-val.winner{background:rgba(80,220,120,0.12);border:1px solid rgba(80,220,120,0.25);color:#50dc78;}
+  .compare-val.loser{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);color:var(--text-dim);}
+  .compare-val.tie{background:rgba(255,200,0,0.08);border:1px solid rgba(255,200,0,0.2);color:#ffc800;}
+  .compare-label{font-size:0.6rem;color:var(--text-dim);text-align:center;text-transform:uppercase;letter-spacing:0.07em;}
+  .compare-aura-row{display:flex;align-items:center;justify-content:center;gap:6px;margin:8px 0;padding:8px;background:rgba(255,255,255,0.02);border-radius:9px;border:1px solid rgba(255,255,255,0.05);}
+
+  /* ── CHAT REACTIONS ── */
+  .chat-react-bar{display:flex;gap:4px;padding-left:42px;margin-top:2px;flex-wrap:wrap;}
+  .chat-react-btn{font-size:0.72rem;padding:2px 7px;border-radius:20px;border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.04);cursor:pointer;transition:all 0.15s;display:flex;align-items:center;gap:3px;}
+  .chat-react-btn:hover{background:rgba(100,140,255,0.15);border-color:rgba(100,140,255,0.3);transform:scale(1.05);}
+  .chat-react-btn.reacted{background:rgba(100,140,255,0.2);border-color:rgba(100,140,255,0.4);}
+  .chat-react-count{font-size:0.65rem;color:var(--text-dim);}
+  .chat-react-popup{position:absolute;display:flex;gap:4px;background:rgba(10,14,30,0.97);border:1px solid rgba(100,140,255,0.25);border-radius:20px;padding:5px 8px;box-shadow:0 4px 20px rgba(0,0,0,0.5);z-index:50;animation:popIn 0.2s ease;}
+  .chat-react-option{font-size:1.1rem;cursor:pointer;transition:transform 0.15s;padding:2px 4px;border-radius:6px;}
+  .chat-react-option:hover{transform:scale(1.3);background:rgba(100,140,255,0.15);}
+  .chat-bubble-wrap{position:relative;}
+  .chat-react-trigger{position:absolute;right:-8px;top:-8px;background:rgba(10,14,30,0.9);border:1px solid rgba(255,255,255,0.1);border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-size:0.7rem;cursor:pointer;opacity:0;transition:opacity 0.15s;z-index:5;}
+  .chat-msg:hover .chat-react-trigger{opacity:1;}
+
+  /* ── ONLINE INDICATOR ── */
+  .online-dot{width:7px;height:7px;border-radius:50%;background:#50dc78;box-shadow:0 0 5px #50dc78;display:inline-block;flex-shrink:0;}
+  .inspect-online-badge{display:flex;align-items:center;gap:5px;font-size:0.65rem;color:#50dc78;margin-top:4px;}
+
+  /* ── DUEL ANIMATED ── */
+  .duel-roll-anim{display:flex;gap:8px;justify-content:center;margin:8px 0;flex-wrap:wrap;}
+  .duel-roll-card{padding:5px 10px;border-radius:8px;font-size:0.75rem;font-weight:700;border:1px solid;animation:popIn 0.3s ease both;}
+  .duel-score-bar{height:6px;border-radius:3px;background:rgba(255,255,255,0.08);margin:6px 0;overflow:hidden;}
+  .duel-score-fill{height:100%;border-radius:3px;transition:width 0.6s ease;}
+
+  @keyframes duel-shake{0%,100%{transform:translateX(0);}25%{transform:translateX(-6px);}75%{transform:translateX(6px);}}
+
   /* ══ FIREBASE SETUP MODAL ══ */
   .fb-setup-box{position:relative;z-index:1;width:min(520px,95vw);background:linear-gradient(150deg,rgba(8,12,30,0.99),rgba(4,7,20,0.99));border:1px solid rgba(255,160,0,0.25);border-radius:22px;padding:28px;display:flex;flex-direction:column;gap:16px;animation:popIn .35s cubic-bezier(.34,1.4,.64,1);max-height:90vh;overflow-y:auto;}
   .fb-setup-box::-webkit-scrollbar{width:4px;}
@@ -2189,7 +2293,6 @@
 <div id="inspectModal" style="display:none;position:fixed;inset:0;z-index:400;align-items:center;justify-content:center;">
   <div class="modal-backdrop" onclick="closeInspect()"></div>
   <div class="inspect-box">
-    <!-- Banner + avatar -->
     <div class="inspect-banner" id="inspectBanner">
       <button class="modal-close-x" onclick="closeInspect()" style="position:absolute;top:10px;right:12px;">✕</button>
       <div class="inspect-avatar" id="inspectAvatar">?</div>
@@ -2200,17 +2303,80 @@
       </div>
     </div>
 
-    <div class="inspect-body">
-      <!-- Stats row -->
-      <div class="inspect-stat-grid" id="inspectStats"></div>
-
-      <!-- Inventory -->
-      <div class="inspect-section-title">📦 Inventory</div>
-      <div class="inspect-inv-grid" id="inspectInv"></div>
-
-      <!-- Joined -->
-      <div style="text-align:center;font-size:0.65rem;color:var(--text-dim);margin-top:14px;" id="inspectJoined"></div>
+    <!-- Profile tabs -->
+    <div style="display:flex;gap:4px;padding:10px 16px 0;border-bottom:1px solid var(--border);flex-wrap:wrap;">
+      <button class="inspect-tab active" id="itab-stats" onclick="switchInspectTab('stats')">📊 Stats</button>
+      <button class="inspect-tab" id="itab-history" onclick="switchInspectTab('history')">📜 History</button>
+      <button class="inspect-tab" id="itab-speed" onclick="switchInspectTab('speed')">⚡ Records</button>
+      <button class="inspect-tab" id="itab-compare" onclick="switchInspectTab('compare')">🆚 Compare</button>
+      <button class="inspect-tab" id="itab-duel" onclick="switchInspectTab('duel')">⚔️ Duel</button>
     </div>
+
+    <div class="inspect-body">
+      <!-- STATS TAB -->
+      <div id="iview-stats">
+        <div id="inspectOnlineBadge" class="inspect-online-badge" style="display:none;margin-bottom:8px;">
+          <span class="online-dot"></span> Online now
+        </div>
+        <div class="inspect-stat-grid" id="inspectStats"></div>
+        <div class="inspect-section-title" style="margin-top:10px;">📦 Inventory</div>
+        <div class="inspect-inv-grid" id="inspectInv"></div>
+        <div style="text-align:center;font-size:0.65rem;color:var(--text-dim);margin-top:14px;" id="inspectJoined"></div>
+      </div>
+
+      <!-- HISTORY TAB -->
+      <div id="iview-history" style="display:none;">
+        <div class="hist-filter-bar" id="histFilterBar">
+          <button class="hist-filter-btn active" onclick="filterHistory('all',this)">All Rare+</button>
+          <button class="hist-filter-btn" onclick="filterHistory('legendary',this)">Legendary+</button>
+          <button class="hist-filter-btn" onclick="filterHistory('mythical',this)">Mythical+</button>
+          <button class="hist-filter-btn" onclick="filterHistory('gargantua',this)">Gargantua+</button>
+        </div>
+        <div class="hist-timeline" id="inspectHistory"></div>
+        <div class="inspect-section-title" style="margin-top:14px;margin-bottom:8px;">📈 Roll Breakdown</div>
+        <div id="inspectBreakdown" style="display:flex;flex-direction:column;gap:4px;"></div>
+      </div>
+
+      <!-- SPEED RECORDS TAB -->
+      <div id="iview-speed" style="display:none;">
+        <div class="season-banner" id="inspectSeasonBanner">
+          <div class="season-title">🏆 Season Ranking</div>
+          <div class="season-rank-row">
+            <div class="season-rank-medal" id="inspectSeasonMedal">—</div>
+            <div>
+              <div class="season-rank-num" id="inspectSeasonRank">#—</div>
+              <div class="season-rank-info" id="inspectSeasonInfo">No ranking yet</div>
+            </div>
+          </div>
+          <div class="season-timer" id="inspectSeasonTimer"></div>
+        </div>
+        <div class="inspect-section-title" style="margin-bottom:10px;">⚡ Fastest First Roll</div>
+        <div id="inspectSpeedRecords" style="display:flex;flex-direction:column;gap:6px;"></div>
+      </div>
+
+      <!-- COMPARE TAB -->
+      <div id="iview-compare" style="display:none;">
+        <div id="inspectCompare"></div>
+      </div>
+
+      <!-- DUEL TAB -->
+      <div id="iview-duel" style="display:none;">
+        <div class="inspect-section-title" style="margin-bottom:8px;">⚔️ Challenge</div>
+        <div id="inspectDuelArea"></div>
+        <div class="inspect-section-title" style="margin-top:14px;margin-bottom:8px;">🏅 Duel Record</div>
+        <div id="inspectDuelRecord"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ DUEL CHALLENGE POPUP ══ -->
+<div id="duelChallengePopup" style="display:none;position:fixed;bottom:80px;right:16px;z-index:600;width:280px;background:linear-gradient(135deg,rgba(255,60,30,0.18),rgba(20,10,5,0.97));border:1px solid rgba(255,80,30,0.45);border-radius:16px;padding:16px;box-shadow:0 8px 40px rgba(255,60,0,0.25);animation:slideInRight 0.35s ease;">
+  <div style="font-family:'Cinzel Decorative',serif;font-size:0.9rem;color:#ff8060;margin-bottom:6px;">⚔️ Duel Challenge!</div>
+  <div id="duelChallengeText" style="font-size:0.78rem;color:var(--text);margin-bottom:12px;line-height:1.5;"></div>
+  <div style="display:flex;gap:8px;">
+    <button onclick="acceptDuelChallenge()" style="flex:1;padding:8px;border-radius:10px;background:rgba(80,220,80,0.15);border:1px solid rgba(80,220,80,0.4);color:#50dc78;font-weight:700;cursor:pointer;font-size:0.8rem;">✅ Accept</button>
+    <button onclick="declineDuelChallenge()" style="flex:1;padding:8px;border-radius:10px;background:rgba(255,60,60,0.1);border:1px solid rgba(255,60,60,0.3);color:#ff8888;font-weight:700;cursor:pointer;font-size:0.8rem;">❌ Decline</button>
   </div>
 </div>
 
@@ -2652,190 +2818,319 @@ function startPreviewFX(color, intensity=1, mode='default'){
   draw();
 }
 
-// ── ARCHANGEL PREVIEW FX ──
+// ── ARCHANGEL PREVIEW FX — REALISTIC WINGS ──
 let _archT = 0;
 function _startArchangelPreviewFX(){
   _archT = 0;
   function spawn(){
     if(!pRunning) return;
-    const cx=pCanvas.width/2, cy=pCanvas.height*0.48;
-    // Feather particles rising from wings
-    for(let i=0;i<4;i++){
-      const side = Math.random()>0.5?1:-1;
-      const wx = cx + side*(50+Math.random()*60);
-      const wy = cy - 20 + Math.random()*60;
-      const col = Math.random()<0.6 ? '#fff5c0' : Math.random()<0.5 ? '#ffd700' : '#ffffff';
+    const cx=pCanvas.width/2, cy=pCanvas.height*0.44;
+    // Falling feathers from wing tips
+    for(let i=0;i<2;i++){
+      const side=Math.random()>0.5?1:-1;
+      const angle=(0.3+Math.random()*0.9)*side;
+      const dist=90+Math.random()*80;
       pParticles.push({
-        x:wx, y:wy,
-        vx: side*(Math.random()*0.5+0.2) + (Math.random()-0.5)*0.4,
-        vy: -(Math.random()*1.8+0.8),
-        life:1, decay:0.006+Math.random()*0.007,
-        size:Math.random()*3+1.2,
-        color:col, tw:Math.random()*Math.PI*2,
-        type:'feather', rot:Math.random()*Math.PI*2, rotSpd:(Math.random()-0.5)*0.06
+        x:cx+Math.cos(angle-Math.PI/2)*dist*side,
+        y:cy+Math.sin(angle-Math.PI/2)*dist*0.5,
+        vx:side*(0.2+Math.random()*0.5),
+        vy:0.5+Math.random()*1.2,
+        life:1, decay:0.004+Math.random()*0.006,
+        size:6+Math.random()*10,
+        rot:Math.random()*Math.PI*2,
+        rotSpd:(Math.random()-0.5)*0.03,
+        type:'feather',
+        col1:Math.random()<0.5?'#fff8d0':'#ffd700',
+        col2:Math.random()<0.5?'#ffb300':'#e07000',
       });
     }
-    // Golden motes floating up from below
+    // Golden dust motes
     for(let i=0;i<3;i++){
+      const a=Math.random()*Math.PI*2;
+      const r=20+Math.random()*100;
       pParticles.push({
-        x: cx+(Math.random()-0.5)*160,
-        y: cy+80+Math.random()*40,
-        vx:(Math.random()-0.5)*0.3,
-        vy:-(Math.random()*1.0+0.5),
-        life:1, decay:0.004+Math.random()*0.005,
-        size:Math.random()*2+0.8,
-        color: Math.random()<0.5?'#ffd700':'#fff5c0',
-        tw:Math.random()*Math.PI*2, type:'mote'
+        x:cx+Math.cos(a)*r, y:cy+Math.sin(a)*r*0.5+20,
+        vx:(Math.random()-0.5)*0.4,
+        vy:-(0.3+Math.random()*0.8),
+        life:1, decay:0.005+Math.random()*0.007,
+        size:1+Math.random()*2.5,
+        type:'mote',
+        color:Math.random()<0.4?'#ffffff':Math.random()<0.5?'#fff5c0':'#ffd700',
+        tw:Math.random()*Math.PI*2,
       });
     }
-    // Sacred light rays from above
-    if(Math.random()<0.3){
-      const rx=cx+(Math.random()-0.5)*120;
-      pParticles.push({
-        x:rx, y:0, vx:0, vy:3+Math.random()*2,
-        life:0.7+Math.random()*0.3, decay:0.008,
-        size:2+Math.random()*3, color:'#fffbe0',
-        tw:0, type:'ray', len:30+Math.random()*50
-      });
-    }
-    pSpawnTimer=setTimeout(spawn,55);
+    pSpawnTimer=setTimeout(spawn,60);
   }
   spawn();
 
+  // Pre-compute feather shapes for realism
+  // Each wing has 3 rows of feathers: coverts (small), secondary, primary (large)
+  function drawRealisticWing(ctx, side, flap, flapSec, W, H){
+    const cx=W/2, cy=H*0.44;
+    ctx.save();
+    ctx.translate(cx + side*5, cy+10);
+
+    // Wing anatomy:
+    // - Shoulder pivot at origin
+    // - Arm extends outward
+    // - Primary feathers at tip (longest, most spread)
+    // - Secondary feathers along trailing edge
+    // - Covert feathers covering the base
+
+    const armAngle  = side*(0.05 + flap*0.4);     // main wing angle from body
+    const armLen    = 115;
+
+    // Transform to arm axis
+    ctx.rotate(armAngle);
+
+    // ── TERTIAL / BASE FEATHERS (innermost, short, fluffy) ──
+    const nTertial=5;
+    for(let i=0;i<nTertial;i++){
+      const t=i/nTertial;
+      const fAngle = side*(0.1+t*0.5) - armAngle + flap*0.1*t;
+      const fLen   = 45+t*15;
+      const fW     = 14-t*2;
+      const alpha  = 0.65+0.1*Math.sin(_archT*2+i);
+      ctx.save();
+      ctx.rotate(-armAngle + fAngle);
+      _drawFeather(ctx, 0, 0, fLen, fW, alpha, '#fff8e0','#ffc840','#e07000', side);
+      ctx.restore();
+    }
+
+    // ── SECONDARY FEATHERS (mid wing, medium length) ──
+    const nSec=8;
+    for(let i=0;i<nSec;i++){
+      const t=i/nSec;
+      const px=armLen*t*0.7;
+      const py=flap*8*t*t;
+      const fLen = 70-t*10 + Math.sin(_archT*1.5+i*0.7)*3;
+      const fW   = 16-t*3;
+      const fAngle = side*(0.3+t*0.2) + flapSec*t*0.3;
+      const alpha  = 0.7+0.1*Math.sin(_archT+i*0.5);
+      ctx.save();
+      ctx.translate(px*side, -py);
+      ctx.rotate(-armAngle*0.3 + fAngle);
+      _drawFeather(ctx, 0, 0, fLen, fW, alpha, '#fffce0','#ffd040','#d06000', side);
+      ctx.restore();
+    }
+
+    // ── PRIMARY FEATHERS (outer, longest, most spread) ──
+    const nPri=10;
+    for(let i=0;i<nPri;i++){
+      const t=i/nPri;
+      const px = armLen*(0.55+t*0.45);
+      const py = flap*18*t*t + flapSec*5*t;
+      const fLen = (100+t*30) + Math.sin(_archT*1.2+i*0.8)*4;
+      const fW   = 14-t*3;
+      // Primary feathers spread outward and upward
+      const spreadAngle = side*(0.5+t*0.7);
+      const fAngle = spreadAngle + flap*t*0.5;
+      const alpha  = 0.75+0.12*Math.sin(_archT*1.8+i*0.6);
+      ctx.save();
+      ctx.translate(px*side, -py);
+      ctx.rotate(-armAngle*0.2 + fAngle);
+      _drawFeather(ctx, 0, 0, fLen, fW, alpha, '#fffde8','#ffc820','#c05000', side);
+      ctx.restore();
+    }
+
+    // ── COVERT FEATHERS (top layer, fan-shaped, covers base of primaries) ──
+    const nCov=14;
+    for(let i=0;i<nCov;i++){
+      const t=i/nCov;
+      const px=armLen*t*0.8;
+      const py=flap*6*t + 5;
+      const fLen = 40-t*8;
+      const fW   = 10;
+      const fAngle = side*(0.2+t*0.6) + flap*0.1;
+      const alpha  = 0.55+0.1*Math.sin(_archT*2.2+i*0.4);
+      ctx.save();
+      ctx.translate(px*side, -py);
+      ctx.rotate(-armAngle*0.5 + fAngle);
+      _drawFeather(ctx, 0, 0, fLen, fW, alpha, '#ffffff','#ffe060','#c07020', side);
+      ctx.restore();
+    }
+
+    ctx.restore();
+  }
+
+  // Draw a single realistic feather
+  function _drawFeather(ctx, x, y, len, width, alpha, col1, col2, col3, side){
+    ctx.save();
+    ctx.translate(x,y);
+
+    // Feather vane — two halves with slight asymmetry
+    const leading  = width*0.42;
+    const trailing = width*0.58;
+
+    // Build gradient properly
+    const g=ctx.createLinearGradient(0,0,0,-len);
+    g.addColorStop(0, _hexA(col1,alpha));
+    g.addColorStop(0.25, _hexA(col2,alpha*0.95));
+    g.addColorStop(0.65, _hexA(col3,alpha*0.7));
+    g.addColorStop(1, _hexA(col3,0));
+
+    // Vane shape — slightly curved, asymmetric
+    ctx.beginPath();
+    ctx.moveTo(0,0);
+    // Leading edge (thinner)
+    ctx.bezierCurveTo(-leading*0.4,-len*0.2, -leading*0.6,-len*0.55, -leading*0.3,-len);
+    // Tip
+    ctx.quadraticCurveTo(0,-len*1.02, trailing*0.3,-len);
+    // Trailing edge (wider, more curved)
+    ctx.bezierCurveTo(trailing*0.7,-len*0.55, trailing*0.5,-len*0.2, 0,0);
+    ctx.closePath();
+
+    ctx.fillStyle=g;
+    ctx.shadowColor='#ffd700';
+    ctx.shadowBlur=8;
+    ctx.fill();
+
+    // Rachis (central spine)
+    ctx.beginPath();
+    ctx.moveTo(0,0);
+    ctx.quadraticCurveTo(leading*0.08,-len*0.45, 0,-len);
+    ctx.strokeStyle=_hexA('#ffe090',alpha*0.6);
+    ctx.lineWidth=0.9;
+    ctx.shadowBlur=4;
+    ctx.stroke();
+
+    // Barbs — fine lines across the vane
+    const nBarbs=Math.floor(len/10);
+    for(let bi=1;bi<nBarbs;bi++){
+      const bt=bi/nBarbs;
+      const by=-len*bt;
+      const lw = (-leading)*(1-bt*0.4);
+      const rw = trailing*(1-bt*0.4);
+      // Slight curve downward for realism
+      ctx.beginPath();
+      ctx.moveTo(lw*0.85, by+len*0.015);
+      ctx.quadraticCurveTo(0,by,rw*0.85,by+len*0.015);
+      ctx.strokeStyle=_hexA('#fffce0', alpha*0.18*(1-bt*0.5));
+      ctx.lineWidth=0.5;
+      ctx.shadowBlur=0;
+      ctx.stroke();
+    }
+
+    ctx.restore();
+  }
+
+  function _hexA(hex, a){
+    const h = hex.startsWith('#') ? hex.slice(1) : hex;
+    const r=parseInt(h.slice(0,2),16);
+    const g=parseInt(h.slice(2,4),16);
+    const b=parseInt(h.slice(4,6),16);
+    if(isNaN(r)||isNaN(g)||isNaN(b)) return `rgba(255,220,80,${a.toFixed(3)})`;
+    return `rgba(${r},${g},${b},${a.toFixed(3)})`;
+  }
+
   function draw(){
     if(!pRunning) return;
-    _archT += 0.025;
-    const cx=pCanvas.width/2, cy=pCanvas.height*0.48;
-    pCtx.clearRect(0,0,pCanvas.width,pCanvas.height);
+    _archT += 0.016;
+    const W=pCanvas.width, H=pCanvas.height;
+    const cx=W/2, cy=H*0.44;
+    pCtx.clearRect(0,0,W,H);
 
-    // ── DIVINE HALO ──
-    const haloY = cy - 115;
-    const haloR = 36 + Math.sin(_archT*1.2)*3;
-    const haloGrad = pCtx.createRadialGradient(cx,haloY,haloR*0.5,cx,haloY,haloR*1.8);
-    haloGrad.addColorStop(0,'rgba(255,245,160,0.0)');
-    haloGrad.addColorStop(0.6,'rgba(255,220,80,0.18)');
-    haloGrad.addColorStop(0.85,'rgba(255,200,40,0.35)');
-    haloGrad.addColorStop(1,'rgba(255,200,0,0)');
-    pCtx.save();
-    pCtx.beginPath();
-    pCtx.ellipse(cx, haloY, haloR*1.8, haloR*0.45, 0, 0, Math.PI*2);
-    pCtx.fillStyle=haloGrad; pCtx.shadowColor='#ffd700'; pCtx.shadowBlur=22;
-    pCtx.fill();
-    // Halo ring
-    pCtx.beginPath();
-    pCtx.ellipse(cx, haloY, haloR*1.5, haloR*0.35, 0, 0, Math.PI*2);
-    pCtx.strokeStyle=`rgba(255,220,80,${0.5+0.2*Math.sin(_archT*2)})`;
-    pCtx.lineWidth=2.5; pCtx.shadowBlur=16;
-    pCtx.stroke();
-    pCtx.restore();
+    // Breathing flap — slow, organic dual-frequency
+    const flap     = Math.sin(_archT*1.4)*0.12 + Math.sin(_archT*2.1)*0.04;
+    const flapSec  = Math.sin(_archT*1.4+0.5)*0.08;
 
-    // ── WINGS ──
-    const wingFlap = Math.sin(_archT*2.2)*0.12;
-    for(const side of [-1,1]){
+    // ── SKY GLOW BEHIND WINGS ──
+    const skyG=pCtx.createRadialGradient(cx,cy,0,cx,cy,W*0.7);
+    skyG.addColorStop(0,'rgba(255,255,180,0.16)');
+    skyG.addColorStop(0.2,'rgba(120,160,255,0.08)');
+    skyG.addColorStop(0.6,'rgba(50,80,200,0.05)');
+    skyG.addColorStop(1,'rgba(10,20,60,0)');
+    pCtx.fillStyle=skyG; pCtx.fillRect(0,0,W,H);
+
+    // ── LIGHT RAYS ──
+    const numRays=32;
+    for(let i=0;i<numRays;i++){
+      const a=(i/numRays)*Math.PI*2 + _archT*0.08;
+      const pulse=0.28+0.15*Math.sin(_archT*1.8+i*0.9);
+      const rLen=55+65*Math.pow(Math.abs(Math.sin(i*1.1+_archT*0.5)),1.5);
+      const w=0.025+0.015*Math.sin(i*2.3);
+      const rg=pCtx.createLinearGradient(cx,cy,
+        cx+Math.cos(a)*(rLen+120),cy+Math.sin(a)*(rLen+120));
+      rg.addColorStop(0,`rgba(255,255,210,${pulse*0.7})`);
+      rg.addColorStop(0.25,`rgba(255,225,100,${pulse*0.4})`);
+      rg.addColorStop(1,'rgba(255,180,30,0)');
       pCtx.save();
-      pCtx.translate(cx + side*18, cy-55);
-      // Wing base glow
-      const wGrad=pCtx.createRadialGradient(side*30,0,0,side*30,0,90);
-      wGrad.addColorStop(0,'rgba(255,245,180,0.35)');
-      wGrad.addColorStop(0.5,'rgba(255,220,100,0.18)');
-      wGrad.addColorStop(1,'rgba(255,200,50,0)');
-      // Upper wing
       pCtx.beginPath();
-      pCtx.moveTo(0,-10);
-      pCtx.bezierCurveTo(
-        side*25, -60+wingFlap*30,
-        side*80, -80+wingFlap*60,
-        side*110, -40+wingFlap*20
-      );
-      pCtx.bezierCurveTo(
-        side*90, -20,
-        side*55, 0,
-        side*20, 10
-      );
+      pCtx.moveTo(cx,cy);
+      pCtx.arc(cx,cy,rLen+120,a-w,a+w);
       pCtx.closePath();
-      const wFill=pCtx.createLinearGradient(0,0,side*110,-60);
-      wFill.addColorStop(0,`rgba(255,255,220,${0.55+wingFlap*0.3})`);
-      wFill.addColorStop(0.4,`rgba(255,230,120,${0.38+wingFlap*0.2})`);
-      wFill.addColorStop(1,`rgba(255,200,60,0.08)`);
-      pCtx.fillStyle=wFill;
-      pCtx.shadowColor='#ffd700'; pCtx.shadowBlur=20;
-      pCtx.fill();
-      // Wing outline feather lines
-      pCtx.strokeStyle=`rgba(255,245,160,${0.3+wingFlap*0.2})`;
-      pCtx.lineWidth=1;
-      for(let fi=0;fi<6;fi++){
-        const t=fi/5;
-        const wx=side*(20+t*90+wingFlap*10);
-        const wy=-10-t*70+wingFlap*30;
-        pCtx.beginPath();
-        pCtx.moveTo(side*15,5);
-        pCtx.quadraticCurveTo(wx*0.6,wy*0.5,wx,wy);
-        pCtx.stroke();
-      }
-      // Lower wing
-      pCtx.beginPath();
-      pCtx.moveTo(0,10);
-      pCtx.bezierCurveTo(
-        side*20, 30+wingFlap*15,
-        side*70, 60+wingFlap*25,
-        side*90, 50+wingFlap*10
-      );
-      pCtx.bezierCurveTo(side*65, 30, side*30, 20, side*10, 15);
-      pCtx.closePath();
-      const lwFill=pCtx.createLinearGradient(0,10,side*90,60);
-      lwFill.addColorStop(0,`rgba(255,245,200,${0.45+wingFlap*0.2})`);
-      lwFill.addColorStop(1,'rgba(255,200,60,0.05)');
-      pCtx.fillStyle=lwFill; pCtx.shadowBlur=12;
-      pCtx.fill();
+      pCtx.fillStyle=rg; pCtx.fill();
       pCtx.restore();
     }
 
-    // ── DIVINE LIGHT COLUMN ──
-    const colGrad=pCtx.createLinearGradient(cx,0,cx,pCanvas.height);
-    colGrad.addColorStop(0,`rgba(255,245,180,${0.12+0.06*Math.sin(_archT*1.5)})`);
-    colGrad.addColorStop(0.4,`rgba(255,220,100,${0.07+0.04*Math.sin(_archT)})`);
-    colGrad.addColorStop(1,'rgba(255,200,50,0)');
+    // ── LEFT WING (drawn first, behind) ──
+    drawRealisticWing(pCtx, -1, flap, flapSec, W, H);
+
+    // ── RIGHT WING ──
+    drawRealisticWing(pCtx,  1, flap, flapSec, W, H);
+
+    // ── WING ROOT AMBIENT GLOW ──
+    const rootG=pCtx.createRadialGradient(cx,cy,0,cx,cy,80);
+    rootG.addColorStop(0,`rgba(255,255,220,${0.35+flap*0.8})`);
+    rootG.addColorStop(0.4,'rgba(255,220,80,0.15)');
+    rootG.addColorStop(1,'rgba(255,180,0,0)');
     pCtx.save();
-    pCtx.fillStyle=colGrad;
-    pCtx.fillRect(cx-40,0,80,pCanvas.height);
+    pCtx.globalCompositeOperation='screen';
+    pCtx.fillStyle=rootG;
+    pCtx.beginPath(); pCtx.arc(cx,cy,80,0,Math.PI*2); pCtx.fill();
     pCtx.restore();
 
-    // ── GROUND GLOW ──
-    const gGrad=pCtx.createRadialGradient(cx,pCanvas.height*0.85,0,cx,pCanvas.height*0.85,90);
-    gGrad.addColorStop(0,`rgba(255,220,80,${0.2+0.08*Math.sin(_archT*1.3)})`);
-    gGrad.addColorStop(1,'rgba(255,200,50,0)');
+    // ── CENTRAL DIVINE CORE ──
+    const cr=18+3*Math.sin(_archT*2.5);
+    // Outer bloom
+    const bloom=pCtx.createRadialGradient(cx,cy,0,cx,cy,cr*7);
+    bloom.addColorStop(0,'rgba(255,255,255,0.95)');
+    bloom.addColorStop(0.08,'rgba(255,255,220,0.85)');
+    bloom.addColorStop(0.2,'rgba(255,230,100,0.55)');
+    bloom.addColorStop(0.45,'rgba(255,200,50,0.25)');
+    bloom.addColorStop(0.7,'rgba(255,170,20,0.10)');
+    bloom.addColorStop(1,'rgba(255,150,0,0)');
     pCtx.save();
-    pCtx.fillStyle=gGrad;
-    pCtx.beginPath();
-    pCtx.ellipse(cx,pCanvas.height*0.87,90,18,0,0,Math.PI*2);
+    pCtx.globalCompositeOperation='screen';
+    pCtx.fillStyle=bloom;
+    pCtx.beginPath(); pCtx.arc(cx,cy,cr*7,0,Math.PI*2); pCtx.fill();
+    pCtx.globalCompositeOperation='source-over';
+    // Hard white core
+    pCtx.beginPath(); pCtx.arc(cx,cy,cr,0,Math.PI*2);
+    pCtx.fillStyle='rgba(255,255,255,0.98)';
+    pCtx.shadowColor='#ffffff'; pCtx.shadowBlur=50;
     pCtx.fill();
     pCtx.restore();
 
-    // ── PARTICLES (feathers, motes, rays) ──
+    // ── GROUND LIGHT POOL ──
+    const gPool=pCtx.createRadialGradient(cx,H*0.88,0,cx,H*0.88,100);
+    gPool.addColorStop(0,`rgba(255,220,80,${0.22+0.08*Math.sin(_archT*1.3)})`);
+    gPool.addColorStop(1,'rgba(255,180,0,0)');
+    pCtx.save();
+    pCtx.fillStyle=gPool;
+    pCtx.beginPath(); pCtx.ellipse(cx,H*0.89,100,16,0,0,Math.PI*2); pCtx.fill();
+    pCtx.restore();
+
+    // ── PARTICLES ──
     pParticles=pParticles.filter(p=>p.life>0);
     for(const p of pParticles){
-      p.tw+=0.08;
       pCtx.save();
-      pCtx.globalAlpha=p.life*(0.6+0.4*Math.sin(p.tw));
-      pCtx.shadowColor=p.color; pCtx.shadowBlur=10;
       if(p.type==='feather'){
         p.rot+=p.rotSpd;
-        pCtx.translate(p.x,p.y); pCtx.rotate(p.rot);
-        pCtx.fillStyle=p.color;
-        pCtx.beginPath();
-        pCtx.ellipse(0,0,p.size*0.5,p.size*1.8*p.life,0,0,Math.PI*2);
-        pCtx.fill();
-      } else if(p.type==='ray'){
-        pCtx.strokeStyle=p.color; pCtx.lineWidth=p.size*p.life;
-        pCtx.beginPath(); pCtx.moveTo(p.x,p.y); pCtx.lineTo(p.x,p.y+p.len*p.life);
-        pCtx.stroke();
+        pCtx.globalAlpha=p.life*0.75;
+        _drawFeather(pCtx, p.x, p.y, p.size*p.life, p.size*0.35*p.life, 0.8, p.col1, p.col2, p.col1, 1);
       } else {
+        p.tw+=0.1;
+        const al=p.life*(0.6+0.4*Math.sin(p.tw));
+        pCtx.globalAlpha=al;
+        pCtx.shadowColor=p.color; pCtx.shadowBlur=10;
         pCtx.fillStyle=p.color;
         pCtx.beginPath(); pCtx.arc(p.x,p.y,p.size*p.life,0,Math.PI*2); pCtx.fill();
       }
       pCtx.restore();
       p.x+=p.vx; p.y+=p.vy; p.life-=p.decay;
     }
+
     pAnimFrame=requestAnimationFrame(draw);
   }
   draw();
@@ -2860,10 +3155,10 @@ function openPreview(aura){
     } else {
       // Archangel: divine stage background + special FX
       const stage=document.getElementById('previewStage');
-      stage.style.background='radial-gradient(ellipse 90% 90% at 50% 45%, rgba(255,240,140,0.13) 0%, rgba(255,200,60,0.07) 40%, rgba(20,15,5,0.95) 100%)';
-      document.getElementById('auraGlowLayer').style.background='radial-gradient(ellipse 60% 80% at 50% 40%, rgba(255,230,100,0.22) 0%, transparent 70%)';
-      document.getElementById('charSvg').style.filter='drop-shadow(0 0 18px #ffd700) drop-shadow(0 0 40px #fff5c0) drop-shadow(0 0 6px #ffffff)';
-      document.getElementById('stageShadow').style.background='#ffd70066';
+      stage.style.background='radial-gradient(ellipse 100% 100% at 50% 40%, rgba(80,120,255,0.18) 0%, rgba(40,70,180,0.12) 40%, rgba(10,10,30,0.97) 100%)';
+      document.getElementById('auraGlowLayer').style.background='radial-gradient(ellipse 70% 70% at 50% 42%, rgba(255,230,80,0.18) 0%, rgba(100,150,255,0.08) 50%, transparent 80%)';
+      document.getElementById('charSvg').style.filter='drop-shadow(0 0 20px #ffd700) drop-shadow(0 0 50px #fff5c0) drop-shadow(0 0 8px #ffffff)';
+      document.getElementById('stageShadow').style.background='rgba(255,210,50,0.5)';
       startPreviewFX('#ffd700', 1, 'archangel');
     }
   } else {
@@ -4705,6 +5000,7 @@ function fbRemovePresence(){
 }
 
 // Listen to online count
+let _onlinePlayers = {};
 function fbListenPresence(){
   const f = fb();
   if(!f) return;
@@ -4712,8 +5008,11 @@ function fbListenPresence(){
   const unsub = f.onValue(presRef, snap=>{
     const now = Date.now();
     let count = 0;
+    _onlinePlayers = {};
     if(snap.exists()){
-      Object.values(snap.val()).forEach(p=>{ if(now - (p.ts||0) < 90000) count++; });
+      Object.entries(snap.val()).forEach(([u,p])=>{
+        if(now - (p.ts||0) < 90000){ count++; _onlinePlayers[u]=true; }
+      });
     }
     count = Math.max(count, 1);
     const el = document.getElementById('chatOnlineCount');
@@ -5124,10 +5423,155 @@ function buildLeaderboard(tab){
   document.getElementById('lbMyScore').innerHTML=myAura?`<span style="color:${myAura.color}">${myAura.name}</span>`:'<span style="color:var(--text-dim)">—</span>';
 }
 
+let _inspectingUser = null;
+
+function switchInspectTab(tab){
+  ['stats','history','speed','compare','duel'].forEach(t=>{
+    document.getElementById('itab-'+t).classList.toggle('active',t===tab);
+    document.getElementById('iview-'+t).style.display=t===tab?'block':'none';
+  });
+}
+
+let _inspectHistFilter='all';
+function filterHistory(filter, btn){
+  _inspectHistFilter=filter;
+  document.querySelectorAll('.hist-filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  if(_inspectingUser) _renderInspectHistory(getUsers()[_inspectingUser]);
+}
+
+function _renderInspectHistory(d){
+  const glowOrder={'rare':5,'epic':4,'legendary':3,'mythical':2,'gargantua':1,'archangel':0};
+  const filterMap={
+    'all':['rare','epic','legendary','mythical','gargantua','archangel'],
+    'legendary':['legendary','mythical','gargantua','archangel'],
+    'mythical':['mythical','gargantua','archangel'],
+    'gargantua':['gargantua','archangel']
+  };
+  const allowed=filterMap[_inspectHistFilter]||filterMap['all'];
+  const hist=(d.rollHistory||[]).filter(r=>allowed.includes(r.glow));
+  const el=document.getElementById('inspectHistory');
+  if(!hist.length){
+    el.innerHTML='<div style="color:var(--text-dim);font-size:0.78rem;padding:8px;">No rolls in this category yet.</div>';
+    return;
+  }
+  el.innerHTML=hist.slice(0,30).map((r,i)=>{
+    const aura=AURAS.find(a=>a.glow===r.glow)||{icon:'✨'};
+    const timeStr=_timeAgo(r.ts);
+    const rollNum=d.totalRolls?`Roll ~${(d.totalRolls-i).toLocaleString()}`:'';
+    return `<div class="hist-entry" style="--entry-color:${r.color};">
+      <div class="hist-entry-card" style="border-color:${r.color}18;">
+        <div class="hist-entry-icon">${aura.icon||'✨'}</div>
+        <div class="hist-entry-info">
+          <div class="hist-entry-name" style="color:${r.color};">${r.name}</div>
+          <div class="hist-entry-sub">${rollNum}</div>
+        </div>
+        <div class="hist-entry-time">${timeStr}</div>
+      </div>
+    </div>`;
+  }).join('');
+  // add ::before color via style attribute hack
+  el.querySelectorAll('.hist-entry').forEach(e=>{
+    const col=e.querySelector('.hist-entry-name')?.style.color||'#a0c4ff';
+    e.style.setProperty('--entry-color',col);
+    // inject pseudo-element color via a real child dot
+    const dot=document.createElement('div');
+    dot.style.cssText=`position:absolute;left:-14px;top:8px;width:8px;height:8px;border-radius:50%;background:${col};box-shadow:0 0 6px ${col};`;
+    e.style.position='relative';
+    e.appendChild(dot);
+  });
+}
+
+function _renderCompare(meData, themData, theirName){
+  const el=document.getElementById('inspectCompare');
+  const myName=currentUser?.username||'You';
+  const fields=[
+    {label:'Total Rolls', myVal:(meData?.totalRolls||0).toLocaleString(), theirVal:(themData?.totalRolls||0).toLocaleString(),
+      myN:meData?.totalRolls||0, theirN:themData?.totalRolls||0, higherWins:true},
+    {label:'Best Aura', myVal:meData?.bestAura||'—', theirVal:themData?.bestAura||'—',
+      myN:RARITY_ORDER.indexOf(meData?.bestAura), theirN:RARITY_ORDER.indexOf(themData?.bestAura), higherWins:false},
+    {label:'Unique Auras', myVal:Object.keys(meData?.inventory||{}).length, theirVal:Object.keys(themData?.inventory||{}).length,
+      myN:Object.keys(meData?.inventory||{}).length, theirN:Object.keys(themData?.inventory||{}).length, higherWins:true},
+    {label:'Rare+ Owned', myVal:_countRarePlus(meData), theirVal:_countRarePlus(themData),
+      myN:_countRarePlus(meData), theirN:_countRarePlus(themData), higherWins:true},
+  ];
+
+  const myWins=fields.filter(f=>{
+    if(f.myN===f.theirN||f.myN===-1||f.theirN===-1) return false;
+    return f.higherWins?(f.myN>f.theirN):(f.myN<f.theirN);
+  }).length;
+  const theirWins=fields.length-myWins-fields.filter(f=>f.myN===f.theirN).length;
+
+  const myColor=avatarColor(myName); const theirColor=avatarColor(theirName);
+  el.innerHTML=`
+    <div class="compare-header">
+      <div class="compare-player">
+        <div class="compare-player-name" style="color:${myColor};">${myName}</div>
+        <div style="font-size:1.2rem;font-weight:900;color:#50dc78;">${myWins}</div>
+        <div style="font-size:0.6rem;color:var(--text-dim);">wins</div>
+      </div>
+      <div class="compare-vs">VS</div>
+      <div class="compare-player">
+        <div class="compare-player-name" style="color:${theirColor};">${theirName}</div>
+        <div style="font-size:1.2rem;font-weight:900;color:#50dc78;">${theirWins}</div>
+        <div style="font-size:0.6rem;color:var(--text-dim);">wins</div>
+      </div>
+    </div>
+    ${fields.map(f=>{
+      const tie=f.myN===f.theirN||(f.myN===-1&&f.theirN===-1);
+      const myWin=!tie&&(f.higherWins?(f.myN>f.theirN):(f.myN<f.theirN));
+      const theirWin=!tie&&!myWin;
+      return `<div class="compare-stat-row">
+        <div class="compare-val ${tie?'tie':myWin?'winner':'loser'}">${f.myVal}</div>
+        <div class="compare-label">${f.label}</div>
+        <div class="compare-val ${tie?'tie':theirWin?'winner':'loser'}">${f.theirVal}</div>
+      </div>`;
+    }).join('')}
+    <div style="margin-top:10px;">
+      <div class="inspect-section-title">🪶 Best Aura</div>
+      <div class="compare-aura-row">
+        ${_auraChip(meData?.bestAura)} <span style="color:var(--text-dim);font-size:0.7rem;">vs</span> ${_auraChip(themData?.bestAura)}
+      </div>
+    </div>`;
+}
+
+function _countRarePlus(d){
+  if(!d) return 0;
+  return Object.entries(d.inventory||{}).filter(([n])=>{
+    const a=AURAS.find(x=>x.name===n); return a&&['rare','epic','legendary','mythical','gargantua','archangel'].includes(a.glow);
+  }).reduce((s,[,v])=>s+v,0);
+}
+
+function _auraChip(name){
+  if(!name) return '<span style="color:var(--text-dim);font-size:0.75rem;">—</span>';
+  const a=AURAS.find(x=>x.name===name);
+  if(!a) return `<span style="font-size:0.75rem;">${name}</span>`;
+  return `<span style="color:${a.color};font-size:0.82rem;font-weight:700;">${a.icon} ${a.name}</span>`;
+}
+
+function _renderSeasonRank(username){
+  const users=getUsers();
+  const sorted=Object.entries(users).map(([u,d])=>({
+    u, best:d.bestAura?RARITY_ORDER.indexOf(d.bestAura):99, rolls:d.totalRolls||0
+  })).sort((a,b)=>a.best-b.best||b.rolls-a.rolls);
+  const idx=sorted.findIndex(e=>e.u===username);
+  const rank=idx>=0?idx+1:null;
+  const medals=['🥇','🥈','🥉'];
+  document.getElementById('inspectSeasonMedal').textContent=rank&&rank<=3?medals[rank-1]:(rank?'🏅':'—');
+  document.getElementById('inspectSeasonRank').textContent=rank?`#${rank}`:'#—';
+  document.getElementById('inspectSeasonInfo').textContent=rank?`Top ${((rank/Math.max(sorted.length,1))*100).toFixed(0)}% of ${sorted.length} players`:'Not yet ranked';
+  // Season timer — resets first of each month
+  const now=new Date(); const end=new Date(now.getFullYear(),now.getMonth()+1,1);
+  const diff=end-now; const days=Math.floor(diff/86400000); const hrs=Math.floor((diff%86400000)/3600000);
+  document.getElementById('inspectSeasonTimer').textContent=`Season resets in ${days}d ${hrs}h`;
+}
+
 function openInspect(username){
   const users = getUsers();
   const d = users[username];
   if(!d) return;
+  _inspectingUser = username;
+  _inspectHistFilter='all';
 
   const color = avatarColor(username);
   const inv = d.inventory || {};
@@ -5140,6 +5584,7 @@ function openInspect(username){
   const title = TITLES.find(t=>t.id===(prof.title||'none'));
   const nc = prof.nameColor || '#c8d8ff';
   const isOwner = username === 'Daniel';
+  const isMe = currentUser && username === currentUser.username;
 
   // banner
   const bannerEl = document.getElementById('inspectBanner');
@@ -5148,72 +5593,219 @@ function openInspect(username){
 
   // avatar
   const av = document.getElementById('inspectAvatar');
-  if(prof.profilePic){
-    av.style.backgroundImage = `url(${prof.profilePic})`;
-    av.textContent = '';
-  } else {
-    av.style.backgroundImage = '';
-    av.textContent = avatarInitial(username);
-    av.style.background = `linear-gradient(135deg,${color},${color}88)`;
-  }
+  if(prof.profilePic){ av.style.backgroundImage=`url(${prof.profilePic})`; av.textContent=''; }
+  else { av.style.backgroundImage=''; av.textContent=avatarInitial(username); av.style.background=`linear-gradient(135deg,${color},${color}88)`; }
   const isGrad = bord.css.startsWith('linear')||bord.css.startsWith('radial');
-  av.style.borderColor = isGrad ? 'transparent' : bord.css;
-  av.style.borderImage = isGrad ? bord.css+' 1' : '';
-  if(bord.ownerOnly) av.style.boxShadow = '0 0 12px #9932cc88';
+  av.style.borderColor = isGrad?'transparent':bord.css;
+  av.style.borderImage = isGrad?bord.css+' 1':'';
+  if(bord.ownerOnly) av.style.boxShadow='0 0 12px #9932cc88';
 
   // name + title
-  document.getElementById('inspectUsername').textContent = username + (isOwner ? ' 👑' : '');
+  document.getElementById('inspectUsername').textContent = username+(isOwner?' 👑':'');
   document.getElementById('inspectUsername').style.color = nc;
   const titleEl = document.getElementById('inspectTitleBadge');
-  if(title && title.id !== 'none'){
-    titleEl.textContent = title.label;
-    titleEl.style.color = isOwner ? '#cc88ff' : nc;
-  } else { titleEl.textContent = ''; }
+  if(title && title.id!=='none'){ titleEl.textContent=title.label; titleEl.style.color=isOwner?'#cc88ff':nc; }
+  else { titleEl.textContent=''; }
+
+  // online badge
+  const onlineBadge=document.getElementById('inspectOnlineBadge');
+  const isOnline=_onlinePlayers&&_onlinePlayers[username];
+  onlineBadge.style.display=isOnline?'flex':'none';
 
   // best aura
-  const baEl = document.getElementById('inspectBestAura');
-  baEl.innerHTML = bestAura
+  document.getElementById('inspectBestAura').innerHTML = bestAura
     ? `<span style="color:${bestAura.color}">${bestAura.icon} ${bestAura.name}</span>`
     : '<span style="color:var(--text-dim)">No best aura</span>';
 
-  // stats
+  // ── STATS TAB ──
   const totalOwned = Object.values(inv).reduce((s,v)=>s+v,0);
+  const rareCount = _countRarePlus(d);
+  const luckRate = totalRolls>0?((rareCount/totalRolls)*100).toFixed(2)+'%':'0%';
   document.getElementById('inspectStats').innerHTML = [
     { val: totalRolls.toLocaleString(), lbl: 'Total Rolls' },
     { val: uniqueCount+'/'+AURAS.length, lbl: 'Unique Auras' },
+    { val: rareCount.toLocaleString(), lbl: 'Rare+ Found' },
+    { val: luckRate, lbl: 'Rare Rate' },
     { val: totalOwned.toLocaleString(), lbl: 'Total Owned' },
-  ].map(s=>`<div class="inspect-stat">
-    <div class="inspect-stat-val">${s.val}</div>
-    <div class="inspect-stat-lbl">${s.lbl}</div>
-  </div>`).join('');
+    { val: d.luckMultiplier?d.luckMultiplier+'x':'1x', lbl: 'Luck Multi' },
+  ].map(s=>`<div class="inspect-stat"><div class="inspect-stat-val">${s.val}</div><div class="inspect-stat-lbl">${s.lbl}</div></div>`).join('');
 
   // inventory
   const invEl = document.getElementById('inspectInv');
   const ownedAuras = AURAS.filter(a=>inv[a.name]);
-  if(ownedAuras.length === 0){
-    invEl.innerHTML = '<div style="color:var(--text-dim);font-size:0.78rem;grid-column:1/-1;padding:8px;">No auras owned yet.</div>';
-  } else {
-    invEl.innerHTML = [...ownedAuras].reverse().map(a=>`
-      <div class="inspect-inv-row">
-        <div style="width:10px;height:10px;border-radius:50%;background:${a.color};box-shadow:0 0 5px ${a.color};flex-shrink:0;"></div>
-        <div style="flex:1;font-size:0.8rem;font-weight:600;color:${a.color};">${a.name}</div>
-        <div style="font-size:0.72rem;color:var(--text-dim);">x${inv[a.name]}</div>
-      </div>`).join('');
-  }
+  if(!ownedAuras.length){ invEl.innerHTML='<div style="color:var(--text-dim);font-size:0.78rem;grid-column:1/-1;padding:8px;">No auras owned yet.</div>'; }
+  else { invEl.innerHTML=[...ownedAuras].reverse().map(a=>`<div class="inspect-inv-row"><div style="width:10px;height:10px;border-radius:50%;background:${a.color};box-shadow:0 0 5px ${a.color};flex-shrink:0;"></div><div style="flex:1;font-size:0.8rem;font-weight:600;color:${a.color};">${a.name}</div><div style="font-size:0.72rem;color:var(--text-dim);">x${inv[a.name]}</div></div>`).join(''); }
 
   // joined
   const joinedEl = document.getElementById('inspectJoined');
-  if(d.createdAt){
-    const date = new Date(d.createdAt);
-    joinedEl.textContent = `Joined ${date.toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'})}`;
-  } else { joinedEl.textContent = ''; }
+  joinedEl.textContent = d.createdAt ? `Joined ${new Date(d.createdAt).toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'})}` : '';
 
-  document.getElementById('inspectModal').style.display = 'flex';
+  // ── HISTORY TAB ──
+  _renderInspectHistory(d);
+  const breakdownEl = document.getElementById('inspectBreakdown');
+  const rarityGroups = AURAS.map(a=>({ name:a.name, color:a.color, count:inv[a.name]||0 })).filter(x=>x.count>0);
+  const maxCount = Math.max(1,...rarityGroups.map(x=>x.count));
+  breakdownEl.innerHTML = rarityGroups.map(x=>`
+    <div class="breakdown-row">
+      <div class="breakdown-label" style="color:${x.color};">${x.name}</div>
+      <div class="breakdown-track"><div class="breakdown-fill" style="width:${(x.count/maxCount*100).toFixed(1)}%;background:${x.color};"></div></div>
+      <div class="breakdown-count">${x.count}</div>
+    </div>`).join('');
+
+  // ── SPEED RECORDS TAB ──
+  _renderSeasonRank(username);
+  const speedRecs = _buildSpeedRecords(d);
+  const speedEl = document.getElementById('inspectSpeedRecords');
+  if(!speedRecs.length){
+    speedEl.innerHTML='<div style="color:var(--text-dim);font-size:0.78rem;padding:8px;">No speed records yet. Keep rolling!</div>';
+  } else {
+    speedEl.innerHTML = speedRecs.map(r=>`
+      <div class="speed-record-row">
+        <div class="speed-record-icon">${r.icon}</div>
+        <div class="speed-record-info">
+          <div class="speed-record-name" style="color:${r.color};">${r.name}</div>
+          <div class="speed-record-sub">First obtained</div>
+        </div>
+        <div class="speed-record-val">${r.rollsNeeded.toLocaleString()} rolls</div>
+      </div>`).join('');
+  }
+
+  // ── COMPARE TAB ──
+  const meData = currentUser&&!currentUser.guest ? users[currentUser.username] : null;
+  if(meData && !isMe){
+    _renderCompare(meData, d, username);
+  } else {
+    document.getElementById('inspectCompare').innerHTML='<div style="color:var(--text-dim);font-size:0.78rem;padding:8px;">'+(isMe?'Cannot compare with yourself.':'Login to compare stats.')+'</div>';
+  }
+
+  // ── DUEL TAB ──
+  const duelEl = document.getElementById('inspectDuelArea');
+  if(isMe || !currentUser || currentUser.guest){
+    duelEl.innerHTML='<div style="color:var(--text-dim);font-size:0.75rem;text-align:center;padding:8px;">'+(isMe?'Cannot duel yourself.':'Login to challenge players.')+'</div>';
+  } else {
+    duelEl.innerHTML=`
+      <div style="font-size:0.75rem;color:var(--text-dim);margin-bottom:8px;line-height:1.5;">Challenge <strong style="color:var(--text);">${username}</strong> to 3 rolls each. Best aura wins!</div>
+      <button class="duel-btn" onclick="startDuel('${username}')">⚔️ Challenge ${username}</button>
+      <div id="duelResultArea"></div>`;
+  }
+  // Duel record
+  const duelRec=d.duelRecord||{wins:0,losses:0,ties:0};
+  document.getElementById('inspectDuelRecord').innerHTML=`
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;text-align:center;">
+      <div class="inspect-stat"><div class="inspect-stat-val" style="color:#50dc78;">${duelRec.wins}</div><div class="inspect-stat-lbl">Wins</div></div>
+      <div class="inspect-stat"><div class="inspect-stat-val" style="color:#ff8888;">${duelRec.losses}</div><div class="inspect-stat-lbl">Losses</div></div>
+      <div class="inspect-stat"><div class="inspect-stat-val" style="color:#ffc800;">${duelRec.ties}</div><div class="inspect-stat-lbl">Draws</div></div>
+    </div>`;
+
+  switchInspectTab('stats');
+  document.getElementById('inspectModal').style.display='flex';
+}
+
+function _timeAgo(ts){
+  if(!ts) return '';
+  const diff = Date.now()-ts;
+  const m=Math.floor(diff/60000), h=Math.floor(diff/3600000), d=Math.floor(diff/86400000);
+  if(d>0) return d+'d ago';
+  if(h>0) return h+'h ago';
+  if(m>0) return m+'m ago';
+  return 'just now';
+}
+
+function _buildSpeedRecords(d){
+  const hist = (d.rollHistory||[]).slice().reverse();
+  const records = [];
+  const seen = new Set();
+  let rollIdx = (d.totalRolls||0) - hist.length;
+  for(const r of hist){
+    rollIdx++;
+    if(!seen.has(r.name) && ['rare','epic','legendary','mythical','gargantua','archangel'].includes(r.glow)){
+      seen.add(r.name);
+      const aura=AURAS.find(a=>a.name===r.name);
+      if(aura) records.push({ name:r.name, icon:aura.icon, color:aura.color, rollsNeeded:rollIdx });
+    }
+  }
+  return records.sort((a,b)=>RARITY_ORDER.indexOf(a.name)-RARITY_ORDER.indexOf(b.name));
+}
+
+// ── DUEL SYSTEM (improved animated) ──
+function startDuel(opponentName){
+  const btn = document.querySelector('.duel-btn');
+  const resultEl = document.getElementById('duelResultArea');
+  if(btn) btn.disabled=true;
+  resultEl.innerHTML='<div style="color:var(--text-dim);font-size:0.78rem;text-align:center;padding:10px;"><span style="display:inline-block;animation:spin 0.8s linear infinite;">⚔️</span> Rolling...</div>';
+
+  let myRolls=[], oppRolls=[];
+  const users=getUsers();
+  const opp=users[opponentName];
+
+  setTimeout(()=>{
+    for(let i=0;i<3;i++) myRolls.push(rollAura());
+    const oppLuck=(opp?.luckMultiplier)||1;
+    const origLuck=luckMultiplier; luckMultiplier=oppLuck;
+    for(let i=0;i<3;i++) oppRolls.push(rollAura());
+    luckMultiplier=origLuck;
+
+    const myBest=myRolls.reduce((b,r)=>RARITY_ORDER.indexOf(r.name)<RARITY_ORDER.indexOf(b.name)?r:b);
+    const oppBest=oppRolls.reduce((b,r)=>RARITY_ORDER.indexOf(r.name)<RARITY_ORDER.indexOf(b.name)?r:b);
+    const myIdx=RARITY_ORDER.indexOf(myBest.name);
+    const oppIdx=RARITY_ORDER.indexOf(oppBest.name);
+
+    let outcome;
+    if(myIdx<oppIdx) outcome='win';
+    else if(myIdx>oppIdx) outcome='lose';
+    else outcome='tie';
+
+    // Save duel record
+    const allUsers=getUsers();
+    const myU=allUsers[currentUser.username]||{};
+    const rec=myU.duelRecord||{wins:0,losses:0,ties:0};
+    if(outcome==='win') rec.wins++;
+    else if(outcome==='lose') rec.losses++;
+    else rec.ties++;
+    myU.duelRecord=rec;
+    allUsers[currentUser.username]=myU;
+    saveUsers(allUsers);
+
+    if(navigator.vibrate) navigator.vibrate(outcome==='win'?[30,20,60,20,100]:outcome==='lose'?[80]:20);
+    sfxPlay((ctx,T)=>{
+      if(outcome==='win'){ [523,659,784,1047].forEach((fr,i)=>{ const o=ctx.createOscillator(),g=ctx.createGain(); o.type='sine'; o.frequency.value=fr; g.gain.setValueAtTime(0.15,T+i*0.08); g.gain.exponentialRampToValueAtTime(0.001,T+i*0.08+0.4); o.connect(g); g.connect(ctx.destination); o.start(T+i*0.08); o.stop(T+i*0.08+0.45); }); }
+      else if(outcome==='lose'){ const o=ctx.createOscillator(),g=ctx.createGain(); o.type='sawtooth'; o.frequency.setValueAtTime(220,T); o.frequency.linearRampToValueAtTime(80,T+0.5); g.gain.setValueAtTime(0.2,T); g.gain.exponentialRampToValueAtTime(0.001,T+0.6); o.connect(g); g.connect(ctx.destination); o.start(T); o.stop(T+0.65); }
+    });
+
+    const myName=currentUser.username;
+    const titles={win:'⚔️ Victory!',lose:'💀 Defeat!',tie:'🤝 Draw!'};
+    const cls={win:'win',lose:'lose',tie:'tie'}[outcome];
+    resultEl.innerHTML=`
+      <div class="duel-result ${cls}" style="text-align:left;">
+        <div style="font-size:1.1rem;font-weight:900;margin-bottom:10px;text-align:center;">${titles[outcome]}</div>
+        <div style="font-size:0.7rem;color:var(--text-dim);margin-bottom:4px;">${myName}'s rolls:</div>
+        <div class="duel-roll-anim" style="margin-bottom:8px;">
+          ${myRolls.map((r,i)=>`<div class="duel-roll-card" style="color:${r.color};border-color:${r.color}44;background:${r.color}11;animation-delay:${i*0.1}s">${r.icon} ${r.name}</div>`).join('')}
+        </div>
+        <div style="font-size:0.7rem;color:var(--text-dim);margin-bottom:4px;">${opponentName}'s rolls:</div>
+        <div class="duel-roll-anim" style="margin-bottom:10px;">
+          ${oppRolls.map((r,i)=>`<div class="duel-roll-card" style="color:${r.color};border-color:${r.color}44;background:${r.color}11;animation-delay:${i*0.1+0.3}s">${r.icon} ${r.name}</div>`).join('')}
+        </div>
+        <div style="font-size:0.75rem;text-align:center;">Best: <strong style="color:${myBest.color}">${myBest.icon} ${myBest.name}</strong> vs <strong style="color:${oppBest.color}">${oppBest.icon} ${oppBest.name}</strong></div>
+      </div>
+      <button class="duel-btn" onclick="startDuel('${opponentName}')" style="margin-top:8px;">⚔️ Rematch</button>`;
+
+    // Refresh duel record display
+    const rec2=getUsers()[currentUser.username]?.duelRecord||{wins:0,losses:0,ties:0};
+    document.getElementById('inspectDuelRecord').innerHTML=`
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;text-align:center;">
+        <div class="inspect-stat"><div class="inspect-stat-val" style="color:#50dc78;">${rec2.wins}</div><div class="inspect-stat-lbl">Wins</div></div>
+        <div class="inspect-stat"><div class="inspect-stat-val" style="color:#ff8888;">${rec2.losses}</div><div class="inspect-stat-lbl">Losses</div></div>
+        <div class="inspect-stat"><div class="inspect-stat-val" style="color:#ffc800;">${rec2.ties}</div><div class="inspect-stat-lbl">Draws</div></div>
+      </div>`;
+  }, 900);
 }
 
 function closeInspect(){
-  document.getElementById('inspectModal').style.display = 'none';
+  document.getElementById('inspectModal').style.display='none';
+  _inspectingUser=null;
 }
+
 
 function updateRankDisplay(sorted){
   if(!currentUser||currentUser.guest){
@@ -5592,6 +6184,46 @@ let chatOpen = false;
 let chatPollTimer = null;
 let chatUnreadCount = 0;
 let chatLastCount = 0;
+// ── CHAT REACTIONS ──
+const REACT_EMOJIS=['🔥','😱','👑','💀','🪽','✨'];
+let _reactPickerOpen=null;
+
+function _renderReacts(reactions, msgId){
+  if(!reactions||!Object.keys(reactions).length) return '';
+  return Object.entries(reactions).map(([emoji,users])=>{
+    const count=Object.keys(users).length;
+    if(!count) return '';
+    const myName=currentUser?.username;
+    const reacted=myName&&users[myName];
+    return `<button class="chat-react-btn${reacted?' reacted':''}" onclick="addReaction('${msgId}','${emoji}')">${emoji}<span class="chat-react-count">${count}</span></button>`;
+  }).join('');
+}
+
+function toggleReactPicker(trigger, msgId){
+  // Close any open picker
+  document.querySelectorAll('.chat-react-popup').forEach(p=>p.remove());
+  if(_reactPickerOpen===msgId){ _reactPickerOpen=null; return; }
+  _reactPickerOpen=msgId;
+  const popup=document.createElement('div');
+  popup.className='chat-react-popup';
+  popup.innerHTML=REACT_EMOJIS.map(e=>`<div class="chat-react-option" onclick="addReaction('${msgId}','${e}');this.closest('.chat-react-popup').remove();">${e}</div>`).join('');
+  trigger.parentElement.appendChild(popup);
+  setTimeout(()=>{ document.addEventListener('click',()=>{ popup.remove(); _reactPickerOpen=null; },{once:true}); },50);
+}
+
+function addReaction(msgId, emoji){
+  if(!currentUser||currentUser.guest){ showAdminNotif('Login to react!','#ff8888'); return; }
+  if(!msgId) return;
+  const f=fb();
+  if(!f){ showAdminNotif('Firebase required for reactions','#ff8888'); return; }
+  const path=`chat/${msgId}/reactions/${emoji}/${currentUser.username}`;
+  const ref=f.ref(f.db,path);
+  f.get(ref).then(snap=>{
+    if(snap.exists()) f.remove(ref); // toggle off
+    else f.set(ref, true);
+  }).catch(()=>{});
+}
+
 let _chatListener = null;
 
 // Local cache fallback (used when Firebase unavailable)
@@ -5703,7 +6335,8 @@ function renderChatMsgs(msgs){
             <span style="color:${nc};font-weight:700;cursor:pointer;" onclick="openInspect('${m.username.replace(/'/g,"\\'")}'">${escapeHtml(m.username||'Unknown')}</span>
             ${titleTag}${auraTag}
           </div>
-          <div class="chat-bubble">${escapeHtml(m.text)}</div>
+          <div class="chat-bubble-wrap"><div class="chat-bubble">${escapeHtml(m.text)}</div><div class="chat-react-trigger" onclick="toggleReactPicker(this,'${m.id||''}')">😊</div></div>
+          <div class="chat-react-bar" id="reacts-${m.id||''}">${_renderReacts(m.reactions,m.id)}</div>
           <div class="chat-msg-time">${timeStr}</div>
         </div>`;
     }
