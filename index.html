@@ -736,7 +736,7 @@
   }
   #previewModal {
     position: fixed; inset: 0; z-index: 300;
-    display: flex; align-items: center; justify-content: center;
+    display: none; align-items: center; justify-content: center;
     opacity: 0; pointer-events: none; transition: opacity 0.25s ease;
   }
   #previewModal.open { opacity: 1; pointer-events: all; }
@@ -748,7 +748,7 @@
     position: relative; z-index: 1;
     width: min(800px, 94vw);
     background: linear-gradient(150deg, rgba(9,13,32,0.98), rgba(4,7,20,0.98));
-    border: 1px solid rgba(100,140,255,0.2); border-radius: 24px; overflow: hidden;
+    border: 1px solid rgba(100,140,255,0.2); border-radius: 24px; overflow: visible;
     transform: scale(0.88) translateY(24px);
     transition: transform 0.35s cubic-bezier(0.34,1.4,0.64,1), width 0.4s ease;
     box-shadow: 0 50px 140px rgba(0,0,0,0.85);
@@ -760,6 +760,7 @@
 
   .modal-inner {
     display: grid; grid-template-columns: 300px 1fr; min-height: 420px;
+    overflow: hidden; border-radius: 24px;
   }
 
   /* LEFT stage */
@@ -894,7 +895,7 @@
   .pi-btn-close:hover { background: rgba(100,140,255,0.15); color: var(--text); }
 
   .modal-close-x {
-    position: absolute; top: 14px; right: 16px; z-index: 20;
+    position: absolute; top: 14px; right: 16px; z-index: 9999;
     background: rgba(100,140,255,0.1); border: 1px solid var(--border); border-radius: 8px;
     color: var(--text-dim); font-size: 1rem; cursor: pointer; padding: 4px 9px;
     transition: all 0.15s; font-family: 'Rajdhani', sans-serif;
@@ -1394,6 +1395,11 @@
   .admin-action-btn.gold:hover{background:rgba(255,200,0,0.2);}
 
   .admin-cmd-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+  .ban-dur-btn{background:rgba(255,50,50,0.08);border:1px solid rgba(255,50,50,0.25);border-radius:7px;
+    color:#ff8888;font-size:0.75rem;font-weight:700;padding:5px 10px;cursor:pointer;transition:all .15s;font-family:'Rajdhani',sans-serif;}
+  .ban-dur-btn:hover,.ban-dur-btn.selected{background:rgba(255,50,50,0.25);border-color:rgba(255,50,50,0.7);color:#fff;}
+  .ban-status-badge{display:flex;align-items:center;gap:8px;background:rgba(255,50,50,0.1);
+    border:1px solid rgba(255,50,50,0.3);border-radius:8px;padding:7px 12px;font-size:0.78rem;color:#ff8888;}
   .admin-cmd-btn{
     padding:10px 8px;border-radius:10px;font-family:'Rajdhani',sans-serif;
     font-size:0.78rem;font-weight:700;letter-spacing:0.04em;cursor:pointer;text-align:center;
@@ -1867,7 +1873,7 @@
         <div class="aura-rarity" id="auraRarityLabel">Roll to discover</div>
       </div>
       <div class="aura-chance" id="auraChanceLabel">1 in ???</div>
-      <button class="preview-last-btn" id="previewLastBtn" onclick="openPreviewForLast()">👁 Preview Aura</button>
+      <button class="preview-last-btn" id="previewLastBtn" style="display:none;">👁 Preview Aura</button>
       <button class="roll-btn" id="rollBtn" onclick="doRoll()">Roll</button>
     </div>
 
@@ -2050,6 +2056,32 @@
         <button class="admin-cmd-btn" onclick="adminCmd('clear_player_inv')">🗑 Clear Inventory</button>
         <button class="admin-cmd-btn red" onclick="adminCmd('reset_player')">💀 Full Reset</button>
       </div>
+
+      <!-- Kick / Ban -->
+      <div class="admin-section-title" style="margin-top:16px;color:#ff6b6b;">⚠ Kick / Ban</div>
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <div class="admin-row" style="gap:8px;">
+          <button class="admin-action-btn" style="background:rgba(255,149,0,0.15);border-color:rgba(255,149,0,0.5);color:#ff9500;flex:1;font-size:0.85rem;padding:8px;" onclick="adminCmd('kick')">🥾 Kick Player</button>
+          <button class="admin-action-btn" style="background:rgba(255,50,50,0.15);border-color:rgba(255,50,50,0.5);color:#ff4444;flex:1;font-size:0.85rem;padding:8px;" onclick="adminOpenBanMenu()">🔨 Ban Player</button>
+        </div>
+        <div id="banDurationRow" style="display:none;flex-direction:column;gap:6px;background:rgba(255,50,50,0.07);border:1px solid rgba(255,50,50,0.2);border-radius:10px;padding:10px;">
+          <div style="font-size:0.75rem;color:#ff6666;font-weight:700;text-transform:uppercase;letter-spacing:.06em;">Duração do Ban</div>
+          <div class="admin-row" style="flex-wrap:wrap;gap:6px;">
+            <button class="ban-dur-btn" onclick="selectBanDur(this,5*60*1000)">5 min</button>
+            <button class="ban-dur-btn" onclick="selectBanDur(this,15*60*1000)">15 min</button>
+            <button class="ban-dur-btn" onclick="selectBanDur(this,60*60*1000)">1 hora</button>
+            <button class="ban-dur-btn" onclick="selectBanDur(this,24*60*60*1000)">1 dia</button>
+            <button class="ban-dur-btn" onclick="selectBanDur(this,7*24*60*60*1000)">1 semana</button>
+            <button class="ban-dur-btn" onclick="selectBanDur(this,-1)">♾ Permanente</button>
+          </div>
+          <input type="text" class="admin-input" id="banReasonInput" placeholder="Motivo do ban (opcional)" style="width:100%;margin-top:2px;"/>
+          <div class="admin-row" style="gap:8px;margin-top:2px;">
+            <button class="admin-action-btn" style="background:rgba(255,50,50,0.2);border-color:rgba(255,50,50,0.6);color:#ff4444;flex:1;" onclick="adminConfirmBan()">🔨 Confirmar Ban</button>
+            <button class="admin-action-btn" style="flex:1;" onclick="adminCloseBanMenu()">Cancelar</button>
+          </div>
+        </div>
+        <div id="banStatusRow" style="display:none;"></div>
+      </div>
     </div>
 
     <!-- SERVER TAB -->
@@ -2124,7 +2156,7 @@
     <!-- LOGIN FORM -->
     <div id="authLoginForm" style="display:flex;flex-direction:column;gap:12px;">
       <input class="auth-input" id="loginUser" type="text" placeholder="Username" autocomplete="off"/>
-      <input class="auth-input" id="loginPass" type="password" placeholder="Password" onkeydown="if(event.key==='Enter')doLogin()"/>
+      <input class="auth-input" id="loginPass" type="password" placeholder="Password" onkeydown="if(event.key==='Enter' && !window._activeBanInfo)doLogin()"/>
       <div class="auth-error" id="loginError"></div>
       <button class="auth-submit-btn" onclick="doLogin()">▶ Login</button>
       <button class="auth-guest-btn" onclick="playAsGuest()">👤 Continue as Guest</button>
@@ -2134,7 +2166,7 @@
     <div id="authRegisterForm" style="display:none;flex-direction:column;gap:12px;">
       <input class="auth-input" id="regUser" type="text" placeholder="Choose username (3–16 chars)" autocomplete="off" maxlength="16"/>
       <input class="auth-input" id="regPass" type="password" placeholder="Password (min 4 chars)" maxlength="32"/>
-      <input class="auth-input" id="regPass2" type="password" placeholder="Confirm password" maxlength="32" onkeydown="if(event.key==='Enter')doRegister()"/>
+      <input class="auth-input" id="regPass2" type="password" placeholder="Confirm password" maxlength="32" onkeydown="if(event.key==='Enter' && !window._activeBanInfo)doRegister()"/>
       <div class="auth-error" id="registerError"></div>
       <button class="auth-submit-btn" onclick="doRegister()">✦ Create Account</button>
       <button class="auth-guest-btn" onclick="playAsGuest()">👤 Continue as Guest</button>
@@ -3202,7 +3234,7 @@ function openPreview(aura){
   switchTab('details');
   applyAuraToModal(aura);
   resizePCanvas();
-  document.getElementById('previewModal').classList.add('open');
+  _openPreviewModal();
   stopPreviewFX();
   if(threeActive) stopThreeGargantua();
   if(aura.glow==='gargantua'||aura.glow==='archangel'){
@@ -3229,14 +3261,20 @@ function openPreview(aura){
 }
 function closePreview(){
   if(threeActive) stopThreeGargantua();
-  document.getElementById('previewModal').classList.remove('open');
+  const modal = document.getElementById('previewModal');
+  modal.classList.remove('open');
   stopPreviewFX();
-  // Resume music if it was playing before
   if(_musicPlaying) startAmbientMusic();
+  setTimeout(()=>{ if(!modal.classList.contains('open')) modal.style.display='none'; }, 300);
+}
+function _openPreviewModal(){
+  const modal = document.getElementById('previewModal');
+  modal.style.display='flex';
+  requestAnimationFrame(()=>requestAnimationFrame(()=>modal.classList.add('open')));
 }
 function openPreviewForLast(){if(lastAura)openPreview(lastAura);}
 function openBrowseModal(){
-  document.getElementById('previewModal').classList.add('open');
+  _openPreviewModal();
   stopPreviewFX();
   switchTab('browse');
 }
@@ -4282,13 +4320,8 @@ function updatePityDisplay(){
   const cfg = getPityCfg();
   const pct = Math.min(100, (pityCounter / cfg.threshold) * 100);
   // Archangel: show % instead of raw number (250M is unreadable)
-  if(pityTarget === 'archangel'){
-    count.textContent = pct.toFixed(4) + '%';
-    if(maxEl) maxEl.textContent = '100%';
-  } else {
-    count.textContent = pityCounter.toLocaleString();
-    if(maxEl) maxEl.textContent = cfg.threshold.toLocaleString();
-  }
+  count.textContent = pityCounter.toLocaleString();
+  if(maxEl) maxEl.textContent = cfg.threshold.toLocaleString();
   fill.style.width = pct + '%';
   fill.style.background = cfg.fillCss;
   if(icon) icon.textContent = cfg.icon;
@@ -4551,39 +4584,55 @@ function adminLogout(){
 
 // ── PANEL ──
 function showPanel(){
+  _selectedAdminPlayer = null; // reset so first player in list gets selected
   refreshPlayerList();
-  syncAdminStats();
   document.getElementById('adminPanelModal').style.display='flex';
 }
 function closeAdminPanel(){ document.getElementById('adminPanelModal').style.display='none'; }
 
+let _selectedAdminPlayer = null; // persists across refreshes
+
 function getSelectedPlayer(){
-  const sel=document.getElementById('playerSelect');
-  if(!sel||sel.value==='__self__') return null;
-  return sel.value;
+  // Always prefer the dropdown value if available
+  const sel = document.getElementById('playerSelect');
+  if(sel && sel.value && sel.value !== '__self__'){
+    _selectedAdminPlayer = sel.value;
+    return sel.value;
+  }
+  // Fallback to last known selection
+  return _selectedAdminPlayer;
 }
 
 function refreshPlayerList(){
-  const sel=document.getElementById('playerSelect');
+  const sel = document.getElementById('playerSelect');
   if(!sel) return;
-  const current=sel.value;
-  sel.innerHTML='<option value="__self__">👤 Yourself (current session)</option>';
-  const users=getUsers();
-  Object.keys(users).forEach(username=>{
-    const opt=document.createElement('option');
-    opt.value=username;
-    const d=users[username];
-    const aura=d.bestAura||'No aura';
-    const rolls=(d.totalRolls||0).toLocaleString();
-    opt.textContent=`👤 ${username}  ·  ${aura}  ·  ${rolls} rolls`;
+  const toRestore = _selectedAdminPlayer || sel.value;
+  sel.innerHTML = '<option value="__self__">👤 Yourself (current session)</option>';
+  const users = getUsers();
+  Object.keys(users).forEach(username => {
+    const opt = document.createElement('option');
+    opt.value = username;
+    const d = users[username];
+    opt.textContent = `👤 ${username}  ·  ${d.bestAura||'No aura'}  ·  ${(d.totalRolls||0).toLocaleString()} rolls`;
     sel.appendChild(opt);
   });
-  if(current&&sel.querySelector(`option[value="${current}"]`)) sel.value=current;
+  // Restore selection or pick first real player
+  if(toRestore && sel.querySelector(`option[value="${toRestore}"]`)){
+    sel.value = toRestore;
+    _selectedAdminPlayer = toRestore;
+  } else {
+    // Auto-select first real player (not __self__)
+    const firstPlayer = sel.querySelector('option:not([value="__self__"])');
+    if(firstPlayer){
+      sel.value = firstPlayer.value;
+      _selectedAdminPlayer = firstPlayer.value;
+    }
+  }
   onAdminPlayerChange();
 }
 
 function onAdminPlayerChange(){
-  const target=getSelectedPlayer();
+  const target = getSelectedPlayer();
   if(!target){ syncAdminStats(); return; }
   const d=getUserData(target);
   if(!d){ addLog(`⚠ Player "${target}" not found.`,'warn'); return; }
@@ -4771,7 +4820,23 @@ function adminCmd(cmd){
       showAnnounce('🔴 Server shutting down in 60 seconds. Please save your progress.','shutdown'); break;
     case 'kick_all':
       addLog('🚫 Kicked all players.','error');
-      showAnnounce('🚫 All players have been kicked by Admin.','warn'); break;
+      showAnnounce('\U0001f6ab All players have been kicked by Admin.','warn'); break;
+    case 'kick':{
+      const kt = getSelectedPlayer() || _selectedAdminPlayer;
+      if(!kt){ showAdminNotif('Seleciona um jogador primeiro!','#ff9500'); break; }
+      const users2 = getUsers();
+      if(!users2[kt]){ showAdminNotif('Jogador não encontrado!','#ff4444'); break; }
+      users2[kt].kicked = Date.now();
+      saveUsers(users2);
+      if(currentUser && currentUser.username === kt){
+        currentUser = null;
+        inventory={}; bestAura=null; totalRolls=0; luckMultiplier=1;
+        updateUI(); showLoginScreen();
+      }
+      addLog(`\U0001f9b6 Kicked "${kt}" — voltará ao login.`,'warn');
+      showAdminNotif(`\U0001f9b6 ${kt} foi kickado!`,'#ff9500');
+      break;
+    }
   }
   syncAdminStats();
 }
@@ -5159,10 +5224,26 @@ function loadUserProgress(username){
 }
 
 // ── SHOW / HIDE LOGIN SCREEN ──
-function showLoginScreen(){
+function showLoginScreen(reason){
   document.getElementById('loginModal').style.display='flex';
   document.querySelector('.ui-root').style.filter='blur(4px)';
   document.querySelector('.ui-root').style.pointerEvents='none';
+  // If kicked/banned, stop auto-roll and clear session
+  if(reason==='kick'||reason==='ban'){
+    autoRolling=false;
+    clearInterval(window._autoRollInterval);
+    sessionStorage.removeItem(SESSION_KEY);
+    currentUser=null;
+    // Show message on login screen
+    const errEl=document.getElementById('loginError');
+    if(errEl){
+      if(reason==='kick'){
+        errEl.innerHTML='<span style="color:#ff9500;">🥾 Foste kickado pelo Admin.</span>';
+      } else {
+        // ban message already set by checkAndEnforceBan
+      }
+    }
+  }
 }
 function hideLoginScreen(){
   document.getElementById('loginModal').style.display='none';
@@ -5181,6 +5262,7 @@ function switchAuthTab(tab){
 
 // ── REGISTER ──
 function doRegister(){
+  if(window._activeBanInfo && (window._activeBanInfo.until === -1 || Date.now() < window._activeBanInfo.until)) return;
   try{
     const username=document.getElementById('regUser').value.trim();
     const pass=document.getElementById('regPass').value;
@@ -5226,6 +5308,7 @@ function doRegister(){
 
 // ── LOGIN ──
 function doLogin(){
+  if(window._activeBanInfo && (window._activeBanInfo.until === -1 || Date.now() < window._activeBanInfo.until)) return;
   try{
     const username=document.getElementById('loginUser').value.trim();
     const pass=document.getElementById('loginPass').value;
@@ -5235,6 +5318,13 @@ function doLogin(){
     const tryLogin = (users) => {
       if(!users[username]){errEl.textContent='Account not found.';return false;}
       if(users[username].password!==btoa(pass)){errEl.textContent='Wrong password.';return false;}
+      // Check ban
+      const banInfo = checkBanOnLogin(username);
+      if(banInfo){
+        errEl.textContent='';
+        errEl.innerHTML=`<span style="color:#ff4444;">🔨 Conta banida ${banInfo.timeLeft}.<br><small style="color:#ff8888;">Motivo: ${banInfo.reason}</small></span>`;
+        return false;
+      }
       saveUsers(users);
       loginUser(username);
       return true;
@@ -5275,6 +5365,7 @@ function loginUser(username){
     applyUserToUI();
     hideLoginScreen();
     setInterval(saveCurrentProgress, 30000);
+    startKickBanPolling(username);
     // Show Firebase button for owner
     if(username === 'Daniel'){
       const btn = document.getElementById('fbTopbarBtn');
@@ -5315,6 +5406,15 @@ function loginUser(username){
 }
 
 function playAsGuest(){
+  // If there's an active ban signal, block guest too
+  if(window._activeBanInfo){
+    const b = window._activeBanInfo;
+    if(b.until === -1 || Date.now() < b.until){
+      const errEl = document.getElementById('loginError');
+      if(errEl) errEl.innerHTML = `<span style="color:#ff4444;">🔨 <b>Conta banida.</b> Não podes entrar como guest.<br><small style="color:#ff8888;">Motivo: ${b.reason}</small></span>`;
+      return;
+    } else { window._activeBanInfo = null; }
+  }
   currentUser={ username:'Guest', color:'#4a5880', guest:true };
   // Restore guest progress from localStorage
   try {
@@ -6309,7 +6409,7 @@ function updateUI(){
     const item=document.createElement('div');
     item.className='inv-item' + (isNew ? ' inv-item-new' : ' inv-item-bump');
     item.innerHTML=`<div class="inv-dot" style="background:${aura.color};box-shadow:0 0 7px ${aura.color};"></div><div class="inv-name" style="color:${aura.color}">${name}</div><div class="inv-qty">x${qty}</div><button class="inv-eye" title="Preview aura">👁</button>`;
-    item.querySelector('.inv-eye').onclick=e=>{e.stopPropagation();openPreview(aura);};
+    item.querySelector('.inv-eye').onclick=e=>{e.stopPropagation();};
     item.onclick=()=>{
       document.getElementById('equippedAura').textContent=name;
       document.getElementById('equippedAura').style.color=aura.color;
@@ -7927,6 +8027,211 @@ function openStatsModal(){ openStats(); }
 function openChatModal(){
   const m=document.getElementById('chatModal');
   if(m){ m.style.display='flex'; _addSwipeToClose(m.querySelector('.chat-modal-box'), ()=>{ m.style.display='none'; }); renderChat(); }
+}
+
+
+// ── KICK / BAN SYSTEM ──
+let _selectedBanDur = 15*60*1000; // default 15min
+
+function adminOpenBanMenu(){
+  const target = getSelectedPlayer();
+  if(!target){ showAdminNotif('Seleciona um jogador primeiro!','#ff4444'); return; }
+  document.getElementById('banDurationRow').style.display='flex';
+  document.getElementById('banStatusRow').style.display='none';
+  // pre-select first btn
+  document.querySelectorAll('.ban-dur-btn').forEach(b=>b.classList.remove('selected'));
+  document.querySelectorAll('.ban-dur-btn')[1].classList.add('selected');
+  _selectedBanDur = 15*60*1000;
+}
+function adminCloseBanMenu(){
+  document.getElementById('banDurationRow').style.display='none';
+}
+function selectBanDur(btn, ms){
+  document.querySelectorAll('.ban-dur-btn').forEach(b=>b.classList.remove('selected'));
+  btn.classList.add('selected');
+  _selectedBanDur = ms;
+}
+function adminConfirmBan(){
+  const target = getSelectedPlayer();
+  if(!target){ showAdminNotif('Seleciona um jogador primeiro!','#ff4444'); return; }
+  const reason = document.getElementById('banReasonInput').value.trim() || 'Banido pelo Admin';
+  const until = _selectedBanDur === -1 ? -1 : Date.now() + _selectedBanDur;
+  const users = getUsers();
+  if(!users[target]){ showAdminNotif('Jogador não encontrado!','#ff4444'); return; }
+  users[target].banned = { until, reason };
+  // signal sent separately below
+  saveUsers(users);
+  adminCloseBanMenu();
+  // Send ban signal via dedicated key (instant cross-tab detection)
+  sendBanSignal(target, { until, reason });
+  // If same session, enforce immediately
+  if(currentUser && currentUser.username === target){ _enforceBan({ until, reason }); }
+  const durLabel = _selectedBanDur === -1 ? 'permanentemente' : formatBanDur(_selectedBanDur);
+  addLog(`🔨 Banned "${target}" ${durLabel}. Motivo: ${reason}`,'error');
+  showAdminNotif(`🔨 ${target} foi banido ${durLabel}!`,'#ff4444');
+  const row = document.getElementById('banStatusRow');
+  row.style.display='flex';
+  row.innerHTML=`<div class="ban-status-badge">🔨 <b>${target}</b> banido ${durLabel}</div>`;
+  setTimeout(()=>{ row.style.display='none'; }, 5000);
+}
+function formatBanDur(ms){
+  if(ms<60*1000) return Math.round(ms/1000)+' seg';
+  if(ms<60*60*1000) return Math.round(ms/60000)+' min';
+  if(ms<24*60*60*1000) return Math.round(ms/3600000)+' hora(s)';
+  if(ms<7*24*60*60*1000) return Math.round(ms/86400000)+' dia(s)';
+  return Math.round(ms/604800000)+' semana(s)';
+}
+// ── KICK/BAN ENFORCEMENT OVERLAY ──
+function _enforceBan(banInfo){
+  autoRolling = false;
+  clearInterval(window._autoRollInterval);
+  clearInterval(window._kickBanPollInterval);
+  window.removeEventListener('storage', window._kickBanStorageListener);
+  sessionStorage.removeItem(SESSION_KEY);
+  inventory={}; bestAura=null; lastAura=null; totalRolls=0; luckMultiplier=1;
+  try{ updateUI(); }catch(e){}
+  currentUser = null;
+  window._activeBanInfo = banInfo; // blocks guest/register
+  // Show login screen
+  document.getElementById('loginModal').style.display='flex';
+  document.querySelector('.ui-root').style.filter='blur(4px)';
+  document.querySelector('.ui-root').style.pointerEvents='none';
+  _showBanScreen(banInfo);
+  _lockLoginFormIfBanned(banInfo);
+}
+
+function _showBanScreen(banInfo){
+  const timeLeft = banInfo.until === -1 ? 'permanentemente' : 'por mais ' + formatBanDur(banInfo.until - Date.now());
+  // Disable all login form buttons
+  document.querySelectorAll('.auth-submit-btn, .auth-guest-btn, #loginModal button').forEach(b=>{
+    if(!b.classList.contains('ban-exempt')) b.disabled = true;
+  });
+  const errEl = document.getElementById('loginError');
+  if(errEl) errEl.innerHTML = `<div style="background:rgba(255,50,50,0.12);border:1px solid rgba(255,50,50,0.4);border-radius:10px;padding:12px;text-align:center;">
+    <div style="font-size:1.1rem;margin-bottom:4px;">🔨 <b style="color:#ff4444;">Conta Banida</b></div>
+    <div style="color:#ff8888;font-size:0.85rem;" id="banTimerDisplay">${timeLeft}</div>
+    <div style="color:#ff6666;font-size:0.78rem;margin-top:4px;">Motivo: ${banInfo.reason}</div>
+  </div>`;
+}
+
+function _lockLoginFormIfBanned(banInfo){
+  if(banInfo.until === -1) return; // permanent ban, no countdown needed
+  clearInterval(window._banCountdownTimer);
+  window._banCountdownTimer = setInterval(()=>{
+    const remaining = banInfo.until - Date.now();
+    const timerEl = document.getElementById('banTimerDisplay');
+    if(remaining <= 0){
+      clearInterval(window._banCountdownTimer);
+      window._activeBanInfo = null;
+      // Re-enable all buttons
+      document.querySelectorAll('.auth-submit-btn, .auth-guest-btn, #loginModal button').forEach(b=>{ b.disabled = false; });
+      const errEl = document.getElementById('loginError');
+      if(errEl) errEl.innerHTML = '<span style="color:#50dc78;">✅ Ban expirado. Podes entrar.</span>';
+      return;
+    }
+    if(timerEl) timerEl.textContent = 'por mais ' + formatBanDur(remaining);
+  }, 1000);
+}
+
+// ── KICK/BAN SIGNAL KEYS (separate from user data so saveProgress can't overwrite) ──
+const KICK_SIGNAL_KEY = 'solsrng_kick_';
+const BAN_SIGNAL_KEY  = 'solsrng_ban_';
+
+function sendKickSignal(username){
+  localStorage.setItem(KICK_SIGNAL_KEY + username, Date.now().toString());
+}
+function sendBanSignal(username, banData){
+  localStorage.setItem(BAN_SIGNAL_KEY + username, JSON.stringify(banData));
+}
+function clearKickSignal(username){
+  localStorage.removeItem(KICK_SIGNAL_KEY + username);
+}
+
+function startKickBanPolling(username){
+  // Instant detection via storage event (works across tabs)
+  window._kickBanStorageListener = (e) => {
+    if(!currentUser) return;
+    if(e.key === KICK_SIGNAL_KEY + username){
+      clearKickSignal(username);
+      _doKick();
+    }
+    if(e.key === BAN_SIGNAL_KEY + username){
+      try{
+        const b = JSON.parse(e.newValue);
+        if(b && (b.until === -1 || Date.now() < b.until)) _enforceBan(b);
+      }catch(ex){}
+    }
+  };
+  window.removeEventListener('storage', window._kickBanStorageListener);
+  window.addEventListener('storage', window._kickBanStorageListener);
+
+  // Fallback polling every 1.5s (same tab / safety net)
+  clearInterval(window._kickBanPollInterval);
+  window._kickBanPollInterval = setInterval(()=>{
+    if(!currentUser) return;
+    // Check kick signal key
+    const ks = localStorage.getItem(KICK_SIGNAL_KEY + username);
+    if(ks){ clearKickSignal(username); _doKick(); return; }
+    // Backup: check _kickedAt in user record
+    const usersChk = getUsers();
+    const uChk = usersChk[username];
+    if(uChk && uChk._kickedAt && uChk._kickedAt > (window._lastKickAck||0)){
+      window._lastKickAck = uChk._kickedAt;
+      delete uChk._kickedAt; saveUsers(usersChk);
+      _doKick(); return;
+    }
+    // Check ban signal key
+    const bs = localStorage.getItem(BAN_SIGNAL_KEY + username);
+    if(bs){
+      try{
+        const b = JSON.parse(bs);
+        if(b && (b.until === -1 || Date.now() < b.until)){ _enforceBan(b); return; }
+      }catch(ex){}
+    }
+    // Also check users object for ban (set before signal existed)
+    const users = getUsers();
+    const u = users[username];
+    if(u && u.banned){
+      const b = u.banned;
+      if(b.until === -1 || Date.now() < b.until){ _enforceBan(b); return; }
+    }
+  }, 1500);
+}
+
+function _doKick(){
+  if(!currentUser) return; // already kicked
+  autoRolling = false;
+  clearInterval(window._autoRollInterval);
+  clearInterval(window._kickBanPollInterval);
+  window.removeEventListener('storage', window._kickBanStorageListener);
+  sessionStorage.removeItem(SESSION_KEY);
+  currentUser = null;
+  window._activeBanInfo = null;
+  inventory={}; bestAura=null; lastAura=null; totalRolls=0; luckMultiplier=1;
+  try{ updateUI(); }catch(e){}
+  // Re-enable all buttons (not banned, just kicked)
+  document.querySelectorAll('.auth-submit-btn, .auth-guest-btn, #loginModal button').forEach(b=>{ b.disabled = false; });
+  document.getElementById('loginModal').style.display='flex';
+  document.querySelector('.ui-root').style.filter='blur(4px)';
+  document.querySelector('.ui-root').style.pointerEvents='none';
+  const errEl = document.getElementById('loginError');
+  if(errEl) errEl.innerHTML = '<span style="color:#ff9500;font-size:0.9rem;">🥾 <b>Foste kickado pelo Admin.</b><br><small style="color:#ffb84d;">Podes voltar a entrar.</small></span>';
+}
+
+
+function checkBanOnLogin(username){
+  const users = getUsers();
+  const u = users[username];
+  if(!u || !u.banned) return false;
+  const b = u.banned;
+  if(b.until !== -1 && Date.now() > b.until){
+    // Ban expired — remove it
+    delete u.banned;
+    saveUsers(users);
+    return false;
+  }
+  const timeLeft = b.until === -1 ? 'permanentemente' : 'por mais '+formatBanDur(b.until - Date.now());
+  return { reason: b.reason, timeLeft };
 }
 
 // ── PITY DISPLAY: show % for Archangel ──
