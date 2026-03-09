@@ -48,10 +48,14 @@
 
   /* ── TOP BAR ── */
   .topbar {
-    display: flex; align-items: center; justify-content: space-between;
+    display: flex; flex-direction: column; gap: 6px;
     padding: 10px 18px; background: var(--panel); border: 1px solid var(--border);
-    border-radius: 14px; backdrop-filter: blur(12px);
+    border-radius: 14px; backdrop-filter: blur(12px); position: relative;
   }
+  .topbar-row { display: flex; align-items: center; }
+  .topbar-row1 { justify-content: space-between; }
+  .topbar-row2 { justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+  .topbar-right { display: flex; align-items: center; gap: 8px; }
   .game-title {
     font-family: 'Cinzel Decorative', serif; font-size: 1.15rem; font-weight: 900;
     background: linear-gradient(135deg, #a0c4ff, #ffffff, #f0c060);
@@ -67,6 +71,45 @@
   }
   .luck-dot { width:7px; height:7px; border-radius:50%; background:var(--gold); animation: pulse-gold 1.5s ease-in-out infinite; }
   @keyframes pulse-gold { 0%,100%{box-shadow:0 0 4px 0 var(--gold);} 50%{box-shadow:0 0 10px 3px var(--gold);} }
+
+  /* ── HAMBURGER ── */
+  .hamburger-btn {
+    display: none; flex-direction: column; justify-content: center; gap: 4px;
+    width: 32px; height: 32px; background: rgba(100,140,255,0.08);
+    border: 1px solid var(--border); border-radius: 8px; cursor: pointer;
+    padding: 6px; transition: background 0.2s;
+  }
+  .hamburger-btn span {
+    display: block; width: 100%; height: 2px; background: var(--text-dim);
+    border-radius: 2px; transition: all 0.25s;
+  }
+  .hamburger-btn.open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+  .hamburger-btn.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+  .hamburger-btn.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+  .hamburger-btn:hover { background: rgba(100,140,255,0.16); }
+
+  /* ── MOBILE MENU ── */
+  .mobile-menu {
+    display: none; overflow: hidden; max-height: 0;
+    transition: max-height 0.35s cubic-bezier(0.4,0,0.2,1), opacity 0.25s;
+    opacity: 0;
+  }
+  .mobile-menu.open { max-height: 200px; opacity: 1; }
+  .mobile-menu-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px;
+    padding-top: 8px; border-top: 1px solid var(--border); margin-top: 4px;
+  }
+  .mm-item {
+    display: flex; align-items: center; justify-content: center; gap: 5px;
+    background: rgba(100,140,255,0.06); border: 1px solid var(--border);
+    border-radius: 10px; padding: 8px 4px; font-size: 0.72rem; font-weight: 600;
+    color: var(--text-dim); cursor: pointer; transition: all 0.2s; text-align: center;
+  }
+  .mm-item:hover, .mm-item:active { background: rgba(100,140,255,0.16); color: var(--text); border-color: rgba(100,140,255,0.35); }
+
+  /* ── MOBILE STATS ROW (hidden on desktop) ── */
+  #statsRowMobile { display: none; }
+  #statsRowDesktop { display: flex; }
 
   /* ── MAIN ── */
   .main { display: grid; grid-template-columns: 1fr 280px; gap: 12px; }
@@ -220,6 +263,51 @@
   .toast-name { font-family: 'Cinzel Decorative', serif; font-size: 2.8rem; font-weight: 900; line-height: 1; text-shadow: 0 0 40px currentColor, 0 0 80px currentColor; }
   .toast-rarity { font-size: 0.9rem; letter-spacing: 0.12em; color: rgba(255,255,255,0.6); margin-top: 6px; }
   .toast-chance { font-size: 0.78rem; color: rgba(255,255,255,0.4); margin-top: 4px; }
+
+  /* ── ACHIEVEMENT TOAST ── */
+  #achievementToast {
+    position: fixed; bottom: 24px; right: 20px; z-index: 500;
+    background: rgba(10,14,30,0.95); border: 1px solid rgba(255,200,80,0.4);
+    border-radius: 16px; padding: 12px 16px; min-width: 220px; max-width: 280px;
+    backdrop-filter: blur(16px); box-shadow: 0 4px 30px rgba(255,200,0,0.2);
+    transform: translateX(120%); opacity: 0;
+    transition: transform 0.45s cubic-bezier(0.34,1.4,0.64,1), opacity 0.3s;
+    pointer-events: none;
+  }
+  #achievementToast.show { transform: translateX(0); opacity: 1; }
+  .ach-badge {
+    font-size: 0.55rem; font-weight: 800; letter-spacing: 0.18em;
+    color: var(--gold); text-transform: uppercase; margin-bottom: 6px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .ach-badge::before { content:''; display:inline-block; width:20px; height:1px; background:var(--gold); opacity:0.5; }
+  .ach-badge::after  { content:''; display:inline-block; width:20px; height:1px; background:var(--gold); opacity:0.5; }
+  .ach-body { display: flex; align-items: center; gap: 12px; }
+  .ach-icon-wrap { font-size: 2rem; line-height: 1; flex-shrink: 0; filter: drop-shadow(0 0 8px rgba(255,200,0,0.5)); }
+  .ach-text { flex: 1; min-width: 0; }
+  .ach-name { font-family: 'Cinzel Decorative', serif; font-size: 0.82rem; font-weight: 700; color: var(--gold); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .ach-desc { font-size: 0.72rem; color: var(--text-dim); margin-top: 2px; }
+
+  /* ── TUTORIAL HINT ── */
+  #tutorialHint {
+    position: fixed; z-index: 600; width: 260px;
+    background: rgba(10,14,30,0.97); border: 1px solid rgba(100,200,255,0.35);
+    border-radius: 14px; padding: 14px 16px; box-shadow: 0 8px 32px rgba(0,150,255,0.2);
+    backdrop-filter: blur(16px);
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.3s ease; flex-direction: column; gap: 10px;
+  }
+  #tutorialHint.show { opacity: 1; pointer-events: all; }
+  .tut-body { display: flex; flex-direction: column; gap: 10px; }
+  #tutHintText { font-size: 0.82rem; color: var(--text); line-height: 1.5; }
+  .tut-footer { display: flex; align-items: center; gap: 8px; }
+  .tut-step { font-size: 0.65rem; color: var(--text-dim); flex: 1; }
+  .tut-next { background: rgba(100,200,255,0.15); border: 1px solid rgba(100,200,255,0.35); border-radius: 8px; padding: 4px 12px; font-size: 0.72rem; font-weight: 700; color: #80d0ff; cursor: pointer; transition: all 0.2s; }
+  .tut-next:hover { background: rgba(100,200,255,0.25); }
+  .tut-skip { background: none; border: none; font-size: 0.68rem; color: var(--text-dim); cursor: pointer; }
+  .tut-skip:hover { color: var(--text); }
+  @keyframes tutorial-pulse-ring { 0%,100%{box-shadow:0 0 0 0 rgba(100,200,255,0.5);} 50%{box-shadow:0 0 0 8px rgba(100,200,255,0);} }
+  .tutorial-pulse { animation: tutorial-pulse-ring 0.8s ease 3; }
 
   .rolling .aura-core { animation: spin-roll 0.3s linear infinite; }
   @keyframes spin-roll { to { transform: rotate(360deg); } }
@@ -482,132 +570,169 @@
     }
 
     .ui-root {
-      width: 100% !important;
-      max-width: 100% !important;
+      width: 100% !important; max-width: 100% !important;
       height: auto !important;
-      min-height: calc(100vh - env(safe-area-inset-top) - env(safe-area-inset-bottom)) !important;
-      gap: 8px !important;
-      padding: 8px !important;
-      box-sizing: border-box;
+      min-height: calc(100dvh - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+      gap: 8px !important; padding: 8px !important; box-sizing: border-box;
     }
 
-    /* TOP BAR */
-    .topbar { padding: 8px 10px; border-radius: 10px; flex-wrap: wrap; gap: 4px; }
-    .game-title { font-size: 0.9rem; }
-    .stats-row { gap: 10px; }
-    .stat { font-size: 0.6rem; }
-    .stat span { font-size: 0.85rem; }
-    .luck-badge { padding: 3px 8px; font-size: 0.68rem; }
+    /* ── TOPBAR ── */
+    .topbar { padding: 10px 12px; border-radius: 12px; gap: 0; }
+    .topbar-row2 { margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--border); }
+    .game-title { font-size: 1rem; }
+
+    /* Show hamburger, hide desktop-only items */
+    .hamburger-btn { display: flex !important; }
+    .mobile-menu { display: block; }
+    #musicBtn { display: none !important; }
+    #fbTopbarBtn { display: none !important; }
+    #statsRowDesktop { display: none !important; }
+    #statsRowMobile { display: flex !important; gap: 12px; }
+    .stat { font-size: 0.58rem; }
+    .stat span { font-size: 0.9rem; }
+    .luck-badge { padding: 3px 8px; font-size: 0.66rem; }
     .user-chip { padding: 3px 8px 3px 4px; }
-    .user-chip-name { font-size: 0.7rem; }
-    .user-chip-rank { font-size: 0.56rem; }
-    .user-avatar { width: 22px; height: 22px; font-size: 0.7rem; }
+    .user-chip-name { font-size: 0.72rem; }
+    .user-chip-rank { font-size: 0.58rem; }
+    .user-avatar { width: 24px; height: 24px; font-size: 0.72rem; }
 
-    /* MAIN — full width, stacked */
+    /* Pity compact */
+    .pity-bar-wrap { padding: 4px 10px; }
+    #pityMax { display: none; }
+    .pity-fill-track { width: 60px; }
+
+    /* ── MAIN ── */
     .main {
-      display: flex !important;
-      flex-direction: column !important;
-      gap: 8px !important;
-      width: 100% !important;
+      display: flex !important; flex-direction: column !important;
+      gap: 8px !important; width: 100% !important;
     }
 
-    /* ROLL PANEL */
-    .roll-panel { padding: 16px 12px; gap: 12px; border-radius: 12px; width: 100% !important; }
-    .aura-ring { width: 130px !important; height: 130px !important; }
-    .aura-core { width: 84px !important; height: 84px !important; }
-    .aura-icon { font-size: 2rem !important; }
-    #particleCanvas { width: 130px !important; height: 130px !important; }
-    .aura-name { font-size: 1.4rem !important; }
+    /* ── ROLL PANEL ── */
+    .roll-panel {
+      padding: 20px 12px 16px !important; gap: 14px !important;
+      border-radius: 14px !important; width: 100% !important;
+    }
+    .aura-ring { width: 150px !important; height: 150px !important; }
+    .aura-core { width: 96px !important; height: 96px !important; }
+    .aura-icon { font-size: 2.2rem !important; }
+    #particleCanvas { width: 150px !important; height: 150px !important; }
+    .aura-name { font-size: 1.5rem !important; }
     .aura-rarity { font-size: 0.72rem; }
-    .aura-chance { font-size: 0.7rem; }
-    .roll-btn { padding: 12px 44px; font-size: 0.95rem; }
-    .preview-last-btn { font-size: 0.72rem; padding: 6px 16px; }
+    .aura-chance { font-size: 0.72rem; padding: 3px 12px; }
+    .roll-btn { padding: 14px 52px; font-size: 1rem; border-radius: 40px; }
+    .preview-last-btn { font-size: 0.72rem; padding: 7px 18px; }
 
-    /* INVENTORY */
-    .inv-panel { border-radius: 12px; max-height: 200px !important; width: 100% !important; }
-    .inv-list { max-height: 145px !important; }
-    .inv-item { padding: 7px 10px; }
-    .inv-name { font-size: 0.78rem; }
-    .inv-eye { opacity: 1 !important; }
+    /* ── INVENTORY ── */
+    .inv-panel { border-radius: 12px; max-height: 220px !important; width: 100% !important; }
+    .inv-list { max-height: 165px !important; }
+    .inv-header { padding: 10px 14px 8px; }
+    .inv-item { padding: 8px 10px; }
+    .inv-name { font-size: 0.8rem; }
+    .inv-eye { opacity: 1 !important; font-size: 0.78rem; }
 
-    /* BOTTOM BAR */
+    /* ── BOTTOM BAR ── */
     .bottom-bar {
       display: grid !important;
-      grid-template-columns: repeat(3, 1fr) !important;
-      gap: 6px !important;
-      width: 100% !important;
+      grid-template-columns: repeat(2, 1fr) !important;
+      gap: 7px !important; width: 100% !important;
     }
-    .bottom-card { padding: 8px 8px; gap: 6px; border-radius: 10px; }
-    .bc-icon { font-size: 1rem; }
-    .bc-label { font-size: 0.58rem; }
-    .bc-value { font-size: 0.78rem; }
+    .bottom-card { padding: 10px 12px; gap: 8px; border-radius: 12px; }
+    .bc-icon { font-size: 1.1rem; }
+    .bc-label { font-size: 0.6rem; }
+    .bc-value { font-size: 0.82rem; }
 
-    /* MODALS — slide up from bottom */
+    /* Speed slider full width */
+    .speed-card { grid-column: span 2; }
+    .speed-slider { width: 100%; }
+
+    /* ── MODALS — slide up from bottom ── */
     .modal-backdrop { border-radius: 0 !important; }
 
     #previewModal { align-items: flex-end !important; padding: 0 !important; }
     .modal-box {
-      width: 100vw !important;
-      max-width: 100vw !important;
+      width: 100vw !important; max-width: 100vw !important;
       border-radius: 20px 20px 0 0 !important;
-      max-height: 92dvh !important;
-      overflow-y: auto !important;
+      max-height: 94dvh !important; overflow-y: auto !important;
     }
-    .modal-inner { display: flex !important; flex-direction: column !important; }
+    /* Drag handle on modals — use a separate div instead of ::before to avoid click interference */
+    .modal-drag-handle {
+      display: block !important; width: 40px; height: 4px;
+      background: rgba(100,140,255,0.25); border-radius: 2px;
+      margin: 10px auto 0; flex-shrink: 0; pointer-events: none;
+    }    .modal-inner { display: flex !important; flex-direction: column !important; }
     .preview-stage {
-      min-height: 220px !important;
+      min-height: 240px !important;
       border-right: none !important;
       border-bottom: 1px solid rgba(100,140,255,0.1) !important;
     }
-    .preview-info { max-height: none !important; overflow-y: visible !important; padding: 12px !important; }
-    .pi-name { font-size: 1.2rem !important; }
+    .preview-info { max-height: none !important; overflow-y: visible !important; padding: 14px !important; }
+    .pi-name { font-size: 1.3rem !important; }
     .pi-browse-grid { grid-template-columns: repeat(2, 1fr) !important; }
+    .garg-btn, .pi-btn { padding: 10px 12px !important; font-size: 0.8rem !important; }
 
-    /* Gargantua fullscreen mobile */
+    /* Gargantua fullscreen */
     .modal-box.gargantua-mode {
-      height: 100dvh !important;
-      max-height: 100dvh !important;
+      height: 100dvh !important; max-height: 100dvh !important;
       border-radius: 0 !important;
     }
+    .modal-box.gargantua-mode::before { display: none; }
     .modal-box.gargantua-mode .preview-stage { min-height: 100dvh !important; }
 
-    /* LEADERBOARD */
+    /* ── LEADERBOARD ── */
     #leaderboardModal { align-items: flex-end !important; }
     .lb-box {
-      width: 100vw !important;
-      border-radius: 20px 20px 0 0 !important;
-      max-height: 92dvh !important;
-      overflow-y: auto !important;
+      width: 100vw !important; border-radius: 20px 20px 0 0 !important;
+      max-height: 94dvh !important; overflow-y: auto !important;
     }
+    .lb-drag-handle {
+      display: block; width: 40px; height: 4px;
+      background: rgba(100,140,255,0.25); border-radius: 2px;
+      margin: 10px auto 0; pointer-events: none;
+    }
+    .lb-tab { padding: 6px 10px !important; font-size: 0.72rem !important; }
+    .lb-row { padding: 8px 10px !important; gap: 8px !important; }
 
-    /* ADMIN PANEL */
+    /* ── ADMIN ── */
     #adminPanelModal { align-items: flex-end !important; }
     .admin-panel-box {
-      width: 100vw !important;
-      border-radius: 20px 20px 0 0 !important;
-      max-height: 92dvh !important;
-      overflow-y: auto !important;
+      width: 100vw !important; border-radius: 20px 20px 0 0 !important;
+      max-height: 94dvh !important; overflow-y: auto !important;
     }
     .admin-cmd-grid { grid-template-columns: repeat(2,1fr) !important; }
     .admin-row { flex-wrap: wrap !important; }
 
-    /* AUTH */
-    .auth-box { width: 96vw !important; padding: 22px 16px !important; }
+    /* ── AUTH ── */
+    .auth-box { width: 96vw !important; padding: 24px 16px !important; border-radius: 18px !important; }
+    .auth-title { font-size: 1.1rem !important; }
+    .auth-input { font-size: 0.9rem !important; padding: 10px 14px !important; }
 
-    /* TOAST */
-    .toast-name { font-size: 1.8rem !important; }
+    /* ── TOAST ── */
+    .toast { width: 92vw !important; left: 4vw !important; transform: none !important; bottom: 80px !important; }
+    .toast-name { font-size: 1.9rem !important; }
+    /* Achievement toast on mobile */
+    #achievementToast { right: 10px; left: 10px; min-width: unset; max-width: unset; bottom: 16px; }
 
-    /* ORBIT RINGS */
+    /* ── ORBIT RINGS ── */
     .orbit-rings { width: 190px !important; height: 190px !important; }
+
+    /* ── CHAT MODAL ── */
+    #chatModal { align-items: flex-end !important; }
+    .chat-modal-box {
+      width: 100vw !important; border-radius: 20px 20px 0 0 !important;
+      max-height: 85dvh !important;
+    }
   }
 
-  @media (min-width: 601px) and (max-width: 800px) {
-    .ui-root { width: 98vw !important; height: auto !important; min-height: 96vh; gap: 10px; padding: 8px; }
+  @media (min-width: 601px) and (max-width: 900px) {
+    .ui-root { width: 98vw !important; height: auto !important; min-height: 96vh; gap: 10px; padding: 10px; }
     .main { display: flex !important; flex-direction: column !important; }
-    .inv-panel { max-height: 200px !important; }
-    .bottom-bar { grid-template-columns: repeat(3, 1fr) !important; }
+    .inv-panel { max-height: 220px !important; }
+    .bottom-bar { grid-template-columns: repeat(4, 1fr) !important; }
     .modal-box { width: 96vw !important; }
     .lb-box { width: 96vw !important; }
+    #statsRowMobile { display: none; }
+    .hamburger-btn { display: none !important; }
+  }    .lb-box { width: 96vw !important; }
   }
   #previewModal {
     position: fixed; inset: 0; z-index: 300;
@@ -761,6 +886,7 @@
     flex: 1; padding: 11px; border-radius: 12px; font-family: 'Rajdhani', sans-serif;
     font-size: 0.9rem; font-weight: 700; letter-spacing: 0.08em; cursor: pointer;
     transition: all 0.2s; border: 1px solid transparent;
+    position: relative; z-index: 10; pointer-events: all !important;
   }
   .pi-btn-equip { color: #fff; transition: background 0.4s, box-shadow 0.4s; }
   .pi-btn-equip:hover { filter: brightness(1.15); transform: translateY(-1px); }
@@ -768,10 +894,11 @@
   .pi-btn-close:hover { background: rgba(100,140,255,0.15); color: var(--text); }
 
   .modal-close-x {
-    position: absolute; top: 14px; right: 16px; z-index: 5;
+    position: absolute; top: 14px; right: 16px; z-index: 20;
     background: rgba(100,140,255,0.1); border: 1px solid var(--border); border-radius: 8px;
     color: var(--text-dim); font-size: 1rem; cursor: pointer; padding: 4px 9px;
     transition: all 0.15s; font-family: 'Rajdhani', sans-serif;
+    pointer-events: all !important;
   }
   .modal-close-x:hover { background: rgba(100,140,255,0.2); color: var(--text); }
 
@@ -1157,6 +1284,98 @@
   .admin-status-dot{width:8px;height:8px;border-radius:50%;background:#ff4444;animation:admin-blink 1.2s ease-in-out infinite;}
 
   @keyframes slideDown{from{opacity:0;transform:translateX(-50%) translateY(-20px);}to{opacity:1;transform:translateX(-50%) translateY(0);}}
+
+  /* ══ ROLL SHAKE ANIMATIONS ══ */
+  @keyframes screen-shake {
+    0%,100%{transform:translate(0,0) rotate(0deg);}
+    10%{transform:translate(-4px,-2px) rotate(-0.5deg);}
+    20%{transform:translate(4px,2px) rotate(0.5deg);}
+    30%{transform:translate(-6px,1px) rotate(-0.3deg);}
+    40%{transform:translate(6px,-1px) rotate(0.3deg);}
+    50%{transform:translate(-3px,3px) rotate(-0.2deg);}
+    60%{transform:translate(3px,-3px) rotate(0.2deg);}
+    70%{transform:translate(-2px,2px) rotate(0deg);}
+    80%{transform:translate(2px,-1px) rotate(0deg);}
+    90%{transform:translate(-1px,1px) rotate(0deg);}
+  }
+  @keyframes roll-pulse {
+    0%{transform:scale(1);}
+    30%{transform:scale(1.08);}
+    60%{transform:scale(0.96);}
+    100%{transform:scale(1);}
+  }
+  @keyframes rarity-reveal {
+    0%{opacity:0;transform:scale(0.4) rotate(-15deg);}
+    50%{opacity:1;transform:scale(1.18) rotate(4deg);}
+    70%{transform:scale(0.94) rotate(-2deg);}
+    100%{opacity:1;transform:scale(1) rotate(0deg);}
+  }
+  @keyframes name-pop {
+    0%{opacity:0;letter-spacing:0.4em;filter:blur(6px);}
+    60%{opacity:1;letter-spacing:0.05em;filter:blur(0);}
+    100%{opacity:1;}
+  }
+  @keyframes shine-sweep {
+    0%{transform:translateX(-200%) skewX(-20deg);}
+    100%{transform:translateX(400%) skewX(-20deg);}
+  }
+
+  /* ══ EQUIP TRANSITION ══ */
+  .equip-flash {
+    animation: equip-pop 0.55s cubic-bezier(0.34,1.56,0.64,1) forwards;
+  }
+  @keyframes equip-pop {
+    0%{transform:scale(1);}
+    35%{transform:scale(1.22);}
+    65%{transform:scale(0.93);}
+    100%{transform:scale(1);}
+  }
+  .equipped-card-glow {
+    transition: box-shadow 0.4s ease, border-color 0.4s ease, background 0.4s ease;
+  }
+
+  /* ══ INVENTORY ITEM ANIMATION ══ */
+  @keyframes inv-slide-in {
+    0%{opacity:0;transform:translateX(30px) scale(0.92);}
+    60%{transform:translateX(-4px) scale(1.02);}
+    100%{opacity:1;transform:translateX(0) scale(1);}
+  }
+  @keyframes inv-bump {
+    0%{transform:scale(1);}
+    40%{transform:scale(1.06);}
+    100%{transform:scale(1);}
+  }
+  .inv-item-new { animation: inv-slide-in 0.4s cubic-bezier(0.34,1.4,0.64,1) forwards; }
+  .inv-item-bump { animation: inv-bump 0.35s cubic-bezier(0.34,1.56,0.64,1); }
+
+  /* ══ PARTICLE BURST OVERLAY ══ */
+  #burstCanvas {
+    position:fixed;inset:0;pointer-events:none;z-index:150;
+  }
+
+  /* ══ RARITY REVEAL ══ */
+  .aura-core.reveal-anim { animation: roll-pulse 0.5s cubic-bezier(0.34,1.4,0.64,1); }
+  .aura-name.reveal-anim { animation: name-pop 0.6s cubic-bezier(0.16,1,0.3,1) forwards; }
+
+  /* ══ MUSIC TOGGLE BUTTON ══ */
+  #musicBtn {
+    display:flex;align-items:center;gap:6px;
+    background:rgba(100,140,255,0.08);border:1px solid var(--border);
+    border-radius:20px;padding:4px 12px;cursor:pointer;
+    font-size:0.72rem;font-weight:700;color:var(--text-dim);
+    transition:all 0.2s;
+  }
+  #musicBtn:hover{background:rgba(100,140,255,0.16);color:var(--text);}
+  #musicBtn.playing{color:#50dc78;border-color:rgba(80,220,120,0.3);background:rgba(80,220,120,0.08);}
+  .music-dot{width:7px;height:7px;border-radius:50%;background:var(--text-dim);transition:background 0.3s;}
+  #musicBtn.playing .music-dot{background:#50dc78;animation:pulse-green 1.2s ease-in-out infinite;}
+
+  /* ══ SHINE EFFECT ON RARE+ ══ */
+  .aura-core.shine-fx::after {
+    content:'';position:absolute;inset:0;border-radius:50%;
+    background:linear-gradient(105deg,transparent 40%,rgba(255,255,255,0.35) 50%,transparent 60%);
+    animation:shine-sweep 0.7s ease forwards;pointer-events:none;
+  }
 </style>
 <!-- Firebase -->
 <script type="module">
@@ -1202,6 +1421,7 @@
 </head>
 <body>
 
+<canvas id="burstCanvas"></canvas>
 <div id="stars"></div>
 <div class="nebula"></div>
 <div id="flash"></div>
@@ -1255,10 +1475,36 @@
   <div class="toast-chance" id="toastChance"></div>
 </div>
 
+<!-- Achievement Toast -->
+<div id="achievementToast">
+  <div class="ach-badge">ACHIEVEMENT</div>
+  <div class="ach-body">
+    <div class="ach-icon-wrap"><span id="achIcon">🏆</span></div>
+    <div class="ach-text">
+      <div class="ach-name" id="achName">Achievement</div>
+      <div class="ach-desc" id="achDesc">Description</div>
+    </div>
+  </div>
+</div>
+
+<!-- Tutorial Hint -->
+<div id="tutorialHint" style="display:none;">
+  <div class="tut-arrow"></div>
+  <div class="tut-body">
+    <span id="tutHintText">Hint text</span>
+    <div class="tut-footer">
+      <span id="tutHintStep" class="tut-step">1 / 4</span>
+      <button class="tut-next" onclick="nextTutorialStep()">Next →</button>
+      <button class="tut-skip" onclick="skipTutorial()">Skip</button>
+    </div>
+  </div>
+</div>
+
 <!-- ══ PREVIEW MODAL ══ -->
 <div id="previewModal">
   <div class="modal-backdrop" onclick="closePreview()"></div>
   <div class="modal-box">
+    <div class="modal-drag-handle" style="display:none;" id="modalDragHandle"></div>
     <div class="modal-band" id="modalBand"></div>
     <button class="modal-close-x" onclick="closePreview()">✕</button>
     <div class="modal-inner">
@@ -1394,28 +1640,71 @@
 <!-- ══ MAIN UI ══ -->
 <div class="ui-root">
   <div class="topbar">
-    <div class="game-title" id="gameTitle" onclick="handleTitleClick()">Sols RNG</div>
-    <div class="stats-row">
-      <div class="stat">Rolls<span id="statRolls">0</span></div>
-      <div class="stat">Best<span id="statBest">—</span></div>
-      <div class="stat">Unique<span id="statUnique">0</span></div>
-    </div>
-    <div style="display:flex;align-items:center;gap:10px;">
-      <div class="luck-badge"><div class="luck-dot"></div><span id="luckText">Luck x1</span></div>
-      <div class="pity-bar-wrap" id="pityWrap" title="Pity: Gargantua guaranteed at 1,000,000 rolls without one">
-        🕳 <span id="pityCount">0</span>/<span id="pityMax">1000000</span>
-        <div class="pity-fill-track"><div class="pity-fill" id="pityFill" style="width:0%"></div></div>
-      </div>
-      <div id="fbTopbarBtn" style="display:none;align-items:center;gap:5px;background:rgba(255,160,0,0.08);border:1px solid rgba(255,160,0,0.2);border-radius:20px;padding:4px 10px;cursor:pointer;font-size:0.68rem;font-weight:700;color:rgba(255,160,0,0.7);" onclick="openFbSetup()" title="Firebase Multiplayer">
-        <div id="fbTopDot" style="width:7px;height:7px;border-radius:50%;background:#ff6666;flex-shrink:0;"></div>
-        <span id="fbTopLabel">Firebase</span>
-      </div>
-      <div class="user-chip" id="userChip" onclick="openLeaderboard()">
-        <div class="user-avatar" id="userAvatar">?</div>
-        <div class="user-chip-info">
-          <div class="user-chip-name" id="userChipName">Guest</div>
-          <div class="user-chip-rank" id="userChipRank">#—</div>
+    <!-- Row 1: title + user + hamburger -->
+    <div class="topbar-row topbar-row1">
+      <div class="game-title" id="gameTitle" onclick="handleTitleClick()">Sols RNG</div>
+      <div class="topbar-right">
+        <div class="stats-row" id="statsRowDesktop">
+          <div class="stat">Rolls<span id="statRolls">0</span></div>
+          <div class="stat">Best<span id="statBest">—</span></div>
+          <div class="stat">Unique<span id="statUnique">0</span></div>
         </div>
+        <div class="luck-badge"><div class="luck-dot"></div><span id="luckText">Luck x1</span></div>
+        <div id="musicBtn" onclick="toggleMusic()" title="Ambient Music">
+          <div class="music-dot"></div><span id="musicBtnLabel">♪ Music</span>
+        </div>
+        <div id="fbTopbarBtn" style="display:none;align-items:center;gap:5px;background:rgba(255,160,0,0.08);border:1px solid rgba(255,160,0,0.2);border-radius:20px;padding:4px 10px;cursor:pointer;font-size:0.68rem;font-weight:700;color:rgba(255,160,0,0.7);" onclick="openFbSetup()" title="Firebase Multiplayer">
+          <div id="fbTopDot" style="width:7px;height:7px;border-radius:50%;background:#ff6666;flex-shrink:0;"></div>
+          <span id="fbTopLabel">Firebase</span>
+        </div>
+        <div class="user-chip" id="userChip" onclick="openLeaderboard()">
+          <div class="user-avatar" id="userAvatar">?</div>
+          <div class="user-chip-info">
+            <div class="user-chip-name" id="userChipName">Guest</div>
+            <div class="user-chip-rank" id="userChipRank">#—</div>
+          </div>
+        </div>
+        <!-- Mobile hamburger -->
+        <button class="hamburger-btn" id="hamburgerBtn" onclick="toggleMobileMenu()" aria-label="Menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+    <!-- Row 2: stats + pity (always visible on mobile as compact strip) -->
+    <div class="topbar-row topbar-row2" id="topbarRow2">
+      <div class="stats-row" id="statsRowMobile">
+        <div class="stat">Rolls<span id="statRollsMobile">0</span></div>
+        <div class="stat">Best<span id="statBestMobile">—</span></div>
+        <div class="stat">Unique<span id="statUniqueMobile">0</span></div>
+      </div>
+      <div class="pity-bar-wrap" id="pityWrap">
+        <span id="pityIcon" style="cursor:pointer;font-size:1rem;transition:transform 0.2s;" onclick="togglePityTarget()" title="Trocar alvo do pity">🕳</span>
+        <div style="display:flex;flex-direction:column;gap:1px;">
+          <div style="display:flex;align-items:center;gap:5px;">
+            <span id="pityTargetLabel" style="font-size:0.62rem;letter-spacing:0.08em;text-transform:uppercase;opacity:0.7;">Pity</span>
+            <button onclick="togglePityTarget()" id="pityToggleBtn" class="pity-swap-btn" title="Trocar alvo">SWAP</button>
+          </div>
+          <div style="display:flex;align-items:center;gap:5px;">
+            <span id="pityCount">0</span><span style="opacity:0.5">/</span><span id="pityMax">1,000,000</span>
+            <div class="pity-fill-track"><div class="pity-fill" id="pityFill" style="width:0%"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Mobile slide-down menu -->
+    <div class="mobile-menu" id="mobileMenu">
+      <div class="mobile-menu-grid">
+        <div class="mm-item" onclick="toggleMusic();closeMobileMenu()">
+          <div class="music-dot" id="mmMusicDot"></div><span id="mmMusicLabel">♪ Music</span>
+        </div>
+        <div class="mm-item" id="mmFbBtn" style="display:none" onclick="openFbSetup();closeMobileMenu()">
+          <div id="mmFbDot" style="width:7px;height:7px;border-radius:50%;background:#ff6666;"></div>
+          <span>Firebase</span>
+        </div>
+        <div class="mm-item" onclick="openLeaderboard();closeMobileMenu()">🏆 Leaderboard</div>
+        <div class="mm-item" onclick="openBrowseModal();closeMobileMenu()">📖 Aura Book</div>
+        <div class="mm-item" onclick="openStatsModal();closeMobileMenu()">📊 Stats</div>
+        <div class="mm-item" onclick="openChatModal();closeMobileMenu()">💬 Chat</div>
       </div>
     </div>
   </div>
@@ -1464,6 +1753,7 @@
       <div>
         <div class="bc-label">Auto Roll</div>
         <div class="bc-value" id="autoStatus">Off</div>
+        <div style="font-size:0.58rem;color:var(--text-dim);margin-top:1px;display:none;font-weight:600;letter-spacing:0.04em;" id="autoCountLabel">⟳ <span id="autoRollCount">0</span> rolls</div>
       </div>
       <div class="auto-indicator" id="autoIndicator"></div>
     </div>
@@ -1993,15 +2283,32 @@
 
 <style>
 /* ── PITY COUNTER ── */
+.pity-swap-btn {
+  background:rgba(255,149,0,0.12);border:1px solid rgba(255,149,0,0.3);border-radius:8px;
+  padding:1px 7px;font-size:0.58rem;font-weight:700;color:rgba(255,149,0,0.8);
+  cursor:pointer;letter-spacing:0.06em;transition:all 0.2s;
+}
+.pity-swap-btn:hover{background:rgba(255,149,0,0.22);}
+.archangel-mode .pity-swap-btn{background:rgba(255,245,180,0.12);border-color:rgba(255,245,180,0.3);color:rgba(255,245,180,0.85);}
 .pity-bar-wrap {
   display: flex; align-items: center; gap: 8px;
   background: rgba(255,149,0,0.06); border: 1px solid rgba(255,149,0,0.18);
   border-radius: 20px; padding: 4px 12px; font-size: 0.72rem; color: rgba(255,149,0,0.7);
-  letter-spacing: 0.06em;
+  letter-spacing: 0.06em; transition: background 0.4s, border-color 0.4s;
 }
 .pity-bar-wrap span { color: #ff9500; font-weight: 700; }
+.pity-bar-wrap.archangel-mode {
+  background: rgba(255,245,180,0.08); border-color: rgba(255,245,180,0.25);
+  color: rgba(255,245,180,0.75);
+}
+.pity-bar-wrap.archangel-mode span { color: #fff5c0; }
+.pity-bar-wrap.archangel-mode #pityToggleBtn {
+  background: rgba(255,245,180,0.12); border-color: rgba(255,245,180,0.3); color: rgba(255,245,180,0.85);
+}
+.pity-bar-wrap.archangel-mode .pity-fill { background: linear-gradient(90deg,#ffd700,#fff5c0); }
 .pity-fill-track { width: 80px; height: 5px; background: rgba(255,149,0,0.15); border-radius: 3px; overflow: hidden; }
-.pity-fill { height: 100%; border-radius: 3px; background: linear-gradient(90deg,#ff6500,#ff9500); transition: width 0.4s ease; }
+.pity-fill { height: 100%; border-radius: 3px; background: linear-gradient(90deg,#ff6500,#ff9500); transition: width 0.4s ease, background 0.4s ease; }
+@keyframes pity-swap { 0%{transform:scale(1) rotate(0deg);} 40%{transform:scale(1.3) rotate(180deg);} 100%{transform:scale(1) rotate(360deg);} }
 
 /* ── GARGANTUA CUTSCENE ── */
 #gargCutscene {
@@ -2198,10 +2505,45 @@ const RARITY_ORDER = ['Archangel','Gargantua','Mythical','Legendary','Epic','Rar
 
 let inventory={}, totalRolls=0, rolling=false, bestAura=null, lastAura=null, previewAura=null;
 let autoRolling=false, autoTimer=null;
+// Archangel outfit tracking (for reverting to normal colors)
+let _archPrevBody='#3a5fd9',_archPrevBodyS='#2a4ab0',_archPrevLeg='#1a2a6e',_archPrevLegS='#0f1a50',_archPrevShoe='#111',_archPrevShoeS='#333';
 
 // ── PITY SYSTEM ──
-const PITY_THRESHOLD = 1000000; // Gargantua guaranteed after this many rolls without one
-let pityCounter = 0; // rolls since last Gargantua (or ever)
+const PITY_CONFIGS = {
+  gargantua: {
+    threshold: 1000000,
+    target: 'Gargantua',
+    icon: '🕳',
+    label: 'Gargantua Pity',
+    color: '#ff9500',
+    fillCss: 'linear-gradient(90deg,#ff6500,#ff9500)',
+    dangerBorder: 'rgba(255,149,0,0.5)',
+    mode: 'gargantua-mode',
+  },
+  archangel: {
+    threshold: 250500000,
+    target: 'Archangel',
+    icon: '🪽',
+    label: 'Archangel Pity',
+    color: '#fff5c0',
+    fillCss: 'linear-gradient(90deg,#ffd700,#fff5c0)',
+    dangerBorder: 'rgba(255,245,180,0.5)',
+    mode: 'archangel-mode',
+  }
+};
+let pityTarget = 'gargantua'; // current pity target
+let pityCounter = 0;
+
+function getPityCfg(){ return PITY_CONFIGS[pityTarget]; }
+
+function togglePityTarget(){
+  pityTarget = pityTarget === 'gargantua' ? 'archangel' : 'gargantua';
+  pityCounter = 0; // reset counter when switching
+  // animate icon spin
+  const icon = document.getElementById('pityIcon');
+  if(icon){ icon.style.animation='none'; icon.offsetWidth; icon.style.animation='pity-swap 0.45s cubic-bezier(0.34,1.4,0.64,1)'; }
+  updatePityDisplay();
+}
 // Three.js globals — declared here so openPreview can reference them
 let threeScene, threeCamera, threeRenderer, threeAnimId;
 let bhMesh, diskMesh, diskMesh2, coronaParticles, jetMeshTop, jetMeshBot;
@@ -2216,17 +2558,27 @@ function updateSpeed(val){
   if(autoRolling){clearTimeout(autoTimer);scheduleNextRoll();}
 }
 
+let autoSessionRolls = 0;
+
 function toggleAutoRoll(){
   autoRolling=!autoRolling;
   const card=document.getElementById('autoCard');
   const status=document.getElementById('autoStatus');
+  const countLabel=document.getElementById('autoCountLabel');
   if(autoRolling){
     card.classList.add('active');
     status.textContent='On';
+    autoSessionRolls=0;
+    document.getElementById('autoRollCount').textContent='0';
+    if(countLabel) countLabel.style.display='block';
+    // Haptic feedback
+    if(navigator.vibrate) navigator.vibrate(30);
     scheduleNextRoll();
   } else {
     card.classList.remove('active');
     status.textContent='Off';
+    if(countLabel) countLabel.style.display='none';
+    if(navigator.vibrate) navigator.vibrate([10,10,10]);
     clearTimeout(autoTimer);
   }
 }
@@ -2236,7 +2588,12 @@ function scheduleNextRoll(){
   const delay=SPEEDS[currentSpeed].delay;
   autoTimer=setTimeout(async()=>{
     if(!autoRolling)return;
-    if(!rolling) await doRoll();
+    if(!rolling){
+      await doRoll();
+      autoSessionRolls++;
+      const el=document.getElementById('autoRollCount');
+      if(el) el.textContent=autoSessionRolls.toLocaleString();
+    }
     scheduleNextRoll();
   }, delay);
 }
@@ -2259,8 +2616,14 @@ let pParticles=[], pAnimFrame, pRunning=false, pSpawnTimer=null;
 
 function resizePCanvas(){const s=document.getElementById('previewStage');pCanvas.width=s.offsetWidth;pCanvas.height=s.offsetHeight;}
 
-function startPreviewFX(color, intensity=1){
+function startPreviewFX(color, intensity=1, mode='default'){
   pRunning=true; pParticles=[];
+
+  if(mode==='archangel'){
+    _startArchangelPreviewFX();
+    return;
+  }
+
   function spawn(){
     if(!pRunning)return;
     const cx=pCanvas.width/2, cy=pCanvas.height*0.52;
@@ -2288,6 +2651,195 @@ function startPreviewFX(color, intensity=1){
   }
   draw();
 }
+
+// ── ARCHANGEL PREVIEW FX ──
+let _archT = 0;
+function _startArchangelPreviewFX(){
+  _archT = 0;
+  function spawn(){
+    if(!pRunning) return;
+    const cx=pCanvas.width/2, cy=pCanvas.height*0.48;
+    // Feather particles rising from wings
+    for(let i=0;i<4;i++){
+      const side = Math.random()>0.5?1:-1;
+      const wx = cx + side*(50+Math.random()*60);
+      const wy = cy - 20 + Math.random()*60;
+      const col = Math.random()<0.6 ? '#fff5c0' : Math.random()<0.5 ? '#ffd700' : '#ffffff';
+      pParticles.push({
+        x:wx, y:wy,
+        vx: side*(Math.random()*0.5+0.2) + (Math.random()-0.5)*0.4,
+        vy: -(Math.random()*1.8+0.8),
+        life:1, decay:0.006+Math.random()*0.007,
+        size:Math.random()*3+1.2,
+        color:col, tw:Math.random()*Math.PI*2,
+        type:'feather', rot:Math.random()*Math.PI*2, rotSpd:(Math.random()-0.5)*0.06
+      });
+    }
+    // Golden motes floating up from below
+    for(let i=0;i<3;i++){
+      pParticles.push({
+        x: cx+(Math.random()-0.5)*160,
+        y: cy+80+Math.random()*40,
+        vx:(Math.random()-0.5)*0.3,
+        vy:-(Math.random()*1.0+0.5),
+        life:1, decay:0.004+Math.random()*0.005,
+        size:Math.random()*2+0.8,
+        color: Math.random()<0.5?'#ffd700':'#fff5c0',
+        tw:Math.random()*Math.PI*2, type:'mote'
+      });
+    }
+    // Sacred light rays from above
+    if(Math.random()<0.3){
+      const rx=cx+(Math.random()-0.5)*120;
+      pParticles.push({
+        x:rx, y:0, vx:0, vy:3+Math.random()*2,
+        life:0.7+Math.random()*0.3, decay:0.008,
+        size:2+Math.random()*3, color:'#fffbe0',
+        tw:0, type:'ray', len:30+Math.random()*50
+      });
+    }
+    pSpawnTimer=setTimeout(spawn,55);
+  }
+  spawn();
+
+  function draw(){
+    if(!pRunning) return;
+    _archT += 0.025;
+    const cx=pCanvas.width/2, cy=pCanvas.height*0.48;
+    pCtx.clearRect(0,0,pCanvas.width,pCanvas.height);
+
+    // ── DIVINE HALO ──
+    const haloY = cy - 115;
+    const haloR = 36 + Math.sin(_archT*1.2)*3;
+    const haloGrad = pCtx.createRadialGradient(cx,haloY,haloR*0.5,cx,haloY,haloR*1.8);
+    haloGrad.addColorStop(0,'rgba(255,245,160,0.0)');
+    haloGrad.addColorStop(0.6,'rgba(255,220,80,0.18)');
+    haloGrad.addColorStop(0.85,'rgba(255,200,40,0.35)');
+    haloGrad.addColorStop(1,'rgba(255,200,0,0)');
+    pCtx.save();
+    pCtx.beginPath();
+    pCtx.ellipse(cx, haloY, haloR*1.8, haloR*0.45, 0, 0, Math.PI*2);
+    pCtx.fillStyle=haloGrad; pCtx.shadowColor='#ffd700'; pCtx.shadowBlur=22;
+    pCtx.fill();
+    // Halo ring
+    pCtx.beginPath();
+    pCtx.ellipse(cx, haloY, haloR*1.5, haloR*0.35, 0, 0, Math.PI*2);
+    pCtx.strokeStyle=`rgba(255,220,80,${0.5+0.2*Math.sin(_archT*2)})`;
+    pCtx.lineWidth=2.5; pCtx.shadowBlur=16;
+    pCtx.stroke();
+    pCtx.restore();
+
+    // ── WINGS ──
+    const wingFlap = Math.sin(_archT*2.2)*0.12;
+    for(const side of [-1,1]){
+      pCtx.save();
+      pCtx.translate(cx + side*18, cy-55);
+      // Wing base glow
+      const wGrad=pCtx.createRadialGradient(side*30,0,0,side*30,0,90);
+      wGrad.addColorStop(0,'rgba(255,245,180,0.35)');
+      wGrad.addColorStop(0.5,'rgba(255,220,100,0.18)');
+      wGrad.addColorStop(1,'rgba(255,200,50,0)');
+      // Upper wing
+      pCtx.beginPath();
+      pCtx.moveTo(0,-10);
+      pCtx.bezierCurveTo(
+        side*25, -60+wingFlap*30,
+        side*80, -80+wingFlap*60,
+        side*110, -40+wingFlap*20
+      );
+      pCtx.bezierCurveTo(
+        side*90, -20,
+        side*55, 0,
+        side*20, 10
+      );
+      pCtx.closePath();
+      const wFill=pCtx.createLinearGradient(0,0,side*110,-60);
+      wFill.addColorStop(0,`rgba(255,255,220,${0.55+wingFlap*0.3})`);
+      wFill.addColorStop(0.4,`rgba(255,230,120,${0.38+wingFlap*0.2})`);
+      wFill.addColorStop(1,`rgba(255,200,60,0.08)`);
+      pCtx.fillStyle=wFill;
+      pCtx.shadowColor='#ffd700'; pCtx.shadowBlur=20;
+      pCtx.fill();
+      // Wing outline feather lines
+      pCtx.strokeStyle=`rgba(255,245,160,${0.3+wingFlap*0.2})`;
+      pCtx.lineWidth=1;
+      for(let fi=0;fi<6;fi++){
+        const t=fi/5;
+        const wx=side*(20+t*90+wingFlap*10);
+        const wy=-10-t*70+wingFlap*30;
+        pCtx.beginPath();
+        pCtx.moveTo(side*15,5);
+        pCtx.quadraticCurveTo(wx*0.6,wy*0.5,wx,wy);
+        pCtx.stroke();
+      }
+      // Lower wing
+      pCtx.beginPath();
+      pCtx.moveTo(0,10);
+      pCtx.bezierCurveTo(
+        side*20, 30+wingFlap*15,
+        side*70, 60+wingFlap*25,
+        side*90, 50+wingFlap*10
+      );
+      pCtx.bezierCurveTo(side*65, 30, side*30, 20, side*10, 15);
+      pCtx.closePath();
+      const lwFill=pCtx.createLinearGradient(0,10,side*90,60);
+      lwFill.addColorStop(0,`rgba(255,245,200,${0.45+wingFlap*0.2})`);
+      lwFill.addColorStop(1,'rgba(255,200,60,0.05)');
+      pCtx.fillStyle=lwFill; pCtx.shadowBlur=12;
+      pCtx.fill();
+      pCtx.restore();
+    }
+
+    // ── DIVINE LIGHT COLUMN ──
+    const colGrad=pCtx.createLinearGradient(cx,0,cx,pCanvas.height);
+    colGrad.addColorStop(0,`rgba(255,245,180,${0.12+0.06*Math.sin(_archT*1.5)})`);
+    colGrad.addColorStop(0.4,`rgba(255,220,100,${0.07+0.04*Math.sin(_archT)})`);
+    colGrad.addColorStop(1,'rgba(255,200,50,0)');
+    pCtx.save();
+    pCtx.fillStyle=colGrad;
+    pCtx.fillRect(cx-40,0,80,pCanvas.height);
+    pCtx.restore();
+
+    // ── GROUND GLOW ──
+    const gGrad=pCtx.createRadialGradient(cx,pCanvas.height*0.85,0,cx,pCanvas.height*0.85,90);
+    gGrad.addColorStop(0,`rgba(255,220,80,${0.2+0.08*Math.sin(_archT*1.3)})`);
+    gGrad.addColorStop(1,'rgba(255,200,50,0)');
+    pCtx.save();
+    pCtx.fillStyle=gGrad;
+    pCtx.beginPath();
+    pCtx.ellipse(cx,pCanvas.height*0.87,90,18,0,0,Math.PI*2);
+    pCtx.fill();
+    pCtx.restore();
+
+    // ── PARTICLES (feathers, motes, rays) ──
+    pParticles=pParticles.filter(p=>p.life>0);
+    for(const p of pParticles){
+      p.tw+=0.08;
+      pCtx.save();
+      pCtx.globalAlpha=p.life*(0.6+0.4*Math.sin(p.tw));
+      pCtx.shadowColor=p.color; pCtx.shadowBlur=10;
+      if(p.type==='feather'){
+        p.rot+=p.rotSpd;
+        pCtx.translate(p.x,p.y); pCtx.rotate(p.rot);
+        pCtx.fillStyle=p.color;
+        pCtx.beginPath();
+        pCtx.ellipse(0,0,p.size*0.5,p.size*1.8*p.life,0,0,Math.PI*2);
+        pCtx.fill();
+      } else if(p.type==='ray'){
+        pCtx.strokeStyle=p.color; pCtx.lineWidth=p.size*p.life;
+        pCtx.beginPath(); pCtx.moveTo(p.x,p.y); pCtx.lineTo(p.x,p.y+p.len*p.life);
+        pCtx.stroke();
+      } else {
+        pCtx.fillStyle=p.color;
+        pCtx.beginPath(); pCtx.arc(p.x,p.y,p.size*p.life,0,Math.PI*2); pCtx.fill();
+      }
+      pCtx.restore();
+      p.x+=p.vx; p.y+=p.vy; p.life-=p.decay;
+    }
+    pAnimFrame=requestAnimationFrame(draw);
+  }
+  draw();
+}
 function stopPreviewFX(){pRunning=false;clearTimeout(pSpawnTimer);cancelAnimationFrame(pAnimFrame);pParticles=[];if(pCtx)pCtx.clearRect(0,0,pCanvas.width,pCanvas.height);}
 
 // ── MODAL OPEN/CLOSE ──
@@ -2298,19 +2850,35 @@ function openPreview(aura){
   resizePCanvas();
   document.getElementById('previewModal').classList.add('open');
   stopPreviewFX();
-  // stop any existing 3D
   if(threeActive) stopThreeGargantua();
-  if(aura.glow==='gargantua'){
-    setTimeout(startThreeGargantua, 60);
+  if(aura.glow==='gargantua'||aura.glow==='archangel'){
+    // Pause ambient music during epic cutscenes
+    if(_musicPlaying) stopAmbientMusic();
+    if(navigator.vibrate) navigator.vibrate([40,30,80]);
+    if(aura.glow==='gargantua'){
+      setTimeout(startThreeGargantua, 60);
+    } else {
+      // Archangel: divine stage background + special FX
+      const stage=document.getElementById('previewStage');
+      stage.style.background='radial-gradient(ellipse 90% 90% at 50% 45%, rgba(255,240,140,0.13) 0%, rgba(255,200,60,0.07) 40%, rgba(20,15,5,0.95) 100%)';
+      document.getElementById('auraGlowLayer').style.background='radial-gradient(ellipse 60% 80% at 50% 40%, rgba(255,230,100,0.22) 0%, transparent 70%)';
+      document.getElementById('charSvg').style.filter='drop-shadow(0 0 18px #ffd700) drop-shadow(0 0 40px #fff5c0) drop-shadow(0 0 6px #ffffff)';
+      document.getElementById('stageShadow').style.background='#ffd70066';
+      startPreviewFX('#ffd700', 1, 'archangel');
+    }
   } else {
     const tier=RARITY_ORDER.indexOf(aura.name);
     startPreviewFX(aura.color, 1+(5-tier)*0.45);
   }
+  // Add swipe-to-close on mobile
+  _addSwipeToClose(document.querySelector('.modal-box'));
 }
 function closePreview(){
   if(threeActive) stopThreeGargantua();
   document.getElementById('previewModal').classList.remove('open');
   stopPreviewFX();
+  // Resume music if it was playing before
+  if(_musicPlaying) startAmbientMusic();
 }
 function openPreviewForLast(){if(lastAura)openPreview(lastAura);}
 function openBrowseModal(){
@@ -2328,6 +2896,38 @@ function applyAuraToModal(aura){
   document.getElementById('auraGlowLayer').style.background=`radial-gradient(ellipse 55% 75% at 50% 50%,${aura.color}2e 0%,transparent 70%)`;
   document.getElementById('charSvg').style.filter=`drop-shadow(0 0 24px ${aura.color}) drop-shadow(0 0 8px ${aura.color}99)`;
   document.getElementById('stageShadow').style.background=aura.color+'55';
+
+  // ── ARCHANGEL: golden divine outfit ──
+  const isArch = aura.glow==='archangel';
+  const bodyColor   = isArch ? '#f5e8b0' : '#3a5fd9';
+  const bodyStroke  = isArch ? '#d4b840' : '#2a4ab0';
+  const legColor    = isArch ? '#e8d070' : '#1a2a6e';
+  const legStroke   = isArch ? '#c0a030' : '#0f1a50';
+  const shoeColor   = isArch ? '#c8a820' : '#111';
+  const shoeStroke  = isArch ? '#a08010' : '#333';
+  const svg = document.getElementById('charSvg');
+  // Patch fill colors on rect elements (torso, arms, legs, shoes)
+  const rects = svg.querySelectorAll('rect');
+  // torso+arms = indices 3,4,5 (0=head,1=leftEye,2=rightEye are skipped — they're inside head group)
+  // We'll target by data attributes added inline
+  rects.forEach(r=>{
+    const fill = r.getAttribute('fill');
+    if(fill==='#3a5fd9'||fill===_archPrevBody) r.setAttribute('fill', bodyColor);
+    if(fill==='#1a2a6e'||fill===_archPrevLeg)  r.setAttribute('fill', legColor);
+    if(fill==='#111'||fill===_archPrevShoe)     r.setAttribute('fill', shoeColor);
+    const stroke=r.getAttribute('stroke');
+    if(stroke==='#2a4ab0'||stroke===_archPrevBodyS) r.setAttribute('stroke', bodyStroke);
+    if(stroke==='#0f1a50'||stroke===_archPrevLegS)  r.setAttribute('stroke', legStroke);
+    if(stroke==='#333'||stroke===_archPrevShoeS)    r.setAttribute('stroke', shoeStroke);
+  });
+  _archPrevBody='#3a5fd9'; _archPrevBodyS='#2a4ab0';
+  _archPrevLeg='#1a2a6e';  _archPrevLegS='#0f1a50';
+  _archPrevShoe='#111';    _archPrevShoeS='#333';
+  if(isArch){
+    _archPrevBody=bodyColor; _archPrevBodyS=bodyStroke;
+    _archPrevLeg=legColor;   _archPrevLegS=legStroke;
+    _archPrevShoe=shoeColor; _archPrevShoeS=shoeStroke;
+  }
 
   const owned=inventory[aura.name]||0;
 
@@ -2391,6 +2991,7 @@ function equipFromPreview(){
   if(!previewAura)return;
   document.getElementById('equippedAura').textContent=previewAura.name;
   document.getElementById('equippedAura').style.color=previewAura.color;
+  triggerEquipAnimation(previewAura.name, previewAura.color);
   closePreview();
 }
 
@@ -3320,20 +3921,35 @@ function updatePityDisplay(){
   const wrap  = document.getElementById('pityWrap');
   const count = document.getElementById('pityCount');
   const fill  = document.getElementById('pityFill');
+  const icon  = document.getElementById('pityIcon');
+  const label = document.getElementById('pityTargetLabel');
+  const maxEl = document.getElementById('pityMax');
   if(!wrap) return;
-  count.textContent = pityCounter.toLocaleString();
-  const pct = Math.min(100, (pityCounter / PITY_THRESHOLD) * 100);
+  const cfg = getPityCfg();
+  const pct = Math.min(100, (pityCounter / cfg.threshold) * 100);
+  // Archangel: show % instead of raw number (250M is unreadable)
+  if(pityTarget === 'archangel'){
+    count.textContent = pct.toFixed(4) + '%';
+    if(maxEl) maxEl.textContent = '100%';
+  } else {
+    count.textContent = pityCounter.toLocaleString();
+    if(maxEl) maxEl.textContent = cfg.threshold.toLocaleString();
+  }
   fill.style.width = pct + '%';
-  // Pulse warning at 75%+
+  fill.style.background = cfg.fillCss;
+  if(icon) icon.textContent = cfg.icon;
+  if(label) label.textContent = cfg.label;
+  wrap.classList.toggle('archangel-mode', pityTarget === 'archangel');
   wrap.classList.toggle('danger', pct >= 75);
 }
 
 function rollAura(){
-  // Pity: force Gargantua if threshold reached
-  if(pityCounter >= PITY_THRESHOLD){
+  // Pity: force target aura if threshold reached
+  const cfg = getPityCfg();
+  if(pityCounter >= cfg.threshold){
     pityCounter = 0;
     updatePityDisplay();
-    return AURAS.find(a => a.name === 'Gargantua');
+    return AURAS.find(a => a.name === cfg.target);
   }
 
   // Luck multiplier boosts the chance of every non-common aura
@@ -3360,9 +3976,11 @@ async function doRoll(){
 
   core.className='aura-core'; nameEl.style.cssText=''; ring.classList.add('rolling');
   // remove any old gargantua rings
-  document.querySelectorAll('.gargantua-ring,.gargantua-ring2').forEach(e=>e.remove());
+  document.querySelectorAll('.gargantua-ring,.gargantua-ring2,.archangel-ring,.archangel-ring2').forEach(e=>e.remove());
   iconEl.textContent='✦'; iconEl.style.color=''; nameEl.textContent='...';
   rarityEl.textContent='Rolling...'; chanceEl.textContent='1 in ???'; prevBtn.style.display='none';
+  // Roll spin sound
+  if(!(autoRolling && currentSpeed>=3)) sfxRollSpin();
 
   const spinTime = autoRolling && currentSpeed>=2 ? 120 : 600+Math.random()*400;
   await sleep(spinTime);
@@ -3373,8 +3991,7 @@ async function doRoll(){
     pityCounter = 0;
   } else {
     pityCounter++;
-  }
-  updatePityDisplay();
+  }  updatePityDisplay();
 
   core.className=`aura-core glow-${result.glow}`;
   iconEl.textContent=result.icon; iconEl.style.color=result.color;
@@ -3412,6 +4029,11 @@ async function doRoll(){
   }
 
   cancelAnimationFrame(animFrame);
+  // ── REVEAL ANIMATION + SOUND ──
+  if(!(autoRolling && currentSpeed>=3)){
+    triggerRollAnimation(result.glow);
+    sfxReveal(result.glow);
+  }
   spawnParticles(result.color, result.glow==='archangel'?200:result.glow==='gargantua'?150:result.glow==='mythical'?80:result.glow==='legendary'?55:30);
   // for gargantua, also spawn dark "inward" particles
   if(result.glow==='gargantua'){
@@ -4131,6 +4753,17 @@ function fbListenLeaderboard(){
 
 
 function saveCurrentProgress(){
+  // Always save guest progress to localStorage under a guest key
+  const guestData = {
+    inventory, totalRolls,
+    bestAura: bestAura ? bestAura.name : null,
+    pityCounter, pityTarget,
+    rollHistory: rollHistory.slice(0,200),
+    achievements,
+    lastSaved: Date.now()
+  };
+  try { localStorage.setItem('sols_guest_progress', JSON.stringify(guestData)); } catch(e){}
+
   if(!currentUser||currentUser.guest) return;
   const users=getUsers();
   if(!users[currentUser.username]) return;
@@ -4139,8 +4772,10 @@ function saveCurrentProgress(){
   users[currentUser.username].bestAura=bestAura?bestAura.name:null;
   users[currentUser.username].lastSaved=Date.now();
   users[currentUser.username].pityCounter=pityCounter;
+  users[currentUser.username].pityTarget=pityTarget;
+  users[currentUser.username].rollHistory=rollHistory.slice(0,200);
+  users[currentUser.username].achievements=achievements;
   saveUsers(users);
-  // Push to Firebase async
   fbSaveUser(currentUser.username, users[currentUser.username]);
 }
 
@@ -4151,6 +4786,9 @@ function loadUserProgress(username){
   totalRolls=d.totalRolls||0;
   bestAura=d.bestAura?AURAS.find(a=>a.name===d.bestAura):null;
   pityCounter=d.pityCounter||0;
+  pityTarget=d.pityTarget||'gargantua';
+  rollHistory=d.rollHistory||[];
+  if(d.achievements) Object.assign(achievements, d.achievements);
   lastAura=null;
   updateUI();
   updatePityDisplay();
@@ -4313,7 +4951,23 @@ function loginUser(username){
 
 function playAsGuest(){
   currentUser={ username:'Guest', color:'#4a5880', guest:true };
-  inventory={}; totalRolls=0; bestAura=null; updateUI();
+  // Restore guest progress from localStorage
+  try {
+    const saved = localStorage.getItem('sols_guest_progress');
+    if(saved){
+      const d = JSON.parse(saved);
+      inventory = d.inventory || {};
+      totalRolls = d.totalRolls || 0;
+      bestAura = d.bestAura ? AURAS.find(a=>a.name===d.bestAura) : null;
+      pityCounter = d.pityCounter || 0;
+      pityTarget = d.pityTarget || 'gargantua';
+      rollHistory = d.rollHistory || [];
+      if(d.achievements) Object.assign(achievements, d.achievements);
+    } else {
+      inventory={}; totalRolls=0; bestAura=null;
+    }
+  } catch(e){ inventory={}; totalRolls=0; bestAura=null; }
+  updateUI(); updatePityDisplay();
   applyUserToUI();
   hideLoginScreen();
 }
@@ -4584,17 +5238,39 @@ function updateUI(){
   document.getElementById('statBest').textContent=bestAura?bestAura.name:'—';
   const unique=Object.keys(inventory).length;
   document.getElementById('statUnique').textContent=unique;
+  // Sync mobile stats row
+  const mr=document.getElementById('statRollsMobile'); if(mr) mr.textContent=totalRolls;
+  const mb=document.getElementById('statBestMobile'); if(mb) mb.textContent=bestAura?bestAura.name:'—';
+  const mu=document.getElementById('statUniqueMobile'); if(mu) mu.textContent=unique;
+  // Sync mobile menu firebase button
+  const mmFb=document.getElementById('mmFbBtn');
+  const fbBtn=document.getElementById('fbTopbarBtn');
+  if(mmFb && fbBtn) mmFb.style.display = fbBtn.style.display==='none'?'none':'flex';
+  // Sync mobile music dot
+  const mmDot=document.getElementById('mmMusicDot');
+  const mmLabel=document.getElementById('mmMusicLabel');
+  if(mmDot){ mmDot.style.background=_musicPlaying?'#50dc78':'var(--text-dim)'; }
+  if(mmLabel){ mmLabel.textContent=_musicPlaying?'♪ On':'♪ Music'; }
   document.getElementById('invCount').textContent=unique+' aura'+(unique!==1?'s':'');
   const list=document.getElementById('invList'); list.innerHTML='';
   const sorted=Object.entries(inventory).sort((a,b)=>RARITY_ORDER.indexOf(a[0])-RARITY_ORDER.indexOf(b[0]));
   for(const [name,qty] of sorted){
     const aura=AURAS.find(a=>a.name===name);
-    const item=document.createElement('div'); item.className='inv-item';
+    const isNew = !_prevInventoryKeys.has(name);
+    const item=document.createElement('div');
+    item.className='inv-item' + (isNew ? ' inv-item-new' : ' inv-item-bump');
     item.innerHTML=`<div class="inv-dot" style="background:${aura.color};box-shadow:0 0 7px ${aura.color};"></div><div class="inv-name" style="color:${aura.color}">${name}</div><div class="inv-qty">x${qty}</div><button class="inv-eye" title="Preview aura">👁</button>`;
     item.querySelector('.inv-eye').onclick=e=>{e.stopPropagation();openPreview(aura);};
-    item.onclick=()=>{document.getElementById('equippedAura').textContent=name;document.getElementById('equippedAura').style.color=aura.color;};
+    item.onclick=()=>{
+      document.getElementById('equippedAura').textContent=name;
+      document.getElementById('equippedAura').style.color=aura.color;
+      triggerEquipAnimation(name, aura.color);
+    };
     list.appendChild(item);
+    // remove animation class after it finishes so re-renders don't re-animate
+    setTimeout(()=>{ item.classList.remove('inv-item-new','inv-item-bump'); }, 500);
   }
+  _prevInventoryKeys = new Set(Object.keys(inventory));
   saveCurrentProgress();
   updateRankDisplay();
 }
@@ -5071,17 +5747,21 @@ function sendChat(){
 // broadcast aura roll to chat (rare+)
 function broadcastRollToChat(aura){
   if(!currentUser||currentUser.guest) return;
-  if(!['epic','legendary','mythical','gargantua','archangel'].includes(aura.glow)) return;
+  if(!['rare','epic','legendary','mythical','gargantua','archangel'].includes(aura.glow)) return;
+  // Only broadcast rare if it's the first time ever
+  if(aura.glow==='rare' && (inventory[aura.name]||0) > 1) return;
+  const prefix = aura.glow==='archangel'?'🌟⚡🌟':aura.glow==='gargantua'?'🌌🕳🌌':aura.glow==='mythical'?'👁️🔥👁️':aura.glow==='legendary'?'✨🌟✨':aura.glow==='epic'?'💫⚡💫':'🎲';
+  const isFirst = (inventory[aura.name]||0) <= 1;
+  const suffix = isFirst ? ` for the first time!` : `!`;
   const msg = {
     system: true,
-    text: `🎲 ${currentUser.username} rolled a ${aura.icon} ${aura.name}! (${aura.chanceStr})`,
+    text: `${prefix} ${currentUser.username} rolled ${aura.icon} ${aura.name}${suffix} (${aura.chanceStr})`,
+    glow: aura.glow,
     ts: Date.now()
   };
   const f = fb();
   if(f){
-    f.push(f.ref(f.db, 'chat'), msg).catch(()=>{
-      const msgs = getChat(); msgs.push(msg); saveChat(msgs);
-    });
+    f.push(f.ref(f.db, 'chat'), msg).catch(()=>{ const msgs = getChat(); msgs.push(msg); saveChat(msgs); });
   } else {
     const msgs = getChat(); msgs.push(msg); saveChat(msgs);
   }
@@ -5105,6 +5785,7 @@ function recordRoll(aura){
   rollHistory.unshift({ name: aura.name, color: aura.color, glow: aura.glow, ts: Date.now() });
   if(rollHistory.length > 200) rollHistory = rollHistory.slice(0, 200);
   broadcastRollToChat(aura);
+  checkAchievements();
 }
 
 function openStats(){
@@ -5192,28 +5873,33 @@ function renderStats(){
   }
 
   // ── MILESTONES ──
-  const milestones = [
-    { icon:'🎲', label:'First Roll',         done: totalRolls>=1,      val:`${Math.min(totalRolls,1)}/1 rolls` },
-    { icon:'🔁', label:'100 Rolls',          done: totalRolls>=100,    val:`${Math.min(totalRolls,100)}/100` },
-    { icon:'💪', label:'1,000 Rolls',        done: totalRolls>=1000,   val:`${Math.min(totalRolls,1000)}/1000` },
-    { icon:'⚡', label:'Roll Mythical',      done: !!inventory['Mythical'],    val: inventory['Mythical']?'✓ Done':'Not yet' },
-    { icon:'✦',  label:'Roll Rare',          done: !!inventory['Rare'],        val: inventory['Rare']?'✓ Done':'Not yet' },
-    { icon:'⬡',  label:'Roll Epic',          done: !!inventory['Epic'],        val: inventory['Epic']?'✓ Done':'Not yet' },
-    { icon:'★',  label:'Roll Legendary',     done: !!inventory['Legendary'],   val: inventory['Legendary']?'✓ Done':'Not yet' },
-    { icon:'🕳', label:'Roll Gargantua',     done: !!inventory['Gargantua'],   val: inventory['Gargantua']?'✓ DONE!':'1 in 1,000,000' },
-    { icon:'🌈', label:'Collect All Auras',  done: Object.keys(inventory).length>=AURAS.length, val:`${Object.keys(inventory).length}/${AURAS.length}` },
-    { icon:'🍀', label:'Get x10 Luck',       done: luckMultiplier>=10,  val:`x${luckMultiplier} luck` },
-  ];
+  // ── MILESTONES (driven by ACHIEVEMENTS array) ──
   const milEl = document.getElementById('milestonesList');
-  if(milEl) milEl.innerHTML = milestones.map(m=>`
-    <div style="display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:10px;background:rgba(255,255,255,${m.done?'0.07':'0.03'});border:1px solid rgba(${m.done?'80,220,120':'100,140,255'},${m.done?'0.25':'0.08'});">
-      <span style="font-size:1.1rem;">${m.icon}</span>
-      <div style="flex:1;">
-        <div style="font-size:0.82rem;font-weight:700;color:${m.done?'#50dc78':'var(--text)'};">${m.label}</div>
-        <div style="font-size:0.65rem;color:var(--text-dim);">${m.val}</div>
+  if(milEl){
+    const unlocked = ACHIEVEMENTS.filter(a=>achievements[a.id]).length;
+    milEl.innerHTML = `
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+        <span style="font-size:0.75rem;color:var(--text-dim);letter-spacing:0.08em;text-transform:uppercase;">Achievements</span>
+        <span style="font-size:0.72rem;font-weight:700;color:#50dc78;">${unlocked} / ${ACHIEVEMENTS.length} unlocked</span>
       </div>
-      <span style="font-size:0.9rem;">${m.done?'✅':'⬜'}</span>
-    </div>`).join('');
+      <div style="width:100%;height:4px;background:rgba(80,220,120,0.12);border-radius:2px;margin-bottom:14px;">
+        <div style="height:100%;width:${(unlocked/ACHIEVEMENTS.length*100).toFixed(1)}%;background:linear-gradient(90deg,#50dc78,#a0ffb8);border-radius:2px;transition:width 0.5s ease;"></div>
+      </div>
+      ${ACHIEVEMENTS.map(a=>{
+        const done = !!achievements[a.id];
+        return `<div style="display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:10px;margin-bottom:6px;
+          background:rgba(255,255,255,${done?'0.07':'0.02'});
+          border:1px solid rgba(${done?'80,220,120':'100,140,255'},${done?'0.25':'0.07'});
+          opacity:${done?1:0.55};">
+          <span style="font-size:1.2rem;filter:${done?'none':'grayscale(100%)'};">${a.icon}</span>
+          <div style="flex:1;">
+            <div style="font-size:0.82rem;font-weight:700;color:${done?'#50dc78':'var(--text)'};">${a.name}</div>
+            <div style="font-size:0.65rem;color:var(--text-dim);">${a.desc}</div>
+          </div>
+          <span style="font-size:0.9rem;">${done?'✅':'🔒'}</span>
+        </div>`;
+      }).join('')}`;
+  }
 }
 
 function initThreeGargantua(){
@@ -5493,7 +6179,667 @@ function stopThreeGargantua(){
   bhMesh=diskMesh=diskMesh2=coronaParticles=jetMeshTop=jetMeshBot=null;
 }
 
-// ── GARGANTUA PREVIEW OVERRIDE ──
+// ══════════════════════════════════════════════════════
+// SOUND ENGINE — Web Audio API
+// ══════════════════════════════════════════════════════
+let _sfxCtx = null;
+function getSfxCtx(){
+  if(!_sfxCtx) _sfxCtx = new (window.AudioContext||window.webkitAudioContext)();
+  if(_sfxCtx.state === 'suspended') _sfxCtx.resume();
+  return _sfxCtx;
+}
+
+// Generic helper to build a sound
+function sfxPlay(buildFn){
+  try { const ctx = getSfxCtx(); buildFn(ctx, ctx.currentTime); } catch(e){}
+}
+
+// ── ROLL WHOOSH (spin up) ──
+function sfxRollSpin(){
+  sfxPlay((ctx,T)=>{
+    const buf=ctx.createBuffer(1,ctx.sampleRate*0.35,ctx.sampleRate);
+    const d=buf.getChannelData(0);
+    for(let i=0;i<d.length;i++) d[i]=(Math.random()*2-1)*Math.pow(1-i/d.length,0.4);
+    const src=ctx.createBufferSource(); src.buffer=buf;
+    const f=ctx.createBiquadFilter(); f.type='bandpass';
+    f.frequency.setValueAtTime(600,T); f.frequency.exponentialRampToValueAtTime(2800,T+0.3);
+    f.Q.value=1.2;
+    const g=ctx.createGain(); g.gain.setValueAtTime(0.25,T); g.gain.linearRampToValueAtTime(0,T+0.32);
+    src.connect(f); f.connect(g); g.connect(ctx.destination);
+    src.start(T); src.stop(T+0.35);
+  });
+}
+
+// ── PER-RARITY REVEAL SOUNDS ──
+function sfxReveal(glow){
+  switch(glow){
+    case 'common':   return sfxCommon();
+    case 'uncommon': return sfxUncommon();
+    case 'rare':     return sfxRare();
+    case 'epic':     return sfxEpic();
+    case 'legendary':return sfxLegendary();
+    case 'mythical': return sfxMythical();
+    // Gargantua & Archangel have their own full soundtracks
+    default: return;
+  }
+}
+
+function sfxCommon(){
+  sfxPlay((ctx,T)=>{
+    const o=ctx.createOscillator(), g=ctx.createGain();
+    o.type='sine'; o.frequency.setValueAtTime(440,T); o.frequency.linearRampToValueAtTime(520,T+0.08);
+    g.gain.setValueAtTime(0.18,T); g.gain.exponentialRampToValueAtTime(0.001,T+0.28);
+    o.connect(g); g.connect(ctx.destination);
+    o.start(T); o.stop(T+0.3);
+  });
+}
+
+function sfxUncommon(){
+  sfxPlay((ctx,T)=>{
+    [330,440,554].forEach((freq,i)=>{
+      const o=ctx.createOscillator(), g=ctx.createGain();
+      o.type='triangle'; o.frequency.value=freq;
+      g.gain.setValueAtTime(0,T+i*0.06); g.gain.linearRampToValueAtTime(0.14,T+i*0.06+0.04);
+      g.gain.exponentialRampToValueAtTime(0.001,T+i*0.06+0.32);
+      o.connect(g); g.connect(ctx.destination);
+      o.start(T+i*0.06); o.stop(T+i*0.06+0.35);
+    });
+  });
+}
+
+function sfxRare(){
+  sfxPlay((ctx,T)=>{
+    // Rising electric zing
+    const o=ctx.createOscillator(), g=ctx.createGain();
+    o.type='sawtooth'; o.frequency.setValueAtTime(180,T); o.frequency.exponentialRampToValueAtTime(880,T+0.22);
+    const f=ctx.createBiquadFilter(); f.type='lowpass'; f.frequency.value=1600;
+    g.gain.setValueAtTime(0.22,T); g.gain.linearRampToValueAtTime(0.28,T+0.12); g.gain.exponentialRampToValueAtTime(0.001,T+0.45);
+    o.connect(f); f.connect(g); g.connect(ctx.destination);
+    o.start(T); o.stop(T+0.5);
+    // Spark crackle
+    const buf=ctx.createBuffer(1,ctx.sampleRate*0.15,ctx.sampleRate);
+    const dd=buf.getChannelData(0);
+    for(let i=0;i<dd.length;i++) dd[i]=(Math.random()*2-1)*Math.exp(-i/(ctx.sampleRate*0.04));
+    const ns=ctx.createBufferSource(); ns.buffer=buf;
+    const nf=ctx.createBiquadFilter(); nf.type='highpass'; nf.frequency.value=3000;
+    const ng=ctx.createGain(); ng.gain.setValueAtTime(0.3,T+0.18);
+    ns.connect(nf); nf.connect(ng); ng.connect(ctx.destination);
+    ns.start(T+0.18);
+  });
+}
+
+function sfxEpic(){
+  sfxPlay((ctx,T)=>{
+    // Deep boom + void shimmer
+    const boom=ctx.createOscillator(), bg=ctx.createGain();
+    boom.type='sine'; boom.frequency.setValueAtTime(80,T); boom.frequency.exponentialRampToValueAtTime(40,T+0.4);
+    bg.gain.setValueAtTime(0.5,T); bg.gain.exponentialRampToValueAtTime(0.001,T+0.55);
+    boom.connect(bg); bg.connect(ctx.destination);
+    boom.start(T); boom.stop(T+0.6);
+    // Void shimmer chord
+    [220,277,330,440].forEach((freq,i)=>{
+      const o=ctx.createOscillator(), g=ctx.createGain();
+      o.type='sine'; o.frequency.value=freq;
+      g.gain.setValueAtTime(0,T+0.1+i*0.05); g.gain.linearRampToValueAtTime(0.1,T+0.2+i*0.05);
+      g.gain.linearRampToValueAtTime(0,T+0.8);
+      o.connect(g); g.connect(ctx.destination);
+      o.start(T+0.1+i*0.05); o.stop(T+1.0);
+    });
+    // Impact noise burst
+    const ibuf=ctx.createBuffer(1,ctx.sampleRate*0.08,ctx.sampleRate);
+    const id=ibuf.getChannelData(0);
+    for(let i=0;i<id.length;i++) id[i]=(Math.random()*2-1)*Math.exp(-i/(ctx.sampleRate*0.02));
+    const is2=ctx.createBufferSource(); is2.buffer=ibuf;
+    const if2=ctx.createBiquadFilter(); if2.type='lowpass'; if2.frequency.value=300;
+    const ig=ctx.createGain(); ig.gain.value=0.8;
+    is2.connect(if2); if2.connect(ig); ig.connect(ctx.destination);
+    is2.start(T);
+  });
+}
+
+function sfxLegendary(){
+  sfxPlay((ctx,T)=>{
+    // Massive golden chord swell
+    const master=ctx.createGain(); master.gain.setValueAtTime(0,T); master.gain.linearRampToValueAtTime(0.7,T+0.15); master.gain.linearRampToValueAtTime(0,T+1.4);
+    master.connect(ctx.destination);
+    // Cosmic horn
+    [146.8,220,293.7,440,587.3].forEach((freq,i)=>{
+      const o=ctx.createOscillator(), g=ctx.createGain();
+      o.type = i<2 ? 'sawtooth' : 'sine';
+      o.frequency.value=freq;
+      const f=ctx.createBiquadFilter(); f.type='lowpass'; f.frequency.value=1800-i*100;
+      g.gain.setValueAtTime(0,T+i*0.04); g.gain.linearRampToValueAtTime(0.18-i*0.025,T+0.2);
+      o.connect(f); f.connect(g); g.connect(master);
+      o.start(T+i*0.04); o.stop(T+1.6);
+    });
+    // Star twinkle high notes
+    [1046.5,1318.5,1760].forEach((freq,i)=>{
+      const o=ctx.createOscillator(), g=ctx.createGain();
+      o.type='sine'; o.frequency.value=freq;
+      g.gain.setValueAtTime(0,T+0.08+i*0.07); g.gain.linearRampToValueAtTime(0.12,T+0.14+i*0.07); g.gain.exponentialRampToValueAtTime(0.001,T+0.5+i*0.1);
+      o.connect(g); g.connect(master);
+      o.start(T+0.08+i*0.07); o.stop(T+0.7+i*0.1);
+    });
+    // Sub thud
+    const to=ctx.createOscillator(), tg=ctx.createGain();
+    to.type='sine'; to.frequency.setValueAtTime(60,T); to.frequency.exponentialRampToValueAtTime(28,T+0.35);
+    tg.gain.setValueAtTime(0.9,T); tg.gain.exponentialRampToValueAtTime(0.001,T+0.45);
+    to.connect(tg); tg.connect(ctx.destination);
+    to.start(T); to.stop(T+0.5);
+  });
+}
+
+function sfxMythical(){
+  sfxPlay((ctx,T)=>{
+    const master=ctx.createGain(); master.gain.value=0.8; master.connect(ctx.destination);
+    // Primordial chaos — low distorted drone
+    const o1=ctx.createOscillator(), g1=ctx.createGain();
+    o1.type='sawtooth'; o1.frequency.setValueAtTime(55,T); o1.frequency.linearRampToValueAtTime(42,T+0.8);
+    const dist=ctx.createWaveShaper();
+    const curve=new Float32Array(256);
+    for(let i=0;i<256;i++){const x=i*2/256-1;curve[i]=Math.sign(x)*Math.pow(Math.abs(x),0.3);}
+    dist.curve=curve;
+    g1.gain.setValueAtTime(0.5,T); g1.gain.linearRampToValueAtTime(0,T+1.2);
+    o1.connect(dist); dist.connect(g1); g1.connect(master);
+    o1.start(T); o1.stop(T+1.3);
+    // Hell chorus
+    [110,138.6,165,220,277.2,330].forEach((freq,i)=>{
+      const o=ctx.createOscillator(), g=ctx.createGain();
+      o.type = i%2===0 ? 'square' : 'sawtooth';
+      o.frequency.value=freq*(1+(i%3===0?0.005:-0.005));
+      const f=ctx.createBiquadFilter(); f.type='lowpass'; f.frequency.value=900;
+      g.gain.setValueAtTime(0,T+i*0.03); g.gain.linearRampToValueAtTime(0.08,T+i*0.03+0.12); g.gain.linearRampToValueAtTime(0,T+1.0);
+      o.connect(f); f.connect(g); g.connect(master);
+      o.start(T+i*0.03); o.stop(T+1.2);
+    });
+    // Shriek
+    const s=ctx.createOscillator(), sg=ctx.createGain();
+    s.type='sine'; s.frequency.setValueAtTime(2200,T+0.05); s.frequency.exponentialRampToValueAtTime(400,T+0.4);
+    sg.gain.setValueAtTime(0.35,T+0.05); sg.gain.exponentialRampToValueAtTime(0.001,T+0.5);
+    s.connect(sg); sg.connect(master);
+    s.start(T+0.05); s.stop(T+0.55);
+    // Apocalypse sub
+    const sb=ctx.createOscillator(), sbg=ctx.createGain();
+    sb.type='sine'; sb.frequency.setValueAtTime(32,T); sb.frequency.linearRampToValueAtTime(22,T+0.6);
+    sbg.gain.setValueAtTime(1.0,T); sbg.gain.exponentialRampToValueAtTime(0.001,T+0.75);
+    sb.connect(sbg); sbg.connect(ctx.destination);
+    sb.start(T); sb.stop(T+0.8);
+  });
+}
+
+// ── EQUIP SOUND ──
+function sfxEquip(color){
+  sfxPlay((ctx,T)=>{
+    // Magical chime + shimmer
+    const freqs=[523.3,659.3,783.9,1046.5];
+    freqs.forEach((freq,i)=>{
+      const o=ctx.createOscillator(), g=ctx.createGain();
+      o.type='sine'; o.frequency.value=freq;
+      g.gain.setValueAtTime(0,T+i*0.045); g.gain.linearRampToValueAtTime(0.22-i*0.04,T+i*0.045+0.03);
+      g.gain.exponentialRampToValueAtTime(0.001,T+i*0.045+0.35);
+      o.connect(g); g.connect(ctx.destination);
+      o.start(T+i*0.045); o.stop(T+i*0.045+0.4);
+    });
+    // Sparkle noise
+    const buf=ctx.createBuffer(1,ctx.sampleRate*0.12,ctx.sampleRate);
+    const d=buf.getChannelData(0);
+    for(let i=0;i<d.length;i++) d[i]=(Math.random()*2-1)*Math.pow(1-i/d.length,2);
+    const ns=ctx.createBufferSource(); ns.buffer=buf;
+    const nf=ctx.createBiquadFilter(); nf.type='highpass'; nf.frequency.value=4000;
+    const ng=ctx.createGain(); ng.gain.value=0.15;
+    ns.connect(nf); nf.connect(ng); ng.connect(ctx.destination);
+    ns.start(T+0.05);
+  });
+}
+
+// ══════════════════════════════════════════════════════
+// AMBIENT MUSIC ENGINE
+// ══════════════════════════════════════════════════════
+let _musicCtx = null, _musicPlaying = false, _musicNodes = [];
+let _musicScheduleTimer = null;
+const MUSIC_VOL = 0.18;
+
+function getMusicCtx(){
+  if(!_musicCtx) _musicCtx = new (window.AudioContext||window.webkitAudioContext)();
+  if(_musicCtx.state === 'suspended') _musicCtx.resume();
+  return _musicCtx;
+}
+
+// Ambient music: slow evolving space drone with melodic arpeggio
+function startAmbientMusic(){
+  const ctx = getMusicCtx();
+  const T = ctx.currentTime;
+  const master = ctx.createGain(); master.gain.setValueAtTime(0,T); master.gain.linearRampToValueAtTime(MUSIC_VOL,T+3);
+  master.connect(ctx.destination);
+  _musicNodes.push(master);
+
+  // ── DEEP DRONE (pad) ──
+  const droneFreqs = [55,82.4,110,164.8];
+  droneFreqs.forEach((freq,i)=>{
+    const o=ctx.createOscillator(), g=ctx.createGain();
+    o.type='sine'; o.frequency.value=freq*(1+(i%2===0?0.003:-0.003));
+    const lfo=ctx.createOscillator(); lfo.type='sine'; lfo.frequency.value=0.08+i*0.03;
+    const lfoG=ctx.createGain(); lfoG.gain.value=freq*0.004;
+    lfo.connect(lfoG); lfoG.connect(o.frequency);
+    g.gain.value=0.25-i*0.05;
+    o.connect(g); g.connect(master);
+    o.start(T); lfo.start(T);
+    _musicNodes.push(o,g,lfo,lfoG);
+  });
+
+  // ── SHIMMER PAD (high strings) ──
+  [523.3,659.3,783.9,1046.5,1318.5].forEach((freq,i)=>{
+    const o=ctx.createOscillator(), g=ctx.createGain();
+    o.type='sine'; o.frequency.value=freq;
+    const trem=ctx.createOscillator(); trem.type='sine'; trem.frequency.value=0.12+i*0.04;
+    const tg=ctx.createGain(); tg.gain.value=0.018;
+    trem.connect(tg); tg.connect(g.gain);
+    g.gain.setValueAtTime(0.022-i*0.003,T);
+    o.connect(g); g.connect(master);
+    o.start(T+i*0.5); trem.start(T+i*0.5);
+    _musicNodes.push(o,g,trem,tg);
+  });
+
+  // ── ARPEGGIO (melodic) ──
+  // Scale: D minor pentatonic — D,F,G,A,C
+  const scale = [146.8,174.6,196.0,220.0,261.6,293.7,349.2,392.0,440.0,523.3];
+  const arpeggioPattern = [0,2,4,5,7,5,4,2,0,2,4,7,9,7,4,2];
+  let step = 0;
+  function scheduleArp(){
+    if(!_musicPlaying) return;
+    const now = ctx.currentTime;
+    const freq = scale[arpeggioPattern[step % arpeggioPattern.length]];
+    const o=ctx.createOscillator(), g=ctx.createGain();
+    o.type='triangle';
+    o.frequency.setValueAtTime(freq,now);
+    o.frequency.linearRampToValueAtTime(freq*1.002,now+0.12);
+    g.gain.setValueAtTime(0,now); g.gain.linearRampToValueAtTime(0.055,now+0.02);
+    g.gain.linearRampToValueAtTime(0.032,now+0.3); g.gain.linearRampToValueAtTime(0,now+0.65);
+    const f=ctx.createBiquadFilter(); f.type='lowpass'; f.frequency.value=1400;
+    o.connect(f); f.connect(g); g.connect(master);
+    o.start(now); o.stop(now+0.7);
+    step++;
+    _musicScheduleTimer = setTimeout(scheduleArp, 380+Math.random()*120);
+    _musicNodes.push(o,g,f);
+  }
+  setTimeout(scheduleArp, 2000);
+
+  // ── SOFT NOISE BED ──
+  const nbuf=ctx.createBuffer(2,ctx.sampleRate*8,ctx.sampleRate);
+  for(let ch=0;ch<2;ch++){
+    const d=nbuf.getChannelData(ch);
+    for(let i=0;i<d.length;i++) d[i]=Math.random()*2-1;
+  }
+  const ns=ctx.createBufferSource(); ns.buffer=nbuf; ns.loop=true;
+  const nf=ctx.createBiquadFilter(); nf.type='bandpass'; nf.frequency.value=180; nf.Q.value=0.5;
+  const ng=ctx.createGain(); ng.gain.value=0.04;
+  ns.connect(nf); nf.connect(ng); ng.connect(master);
+  ns.start(T);
+  _musicNodes.push(ns,nf,ng);
+}
+
+function stopAmbientMusic(){
+  clearTimeout(_musicScheduleTimer);
+  if(_musicCtx){
+    const master = _musicNodes[0];
+    if(master && master.gain){
+      const T=_musicCtx.currentTime;
+      master.gain.linearRampToValueAtTime(0, T+1.5);
+    }
+    setTimeout(()=>{
+      _musicNodes.forEach(n=>{ try{n.stop&&n.stop(); n.disconnect&&n.disconnect();}catch(e){} });
+      _musicNodes = [];
+    }, 1600);
+  }
+}
+
+function toggleMusic(){
+  _musicPlaying = !_musicPlaying;
+  const btn = document.getElementById('musicBtn');
+  const label = document.getElementById('musicBtnLabel');
+  if(_musicPlaying){
+    btn.classList.add('playing');
+    label.textContent = '♪ On';
+    startAmbientMusic();
+  } else {
+    btn.classList.remove('playing');
+    label.textContent = '♪ Music';
+    stopAmbientMusic();
+  }
+}
+
+// ══════════════════════════════════════════════════════
+// BURST PARTICLE SYSTEM (full-screen, rare+ reveals)
+// ══════════════════════════════════════════════════════
+const burstCanvas = document.getElementById('burstCanvas');
+const burstCtx = burstCanvas.getContext('2d');
+let burstParticles = [], burstAnimId = null;
+
+function resizeBurst(){
+  burstCanvas.width = window.innerWidth;
+  burstCanvas.height = window.innerHeight;
+}
+resizeBurst();
+window.addEventListener('resize', resizeBurst);
+
+function triggerBurst(color, glow){
+  const cx = window.innerWidth * 0.5;
+  const cy = window.innerHeight * 0.42;
+  // Number and style of particles per rarity
+  const configs = {
+    rare:      { count:40,  speed:6,  size:4,  life:0.018, colors:[color,'#ffffff'] },
+    epic:      { count:70,  speed:9,  size:5,  life:0.014, colors:[color,'#cc88ff','#ffffff'] },
+    legendary: { count:100, speed:12, size:6,  life:0.011, colors:[color,'#ffd700','#ffffff','#fffacd'] },
+    mythical:  { count:140, speed:15, size:7,  life:0.009, colors:[color,'#ff3232','#ff8800','#ffffff'] },
+  };
+  const cfg = configs[glow] || { count:20, speed:4, size:3, life:0.022, colors:[color] };
+  for(let i=0;i<cfg.count;i++){
+    const angle = Math.random()*Math.PI*2;
+    const speed = cfg.speed * (0.4 + Math.random() * 0.8);
+    const col = cfg.colors[Math.floor(Math.random()*cfg.colors.length)];
+    // Mix in stars (⭐) and regular dots
+    burstParticles.push({
+      x:cx, y:cy,
+      vx: Math.cos(angle)*speed,
+      vy: Math.sin(angle)*speed - Math.random()*4,
+      life:1, decay:cfg.life + Math.random()*0.006,
+      size: cfg.size*(0.5+Math.random()),
+      color:col,
+      gravity: 0.08 + Math.random()*0.05,
+      twinkle: Math.random()*Math.PI*2,
+      isStar: Math.random() < 0.25
+    });
+  }
+  // Ring burst — particles shoot outward in perfect ring
+  const ringCount = glow==='legendary'?24:glow==='mythical'?32:16;
+  for(let i=0;i<ringCount;i++){
+    const angle = (i/ringCount)*Math.PI*2;
+    const speed = cfg.speed * 1.2;
+    burstParticles.push({
+      x:cx, y:cy,
+      vx:Math.cos(angle)*speed, vy:Math.sin(angle)*speed,
+      life:1, decay:cfg.life*0.7,
+      size:cfg.size*1.4,
+      color: i%2===0 ? color : '#ffffff',
+      gravity:0.04, twinkle:i, isStar:true
+    });
+  }
+  if(!burstAnimId) animateBurst();
+}
+
+function animateBurst(){
+  burstCtx.clearRect(0,0,burstCanvas.width,burstCanvas.height);
+  burstParticles = burstParticles.filter(p=>p.life>0);
+  for(const p of burstParticles){
+    p.twinkle += 0.15;
+    const alpha = Math.pow(p.life,1.5);
+    burstCtx.save();
+    burstCtx.globalAlpha = alpha * 0.9;
+    burstCtx.shadowColor = p.color;
+    burstCtx.shadowBlur = 12;
+    if(p.isStar){
+      // Draw star shape
+      burstCtx.translate(p.x,p.y);
+      burstCtx.rotate(p.twinkle);
+      burstCtx.fillStyle = p.color;
+      const sz = p.size * p.life;
+      burstCtx.beginPath();
+      for(let i=0;i<5;i++){
+        const outerA = (i*4*Math.PI/5)-Math.PI/2;
+        const innerA = outerA + Math.PI/5;
+        if(i===0) burstCtx.moveTo(Math.cos(outerA)*sz, Math.sin(outerA)*sz);
+        else burstCtx.lineTo(Math.cos(outerA)*sz, Math.sin(outerA)*sz);
+        burstCtx.lineTo(Math.cos(innerA)*sz*0.4, Math.sin(innerA)*sz*0.4);
+      }
+      burstCtx.closePath(); burstCtx.fill();
+    } else {
+      burstCtx.fillStyle = p.color;
+      burstCtx.beginPath();
+      burstCtx.arc(p.x, p.y, p.size*p.life, 0, Math.PI*2);
+      burstCtx.fill();
+    }
+    burstCtx.restore();
+    p.x += p.vx; p.y += p.vy;
+    p.vx *= 0.96; p.vy *= 0.96;
+    p.vy += p.gravity;
+    p.life -= p.decay;
+  }
+  if(burstParticles.length > 0){
+    burstAnimId = requestAnimationFrame(animateBurst);
+  } else {
+    burstAnimId = null;
+    burstCtx.clearRect(0,0,burstCanvas.width,burstCanvas.height);
+  }
+}
+
+// ══════════════════════════════════════════════════════
+// ANIMATION HELPERS
+// ══════════════════════════════════════════════════════
+function triggerRollAnimation(glow){
+  const core = document.getElementById('auraCore');
+  const nameEl = document.getElementById('auraName');
+  // Bounce reveal
+  core.classList.remove('reveal-anim','shine-fx');
+  void core.offsetWidth;
+  core.classList.add('reveal-anim');
+  nameEl.classList.remove('reveal-anim');
+  void nameEl.offsetWidth;
+  nameEl.classList.add('reveal-anim');
+  // Shine on rare+
+  if(['rare','epic','legendary','mythical','gargantua','archangel'].includes(glow)){
+    setTimeout(()=>{
+      core.classList.add('shine-fx');
+      setTimeout(()=>core.classList.remove('shine-fx'),800);
+    },120);
+  }
+  // Full-screen burst on epic+
+  if(['epic','legendary','mythical'].includes(glow)){
+    const aura = AURAS.find(a=>a.glow===glow);
+    if(aura) setTimeout(()=>triggerBurst(aura.color, glow), 80);
+  }
+}
+
+function triggerEquipAnimation(auraName, color){
+  // Animate the equipped card
+  const card = document.querySelector('.bottom-card');
+  const equippedEl = document.getElementById('equippedAura');
+  if(!equippedEl) return;
+  equippedEl.classList.remove('equip-flash');
+  void equippedEl.offsetWidth;
+  equippedEl.classList.add('equip-flash');
+  // Glow the card briefly
+  const parentCard = equippedEl.closest('.bottom-card');
+  if(parentCard){
+    parentCard.style.transition='box-shadow 0.2s,border-color 0.3s';
+    parentCard.style.boxShadow=`0 0 24px ${color}66`;
+    parentCard.style.borderColor=`${color}88`;
+    setTimeout(()=>{
+      parentCard.style.boxShadow='';
+      parentCard.style.borderColor='';
+    },800);
+  }
+  sfxEquip(color);
+}
+
+// ══════════════════════════════════════════════════════
+// PATCH — inventory items get animation
+// ══════════════════════════════════════════════════════
+// We'll track which items were already rendered to animate only new ones
+let _prevInventoryKeys = new Set();
+
+// ── MOBILE MENU ──
+function toggleMobileMenu(){
+  const menu = document.getElementById('mobileMenu');
+  const btn = document.getElementById('hamburgerBtn');
+  const isOpen = menu.classList.toggle('open');
+  btn.classList.toggle('open', isOpen);
+}
+function closeMobileMenu(){
+  document.getElementById('mobileMenu').classList.remove('open');
+  document.getElementById('hamburgerBtn').classList.remove('open');
+}
+document.addEventListener('click', e=>{
+  const menu = document.getElementById('mobileMenu');
+  const btn = document.getElementById('hamburgerBtn');
+  if(menu && menu.classList.contains('open') && !menu.contains(e.target) && !btn.contains(e.target)){
+    closeMobileMenu();
+  }
+});
+
+// ── SWIPE TO CLOSE MODALS ──
+function _addSwipeToClose(el, closeFn){
+  if(!el) return;
+  let startY=0, startX=0;
+  el.addEventListener('touchstart', e=>{ startY=e.touches[0].clientY; startX=e.touches[0].clientX; }, {passive:true});
+  el.addEventListener('touchend', e=>{
+    const dy = e.changedTouches[0].clientY - startY;
+    const dx = Math.abs(e.changedTouches[0].clientX - startX);
+    if(dy > 80 && dx < 60){ if(closeFn) closeFn(); else closePreview(); }
+  }, {passive:true});
+}
+// Apply to leaderboard and other modals after DOM is ready
+document.addEventListener('DOMContentLoaded', ()=>{
+  const lb = document.querySelector('.lb-box');
+  if(lb) _addSwipeToClose(lb, closeLeaderboard);
+  // Tutorial hints for first-time players
+  if(!localStorage.getItem('sols_tutorial_done')){
+    setTimeout(showTutorialHint, 2000);
+  }
+});
+
+// ── TUTORIAL HINT SYSTEM ──
+const TUTORIAL_STEPS = [
+  { target:'#rollBtn',   text:'Press Roll to discover your first aura!', pos:'top' },
+  { target:'#pityWrap',  text:'Pity counter — guaranteed Gargantua at 1,000,000 rolls. Tap the icon to switch to Archangel pity!', pos:'bottom' },
+  { target:'#autoCard',  text:'Enable Auto Roll to roll continuously. Tap Speed to adjust the rate!', pos:'top' },
+  { target:'#userChip',  text:'Create an account to save progress and appear on the leaderboard!', pos:'bottom' },
+];
+let _tutStep = 0;
+
+function showTutorialHint(){
+  const step = TUTORIAL_STEPS[_tutStep];
+  if(!step) return;
+  const target = document.querySelector(step.target);
+  if(!target){ nextTutorialStep(); return; }
+  const hint = document.getElementById('tutorialHint');
+  if(!hint) return;
+  document.getElementById('tutHintText').textContent = step.text;
+  document.getElementById('tutHintStep').textContent = `${_tutStep+1} / ${TUTORIAL_STEPS.length}`;
+  const rect = target.getBoundingClientRect();
+  hint.style.display = 'flex';
+  hint.style.top = step.pos==='bottom' ? (rect.bottom+10)+'px' : (rect.top-10)+'px';
+  hint.style.left = Math.min(Math.max(rect.left + rect.width/2 - 130, 8), window.innerWidth-268)+'px';
+  hint.style.transform = step.pos==='bottom' ? 'translateY(0)' : 'translateY(-100%)';
+  hint.classList.add('show');
+  // Pulse target
+  target.classList.add('tutorial-pulse');
+  setTimeout(()=>target.classList.remove('tutorial-pulse'), 2500);
+}
+function nextTutorialStep(){
+  const hint = document.getElementById('tutorialHint');
+  if(hint) hint.classList.remove('show');
+  _tutStep++;
+  if(_tutStep >= TUTORIAL_STEPS.length){
+    localStorage.setItem('sols_tutorial_done','1');
+    return;
+  }
+  setTimeout(showTutorialHint, 300);
+}
+function skipTutorial(){
+  const hint = document.getElementById('tutorialHint');
+  if(hint){ hint.classList.remove('show'); setTimeout(()=>hint.style.display='none',300); }
+  localStorage.setItem('sols_tutorial_done','1');
+}
+
+// ── HAPTIC FEEDBACK ON ROLL ──
+const _origDoRollBtn = document.getElementById('rollBtn');
+if(_origDoRollBtn) _origDoRollBtn.addEventListener('touchstart', ()=>{ if(navigator.vibrate) navigator.vibrate(15); }, {passive:true});
+
+// ── ACHIEVEMENTS SYSTEM ──
+const ACHIEVEMENTS = [
+  // ── ROLL MILESTONES ──
+  { id:'first_roll',     name:'First Roll',         desc:'Make your first roll',                    icon:'🎲', check:()=>totalRolls>=1 },
+  { id:'rolls_100',      name:'Century',            desc:'Roll 100 times',                          icon:'💯', check:()=>totalRolls>=100 },
+  { id:'rolls_1000',     name:'Dedicated Roller',   desc:'Roll 1,000 times',                        icon:'🔁', check:()=>totalRolls>=1000 },
+  { id:'rolls_10000',    name:'Obsessed',           desc:'Roll 10,000 times',                       icon:'🌀', check:()=>totalRolls>=10000 },
+  { id:'rolls_100000',   name:'Roll God',           desc:'Roll 100,000 times',                      icon:'🏛️', check:()=>totalRolls>=100000 },
+  { id:'rolls_1000000',  name:'Eternal Roller',     desc:'Roll 1,000,000 times',                    icon:'♾️', check:()=>totalRolls>=1000000 },
+  // ── AURA DISCOVERIES ──
+  { id:'first_rare',     name:'Fortune Smiles',     desc:'Roll your first Rare',                    icon:'💎', check:()=>!!inventory['Rare'] },
+  { id:'first_epic',     name:'Power Awakens',      desc:'Roll your first Epic',                    icon:'⚡', check:()=>!!inventory['Epic'] },
+  { id:'first_legendary',name:'Legendary Being',    desc:'Roll your first Legendary',               icon:'🌟', check:()=>!!inventory['Legendary'] },
+  { id:'first_mythical', name:'Beyond Mortal',      desc:'Roll your first Mythical',                icon:'👁️', check:()=>!!inventory['Mythical'] },
+  { id:'first_garg',     name:'Black Hole Found',   desc:'Roll Gargantua for the first time',       icon:'🕳', check:()=>!!inventory['Gargantua'] },
+  { id:'first_arch',     name:"Heaven's Chosen",    desc:'Roll Archangel for the first time',       icon:'🪽', check:()=>!!inventory['Archangel'] },
+  // ── COLLECTION ──
+  { id:'unique_3',       name:'Novice Collector',   desc:'Discover 3 unique auras',                 icon:'📦', check:()=>Object.keys(inventory).length>=3 },
+  { id:'unique_5',       name:'Collector',          desc:'Discover 5 unique auras',                 icon:'🗃️', check:()=>Object.keys(inventory).length>=5 },
+  { id:'unique_7',       name:'Master Collector',   desc:'Discover 7 unique auras',                 icon:'🏆', check:()=>Object.keys(inventory).length>=7 },
+  { id:'all_auras',      name:'Completionist',      desc:'Collect all 8 auras',                     icon:'👑', check:()=>Object.keys(inventory).length>=8 },
+  // ── QUANTITY ──
+  { id:'common_50',      name:'Common Ground',      desc:'Roll Common 50 times',                    icon:'⭕', check:()=>(inventory['Common']||0)>=50 },
+  { id:'rare_10',        name:'Rare Aficionado',    desc:'Roll Rare 10 times',                      icon:'💠', check:()=>(inventory['Rare']||0)>=10 },
+  { id:'epic_5',         name:'Epic Connoisseur',   desc:'Roll Epic 5 times',                       icon:'🔷', check:()=>(inventory['Epic']||0)>=5 },
+  { id:'legendary_3',    name:'Legend Among Legends',desc:'Roll Legendary 3 times',                 icon:'⭐', check:()=>(inventory['Legendary']||0)>=3 },
+  { id:'garg_3',         name:'Singularity',        desc:'Roll Gargantua 3 times',                  icon:'⚫', check:()=>(inventory['Gargantua']||0)>=3 },
+  // ── LUCK & SPECIAL ──
+  { id:'luck_active',    name:'Lucky Star',         desc:'Activate a Luck multiplier',              icon:'🍀', check:()=>luckMultiplier>1 },
+  { id:'luck_10',        name:'Fortune\'s Favourite',desc:'Reach Luck x10',                         icon:'🌈', check:()=>luckMultiplier>=10 },
+  { id:'pity_half',      name:'Halfway There',      desc:'Reach 50% pity progress',                 icon:'⏳', check:()=>pityCounter >= getPityCfg().threshold * 0.5 },
+  { id:'pity_75',        name:'On the Brink',       desc:'Reach 75% pity progress',                 icon:'🔥', check:()=>pityCounter >= getPityCfg().threshold * 0.75 },
+  { id:'auto_1000',      name:'Let It Run',         desc:'Roll 1,000 times with Auto Roll',         icon:'🤖', check:()=>autoSessionRolls>=1000 },
+  { id:'night_owl',      name:'Night Owl',          desc:'Roll after midnight (local time)',        icon:'🦉', check:()=>new Date().getHours()<4 },
+];
+let achievements = {}; // { id: true }
+let _achievementQueue = [];
+let _achievementShowing = false;
+
+function checkAchievements(){
+  for(const ach of ACHIEVEMENTS){
+    if(!achievements[ach.id] && ach.check()){
+      achievements[ach.id] = true;
+      _achievementQueue.push(ach);
+    }
+  }
+  if(!_achievementShowing) _showNextAchievement();
+}
+
+function _showNextAchievement(){
+  if(_achievementQueue.length===0){ _achievementShowing=false; return; }
+  _achievementShowing=true;
+  const ach = _achievementQueue.shift();
+  const el = document.getElementById('achievementToast');
+  if(!el){ _achievementShowing=false; return; }
+  document.getElementById('achIcon').textContent=ach.icon;
+  document.getElementById('achName').textContent=ach.name;
+  document.getElementById('achDesc').textContent=ach.desc;
+  el.classList.add('show');
+  if(navigator.vibrate) navigator.vibrate([20,10,40]);
+  // Achievement unlock sound
+  sfxPlay((ctx,T)=>{
+    [523.3,659.3,783.9,1046.5].forEach((freq,i)=>{
+      const o=ctx.createOscillator(),g=ctx.createGain();
+      o.type='sine'; o.frequency.value=freq;
+      g.gain.setValueAtTime(0,T+i*0.07); g.gain.linearRampToValueAtTime(0.14,T+i*0.07+0.04);
+      g.gain.exponentialRampToValueAtTime(0.001,T+i*0.07+0.5);
+      o.connect(g); g.connect(ctx.destination);
+      o.start(T+i*0.07); o.stop(T+i*0.07+0.55);
+    });
+  });
+  setTimeout(()=>{
+    el.classList.remove('show');
+    setTimeout(_showNextAchievement, 400);
+  }, 3200);
+}
+
+// alias for modal menu
+function openStatsModal(){ openStats(); }
+function openChatModal(){
+  const m=document.getElementById('chatModal');
+  if(m){ m.style.display='flex'; _addSwipeToClose(m.querySelector('.chat-modal-box'), ()=>{ m.style.display='none'; }); renderChat(); }
+}
+
+// ── PITY DISPLAY: show % for Archangel ──
 // Inject black hole visual into preview stage when Gargantua is shown
 const _origApplyAura = applyAuraToModal;
 applyAuraToModal = function(aura){
