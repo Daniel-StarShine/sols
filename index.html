@@ -1145,6 +1145,44 @@
   .duel-score-bar{height:6px;border-radius:3px;background:rgba(255,255,255,0.08);margin:6px 0;overflow:hidden;}
   .duel-score-fill{height:100%;border-radius:3px;transition:width 0.6s ease;}
 
+  /* ── DUEL INVITE POPUP ── */
+  #duelChallengePopup { display:none;position:fixed;inset:0;z-index:700;align-items:center;justify-content:center;background:rgba(0,0,0,0.82);backdrop-filter:blur(6px); }
+  .duel-invite-box { width:min(360px,92vw);background:linear-gradient(160deg,rgba(10,2,0,0.99),rgba(25,8,0,0.99));border:1px solid rgba(255,100,30,0.55);border-radius:24px;padding:26px;box-shadow:0 0 80px rgba(255,80,0,0.3),0 0 140px rgba(255,60,0,0.12);animation:popIn .4s cubic-bezier(.34,1.4,.64,1); }
+  .duel-invite-swords { font-size:2.8rem;text-align:center;margin-bottom:10px;animation:duelSwordPulse 1s ease-in-out infinite; }
+  @keyframes duelSwordPulse { 0%,100%{transform:scale(1) rotate(-5deg)} 50%{transform:scale(1.15) rotate(5deg)} }
+  .duel-invite-title { font-family:'Cinzel Decorative',serif;font-size:1rem;color:#ff8060;text-align:center;margin-bottom:14px;letter-spacing:0.1em; }
+  .duel-challenger-card { display:flex;align-items:center;gap:12px;padding:10px 14px;background:rgba(255,140,0,0.07);border:1px solid rgba(255,140,0,0.2);border-radius:14px;margin-bottom:10px; }
+  .duel-challenger-avatar { width:46px;height:46px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.1rem;font-weight:900;color:#fff;flex-shrink:0;border:2px solid rgba(255,180,0,0.4); }
+  .duel-challenger-info { flex:1;min-width:0; }
+  .duel-challenger-name { font-size:1rem;font-weight:900;color:#ffc800; }
+  .duel-challenger-best { font-size:0.7rem;color:var(--text-dim);margin-top:2px; }
+  .duel-invite-sub { font-size:0.72rem;color:var(--text-dim);text-align:center;margin-bottom:14px;line-height:1.6; }
+  .duel-invite-countdown-wrap { margin-bottom:16px; }
+  .duel-invite-countdown-label { display:flex;justify-content:space-between;font-size:0.62rem;color:var(--text-dim);margin-bottom:5px; }
+  .duel-invite-countdown-label span:last-child { color:#ff8060;font-weight:700; }
+  .duel-invite-countdown { height:5px;border-radius:3px;background:rgba(255,255,255,0.08);overflow:hidden; }
+  .duel-invite-countdown-fill { height:100%;border-radius:3px;background:linear-gradient(90deg,#ff4400,#ff8060);transition:width 1s linear; }
+  .duel-invite-btns { display:grid;grid-template-columns:1fr 1fr;gap:10px; }
+  .duel-accept-btn { padding:13px;border-radius:13px;background:linear-gradient(135deg,rgba(80,220,80,0.22),rgba(40,180,40,0.12));border:1px solid rgba(80,220,80,0.45);color:#50dc78;font-family:'Cinzel Decorative',serif;font-size:0.82rem;font-weight:700;cursor:pointer;transition:all 0.2s;letter-spacing:0.04em; }
+  .duel-accept-btn:hover { background:rgba(80,220,80,0.32);transform:translateY(-2px);box-shadow:0 4px 20px rgba(80,220,80,0.25); }
+  .duel-decline-btn { padding:13px;border-radius:13px;background:rgba(255,60,60,0.08);border:1px solid rgba(255,60,60,0.3);color:#ff8888;font-family:'Cinzel Decorative',serif;font-size:0.82rem;font-weight:700;cursor:pointer;transition:all 0.2s;letter-spacing:0.04em; }
+  .duel-decline-btn:hover { background:rgba(255,60,60,0.2);transform:translateY(-2px); }
+  .duel-waiting-box { text-align:center;padding:18px;background:rgba(255,180,0,0.06);border:1px solid rgba(255,180,0,0.2);border-radius:14px; }
+  .duel-wait-icon { font-size:1.8rem;display:inline-block;animation:spin 2s linear infinite;margin-bottom:8px; }
+  .duel-cancel-btn { padding:7px 20px;border-radius:9px;border:1px solid rgba(255,80,30,0.4);background:rgba(255,60,30,0.08);color:#ff8060;font-size:0.75rem;cursor:pointer;transition:all 0.2s; }
+  .duel-cancel-btn:hover { background:rgba(255,60,30,0.18); }
+  /* Waiting state in duel area */
+  .duel-waiting-box { text-align:center;padding:18px;background:rgba(255,180,0,0.06);border:1px solid rgba(255,180,0,0.2);border-radius:14px; }
+  .duel-wait-icon { font-size:2rem;display:inline-block;animation:spin 2s linear infinite;margin-bottom:8px; }
+  .duel-wait-title { font-size:0.9rem;font-weight:700;color:#ffc800;margin-bottom:4px; }
+  .duel-wait-sub { font-size:0.68rem;color:var(--text-dim);margin-bottom:12px; }
+  .duel-wait-bar { height:4px;border-radius:2px;background:rgba(255,255,255,0.08);margin-bottom:12px;overflow:hidden; }
+  .duel-wait-bar-fill { height:100%;background:linear-gradient(90deg,#ffc800,#ff8060);animation:duelWaitShrink 60s linear forwards; }
+  @keyframes duelWaitShrink { from{width:100%} to{width:0%} }
+  .duel-cancel-btn { padding:7px 20px;border-radius:9px;border:1px solid rgba(255,80,30,0.4);background:rgba(255,60,30,0.1);color:#ff8060;font-size:0.75rem;cursor:pointer;transition:all 0.15s; }
+  .duel-cancel-btn:hover { background:rgba(255,60,30,0.2); }
+
+
   @keyframes duel-shake{0%,100%{transform:translateX(0);}25%{transform:translateX(-6px);}75%{transform:translateX(6px);}}
 
   /* ══ FIREBASE SETUP MODAL ══ */
@@ -2371,12 +2409,33 @@
 </div>
 
 <!-- ══ DUEL CHALLENGE POPUP ══ -->
-<div id="duelChallengePopup" style="display:none;position:fixed;bottom:80px;right:16px;z-index:600;width:280px;background:linear-gradient(135deg,rgba(255,60,30,0.18),rgba(20,10,5,0.97));border:1px solid rgba(255,80,30,0.45);border-radius:16px;padding:16px;box-shadow:0 8px 40px rgba(255,60,0,0.25);animation:slideInRight 0.35s ease;">
-  <div style="font-family:'Cinzel Decorative',serif;font-size:0.9rem;color:#ff8060;margin-bottom:6px;">⚔️ Duel Challenge!</div>
-  <div id="duelChallengeText" style="font-size:0.78rem;color:var(--text);margin-bottom:12px;line-height:1.5;"></div>
-  <div style="display:flex;gap:8px;">
-    <button onclick="acceptDuelChallenge()" style="flex:1;padding:8px;border-radius:10px;background:rgba(80,220,80,0.15);border:1px solid rgba(80,220,80,0.4);color:#50dc78;font-weight:700;cursor:pointer;font-size:0.8rem;">✅ Accept</button>
-    <button onclick="declineDuelChallenge()" style="flex:1;padding:8px;border-radius:10px;background:rgba(255,60,60,0.1);border:1px solid rgba(255,60,60,0.3);color:#ff8888;font-weight:700;cursor:pointer;font-size:0.8rem;">❌ Decline</button>
+<div id="duelChallengePopup" style="display:none;position:fixed;inset:0;z-index:700;align-items:center;justify-content:center;background:rgba(0,0,0,0.82);backdrop-filter:blur(6px);">
+  <div class="duel-invite-box">
+    <div class="duel-invite-swords">⚔️</div>
+    <div class="duel-invite-title">DUEL CHALLENGE!</div>
+    <!-- Challenger card (filled by JS) -->
+    <div class="duel-challenger-card" id="duelChallengerCard">
+      <div class="duel-challenger-avatar" id="duelChallengerAvatar">?</div>
+      <div class="duel-challenger-info">
+        <div class="duel-challenger-name" id="duelChallengerName">Player</div>
+        <div class="duel-challenger-best" id="duelChallengerBest">Best aura: —</div>
+        <div class="duel-challenger-best" id="duelChallengerRolls">0 rolls</div>
+      </div>
+    </div>
+    <div class="duel-invite-sub">challenges you to a duel!<br>Best of 3 rolls — the rarer aura wins.</div>
+    <div class="duel-invite-countdown-wrap">
+      <div class="duel-invite-countdown-label">
+        <span>Time to respond</span>
+        <span id="duelCountdownSecs">60s</span>
+      </div>
+      <div class="duel-invite-countdown">
+        <div class="duel-invite-countdown-fill" id="duelCountdownFill" style="width:100%;"></div>
+      </div>
+    </div>
+    <div class="duel-invite-btns">
+      <button class="duel-accept-btn" onclick="acceptDuelChallenge()">⚔️ Accept</button>
+      <button class="duel-decline-btn" onclick="declineDuelChallenge()">✕ Decline</button>
+    </div>
   </div>
 </div>
 
@@ -4947,6 +5006,7 @@ async function fbSaveUser(username, data){
     lastSaved:   Date.now(),
     inventory:   data.inventory || {},
     pityCounter: data.pityCounter || 0,
+    duelRecord:  data.duelRecord || {wins:0,losses:0,ties:0},
     profile:     data.profile ? (({ profilePic, ...p }) => p)(data.profile) : {}
   };
   try{
@@ -5066,6 +5126,10 @@ function saveCurrentProgress(){
   if(!currentUser||currentUser.guest) return;
   const users=getUsers();
   if(!users[currentUser.username]) return;
+
+  // Preserve duelRecord — read it BEFORE modifying users object
+  const existingRecord = users[currentUser.username].duelRecord || {wins:0,losses:0,ties:0};
+
   users[currentUser.username].inventory=inventory;
   users[currentUser.username].totalRolls=totalRolls;
   users[currentUser.username].bestAura=bestAura?bestAura.name:null;
@@ -5074,6 +5138,7 @@ function saveCurrentProgress(){
   users[currentUser.username].pityTarget=pityTarget;
   users[currentUser.username].rollHistory=rollHistory.slice(0,200);
   users[currentUser.username].achievements=achievements;
+  users[currentUser.username].duelRecord=existingRecord;
   saveUsers(users);
   fbSaveUser(currentUser.username, users[currentUser.username]);
 }
@@ -5221,6 +5286,7 @@ function loginUser(username){
       fbSetPresence(username);
       fbListenPresence();
       fbListenLeaderboard();
+      fbListenIncomingDuels();
       // Push local data to Firebase immediately on login
       setTimeout(saveCurrentProgress, 1000);
     };
@@ -5685,17 +5751,28 @@ function openInspect(username){
   } else {
     duelEl.innerHTML=`
       <div style="font-size:0.75rem;color:var(--text-dim);margin-bottom:8px;line-height:1.5;">Challenge <strong style="color:var(--text);">${username}</strong> to 3 rolls each. Best aura wins!</div>
-      <button class="duel-btn" onclick="startDuel('${username}')">⚔️ Challenge ${username}</button>
+      <button class="duel-btn" onclick="sendDuelInvite('${username}')">⚔️ Challenge ${username}</button>
       <div id="duelResultArea"></div>`;
   }
-  // Duel record
-  const duelRec=d.duelRecord||{wins:0,losses:0,ties:0};
-  document.getElementById('inspectDuelRecord').innerHTML=`
-    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;text-align:center;">
-      <div class="inspect-stat"><div class="inspect-stat-val" style="color:#50dc78;">${duelRec.wins}</div><div class="inspect-stat-lbl">Wins</div></div>
-      <div class="inspect-stat"><div class="inspect-stat-val" style="color:#ff8888;">${duelRec.losses}</div><div class="inspect-stat-lbl">Losses</div></div>
-      <div class="inspect-stat"><div class="inspect-stat-val" style="color:#ffc800;">${duelRec.ties}</div><div class="inspect-stat-lbl">Draws</div></div>
-    </div>`;
+  // Duel record — show local first, then refresh from Firebase
+  const _renderDuelRec=(rec)=>{
+    const el=document.getElementById('inspectDuelRecord');
+    if(!el) return;
+    el.innerHTML=`
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;text-align:center;">
+        <div class="inspect-stat"><div class="inspect-stat-val" style="color:#50dc78;">${rec.wins||0}</div><div class="inspect-stat-lbl">Wins</div></div>
+        <div class="inspect-stat"><div class="inspect-stat-val" style="color:#ff8888;">${rec.losses||0}</div><div class="inspect-stat-lbl">Losses</div></div>
+        <div class="inspect-stat"><div class="inspect-stat-val" style="color:#ffc800;">${rec.ties||0}</div><div class="inspect-stat-lbl">Draws</div></div>
+      </div>`;
+  };
+  _renderDuelRec(d.duelRecord||{wins:0,losses:0,ties:0});
+  // Fetch fresh from Firebase
+  const _ff=fb();
+  if(_ff){
+    _ff.get(_ff.ref(_ff.db,`users/${username}/duelRecord`)).then(snap=>{
+      if(snap.exists()) _renderDuelRec(snap.val());
+    }).catch(()=>{});
+  }
 
   switchInspectTab('stats');
   document.getElementById('inspectModal').style.display='flex';
@@ -5728,7 +5805,382 @@ function _buildSpeedRecords(d){
 }
 
 // ── DUEL SYSTEM (improved animated) ──
+// ── DUEL INVITE SYSTEM ──
+let _pendingDuelId   = null;  // ID of a duel we sent and are waiting for
+let _duelListener    = null;  // Firebase listener for active duel
+let _incomingDuelId  = null;  // ID of an incoming challenge we haven't answered
+let _duelResultShown = null;  // ID of last duel result shown — prevents double-counting
+
+function sendDuelInvite(opponentName){
+  const f=fb();
+  if(!f){ showAdminNotif('Firebase required for real-time duels','#ff8888'); return; }
+  if(!currentUser||currentUser.guest){ showAdminNotif('Login to send a duel invite','#ff8888'); return; }
+
+  const duelId = `${currentUser.username}_vs_${opponentName}_${Date.now()}`;
+  const duelRef = f.ref(f.db, `duels/${duelId}`);
+  const payload = {
+    challenger: currentUser.username,
+    opponent:   opponentName,
+    status:     'pending',   // pending → accepted / declined / playing → done
+    ts:         Date.now(),
+    challengerRolls: null,
+    opponentRolls:   null,
+  };
+
+  f.set(duelRef, payload).then(()=>{
+    _pendingDuelId = duelId;
+    // Update UI to "waiting"
+    const duelEl = document.getElementById('inspectDuelArea');
+    if(duelEl) duelEl.innerHTML=`
+      <div class="duel-waiting-box">
+        <div class="duel-wait-icon">⏳</div>
+        <div style="font-size:0.88rem;font-weight:700;color:#ffc800;margin-bottom:4px;">Waiting for ${opponentName}...</div>
+        <div style="font-size:0.68rem;color:var(--text-dim);margin-bottom:10px;">Invite sent! Expires in <span id="duelSendSecs">60</span>s</div>
+        <div style="height:3px;border-radius:2px;background:rgba(255,255,255,0.07);overflow:hidden;margin-bottom:12px;">
+          <div id="duelSendCountdownFill" style="height:100%;border-radius:2px;background:linear-gradient(90deg,#ffc800,#ff8060);width:100%;transition:width 1s linear;"></div>
+        </div>
+        <button class="duel-cancel-btn" onclick="cancelDuelInvite('${duelId}')">✕ Cancel Invite</button>
+      </div>`;
+    // Animate send countdown
+    let _sc=60; const _scTimer=setInterval(()=>{ _sc--; const fill=document.getElementById('duelSendCountdownFill'); const secsEl=document.getElementById('duelSendSecs'); if(fill) fill.style.width=(_sc/60*100)+'%'; if(secsEl) secsEl.textContent=_sc; if(_sc<=0) clearInterval(_scTimer); },1000);
+    // Listen for opponent response
+    _listenDuel(duelId, opponentName, true);
+    // Auto-expire after 60s
+    setTimeout(()=>{
+      if(_pendingDuelId===duelId) cancelDuelInvite(duelId, true);
+    }, 60000);
+    showAdminNotif(`⚔️ Duel invite sent to ${opponentName}!`, '#ffc800');
+  }).catch(e=>{ showAdminNotif('Failed to send invite: '+e.message,'#ff8888'); });
+}
+
+function cancelDuelInvite(duelId, expired=false){
+  const f=fb();
+  if(f && duelId) f.remove(f.ref(f.db,`duels/${duelId}`)).catch(()=>{});
+  _pendingDuelId=null;
+  if(_duelListener){ _duelListener(); _duelListener=null; }
+  const duelEl=document.getElementById('inspectDuelArea');
+  const opp=_inspectingUser;
+  if(duelEl && opp) duelEl.innerHTML=`
+    <div style="font-size:0.75rem;color:var(--text-dim);margin-bottom:8px;line-height:1.5;">Challenge <strong style="color:var(--text);">${opp}</strong> to 3 rolls each. Best aura wins!</div>
+    <button class="duel-btn" onclick="sendDuelInvite('${opp}')">⚔️ Challenge ${opp}</button>
+    <div id="duelResultArea"></div>`;
+  if(expired) showAdminNotif('Duel invite expired.','#aaaaaa');
+}
+
+// Compute and show result for both players from Firebase duel data
+function _resolveAndShowDuel(duelId, data, opponentName, isChallenger){
+  const myRolls    = isChallenger ? data.challengerRolls : data.opponentRolls;
+  const theirRolls = isChallenger ? data.opponentRolls   : data.challengerRolls;
+  if(!myRolls || !theirRolls) return false;
+
+  const myBest    = myRolls.reduce((b,r)=>RARITY_ORDER.indexOf(r.name)<RARITY_ORDER.indexOf(b.name)?r:b);
+  const theirBest = theirRolls.reduce((b,r)=>RARITY_ORDER.indexOf(r.name)<RARITY_ORDER.indexOf(b.name)?r:b);
+  const myIdx     = RARITY_ORDER.indexOf(myBest.name);
+  const theirIdx  = RARITY_ORDER.indexOf(theirBest.name);
+
+  let outcome;
+  if(myIdx < theirIdx) outcome='win';
+  else if(myIdx > theirIdx) outcome='lose';
+  else outcome='tie';
+
+  const myName    = isChallenger ? data.challenger : data.opponent;
+  const theirName = isChallenger ? data.opponent   : data.challenger;
+
+  _showDuelResult(outcome, myName, theirName, myRolls, theirRolls, myBest, theirBest, duelId, opponentName);
+  return true;
+}
+
+function _listenDuel(duelId, opponentName, isChallenger){
+  const f=fb();
+  if(!f) return;
+  const duelRef=f.ref(f.db,`duels/${duelId}`);
+  if(_duelListener){ _duelListener(); _duelListener=null; }
+  _duelListener = f.onValue(duelRef, snap=>{
+    if(!snap.exists()){ _duelListener&&_duelListener(); _duelListener=null; return; }
+    const data=snap.val();
+
+    if(data.status==='declined'){
+      _duelListener&&_duelListener(); _duelListener=null; _pendingDuelId=null;
+      showAdminNotif(`${opponentName} declined the duel 😔`,'#ff8888');
+      cancelDuelInvite(duelId);
+      return;
+    }
+
+    if(data.status==='accepted' && isChallenger){
+      // Opponent accepted — roll challenger's side now
+      showAdminNotif(`${opponentName} accepted! Rolling...`,'#50dc78');
+      const myRolls=[];
+      for(let i=0;i<3;i++) myRolls.push(rollAura());
+      const updates={};
+      updates[`duels/${duelId}/challengerRolls`]=myRolls.map(r=>({name:r.name,color:r.color,icon:r.icon,glow:r.glow}));
+      updates[`duels/${duelId}/status`]='playing';
+      f.update(f.ref(f.db,'/'), updates).catch(()=>{});
+    }
+
+    if(data.status==='playing' || data.status==='done'){
+      if(data.challengerRolls && data.opponentRolls){
+        const resolved = _resolveAndShowDuel(duelId, data, opponentName, isChallenger);
+        if(resolved){
+          // Only challenger cleans up Firebase to avoid double-delete
+          if(isChallenger){
+            f.set(f.ref(f.db,`duels/${duelId}/status`),'done').catch(()=>{});
+            setTimeout(()=>{ f.remove(f.ref(f.db,`duels/${duelId}`)).catch(()=>{}); }, 6000);
+          }
+          _duelListener&&_duelListener(); _duelListener=null; _pendingDuelId=null; _incomingDuelId=null;
+        }
+      }
+    }
+  });
+}
+
+let _duelResolved = new Set(); // track resolved duel IDs to prevent double-counting
+
+function _showDuelResult(outcome, myName, theirName, myRolls, theirRolls, myBest, theirBest, duelId, opponentName){
+  // Guard against double-resolution (Firebase listener can fire multiple times)
+  if(duelId && _duelResolved.has(duelId)) return;
+  if(duelId) _duelResolved.add(duelId);
+  // Clean up old entries after 2 minutes
+  setTimeout(()=>{ if(duelId) _duelResolved.delete(duelId); }, 120000);
+  // Guard: never count the same duel twice
+  if(duelId && _duelResultShown === duelId) return;
+  _duelResultShown = duelId;
+
+  // ── Save record locally AND directly to Firebase ──
+  const allUsers=getUsers();
+  const myU=allUsers[currentUser?.username]||{};
+  const rec=myU.duelRecord||{wins:0,losses:0,ties:0};
+  if(outcome==='win') rec.wins++;
+  else if(outcome==='lose') rec.losses++;
+  else rec.ties++;
+  myU.duelRecord=rec;
+  allUsers[currentUser.username]=myU;
+  saveUsers(allUsers);
+  // Save duelRecord directly to Firebase right now (don't wait for saveCurrentProgress)
+  const f=fb();
+  if(f && currentUser && !currentUser.guest){
+    f.set(f.ref(f.db, `users/${currentUser.username}/duelRecord`), rec).catch(()=>{});
+  }
+
+  // ── Haptic + sound ──
+  if(navigator.vibrate) navigator.vibrate(outcome==='win'?[30,20,60,20,100]:outcome==='lose'?[80]:20);
+  sfxPlay((ctx,T)=>{
+    if(outcome==='win'){ [523,659,784,1047].forEach((fr,i)=>{ const o=ctx.createOscillator(),g=ctx.createGain(); o.type='sine'; o.frequency.value=fr; g.gain.setValueAtTime(0.15,T+i*0.08); g.gain.exponentialRampToValueAtTime(0.001,T+i*0.08+0.4); o.connect(g); g.connect(ctx.destination); o.start(T+i*0.08); o.stop(T+i*0.08+0.45); }); }
+    else if(outcome==='lose'){ const o=ctx.createOscillator(),g=ctx.createGain(); o.type='sawtooth'; o.frequency.setValueAtTime(220,T); o.frequency.linearRampToValueAtTime(80,T+0.5); g.gain.setValueAtTime(0.2,T); g.gain.exponentialRampToValueAtTime(0.001,T+0.6); o.connect(g); g.connect(ctx.destination); o.start(T); o.stop(T+0.65); }
+  });
+
+  const titles={win:'⚔️ Victory!',lose:'💀 Defeat!',tie:'🤝 Draw!'};
+  const bgCols={win:'rgba(50,180,80,0.12)',lose:'rgba(180,40,40,0.12)',tie:'rgba(200,160,0,0.10)'};
+  const borderCols={win:'rgba(80,220,120,0.35)',lose:'rgba(255,80,80,0.3)',tie:'rgba(220,180,0,0.3)'};
+  const txtCols={win:'#50dc78',lose:'#ff8888',tie:'#ffc800'};
+  const cls=outcome;
+
+  const resultHTML=`
+    <div style="background:${bgCols[cls]};border:1px solid ${borderCols[cls]};border-radius:14px;padding:16px;text-align:center;">
+      <div style="font-size:1.4rem;font-weight:900;color:${txtCols[cls]};margin-bottom:12px;font-family:'Cinzel Decorative',serif;">${titles[outcome]}</div>
+      <div style="font-size:0.68rem;color:var(--text-dim);margin-bottom:5px;">${myName}'s rolls:</div>
+      <div style="display:flex;gap:5px;justify-content:center;flex-wrap:wrap;margin-bottom:10px;">
+        ${myRolls.map((r,i)=>`<div class="duel-roll-card" style="color:${r.color};border-color:${r.color}55;background:${r.color}14;animation-delay:${i*0.12}s">${r.icon||'✨'} ${r.name}</div>`).join('')}
+      </div>
+      <div style="font-size:0.68rem;color:var(--text-dim);margin-bottom:5px;">${theirName}'s rolls:</div>
+      <div style="display:flex;gap:5px;justify-content:center;flex-wrap:wrap;margin-bottom:12px;">
+        ${theirRolls.map((r,i)=>`<div class="duel-roll-card" style="color:${r.color};border-color:${r.color}55;background:${r.color}14;animation-delay:${i*0.12+0.35}s">${r.icon||'✨'} ${r.name}</div>`).join('')}
+      </div>
+      <div style="font-size:0.8rem;">Best: <strong style="color:${myBest.color}">${myBest.icon||'✨'} ${myBest.name}</strong> <span style="color:var(--text-dim)">vs</span> <strong style="color:${theirBest.color}">${theirBest.icon||'✨'} ${theirBest.name}</strong></div>
+    </div>
+    <button class="duel-btn" onclick="sendDuelInvite('${opponentName}')" style="margin-top:10px;">⚔️ Rematch</button>`;
+
+  // ── Show in inspect modal if open, otherwise show full-screen overlay ──
+  const duelEl=document.getElementById('inspectDuelArea');
+  const inspectOpen=document.getElementById('inspectModal')?.style.display==='flex';
+  if(duelEl && inspectOpen){
+    duelEl.innerHTML=resultHTML;
+  } else {
+    // Full-screen result overlay for the player who doesn't have inspect open
+    _showDuelResultOverlay(outcome, titles[outcome], txtCols[cls], borderCols[cls], bgCols[cls], resultHTML, opponentName);
+  }
+
+  // ── Refresh duel record display if visible ──
+  const rec2=getUsers()[currentUser?.username]?.duelRecord||{wins:0,losses:0,ties:0};
+  const recEl=document.getElementById('inspectDuelRecord');
+  if(recEl) recEl.innerHTML=`
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;text-align:center;">
+      <div class="inspect-stat"><div class="inspect-stat-val" style="color:#50dc78;">${rec2.wins}</div><div class="inspect-stat-lbl">Wins</div></div>
+      <div class="inspect-stat"><div class="inspect-stat-val" style="color:#ff8888;">${rec2.losses}</div><div class="inspect-stat-lbl">Losses</div></div>
+      <div class="inspect-stat"><div class="inspect-stat-val" style="color:#ffc800;">${rec2.ties}</div><div class="inspect-stat-lbl">Draws</div></div>
+    </div>`;
+}
+
+function _showDuelResultOverlay(outcome, title, txtCol, borderCol, bgCol, resultHTML, opponentName){
+  // Remove any existing overlay
+  document.getElementById('duelResultOverlay')?.remove();
+  const overlay=document.createElement('div');
+  overlay.id='duelResultOverlay';
+  overlay.style.cssText=`position:fixed;inset:0;z-index:650;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.85);backdrop-filter:blur(6px);animation:fadeIn 0.3s ease;`;
+  overlay.innerHTML=`
+    <div style="width:min(380px,92vw);background:linear-gradient(160deg,rgba(8,4,0,0.99),rgba(15,8,0,0.99));border:2px solid ${borderCol};border-radius:22px;padding:24px;box-shadow:0 0 80px ${borderCol},0 0 30px rgba(0,0,0,0.8);animation:popIn 0.4s cubic-bezier(.34,1.4,.64,1);">
+      ${resultHTML}
+      <button onclick="document.getElementById('duelResultOverlay').remove()" style="width:100%;margin-top:8px;padding:10px;border-radius:11px;border:1px solid rgba(255,255,255,0.12);background:rgba(255,255,255,0.05);color:var(--text-dim);font-size:0.75rem;cursor:pointer;">✕ Close</button>
+    </div>`;
+  document.body.appendChild(overlay);
+  // Auto-close after 30s
+  setTimeout(()=>overlay.remove(), 30000);
+}
+
+// ── LISTEN FOR INCOMING DUELS ──
+function fbListenIncomingDuels(){
+  const f=fb();
+  if(!f||!currentUser||currentUser.guest) return;
+  const duelsRef=f.ref(f.db,'duels');
+  const unsub=f.onValue(duelsRef, snap=>{
+    if(!snap.exists()) return;
+    Object.entries(snap.val()).forEach(([id,data])=>{
+      if(data.opponent!==currentUser.username) return;
+      if(data.status!=='pending') return;
+      if(_incomingDuelId===id) return; // already showing
+      // Check not expired (60s)
+      if(Date.now()-data.ts > 60000) return;
+      _incomingDuelId=id;
+      _showIncomingDuelPopup(id, data.challenger);
+    });
+  });
+  _fbListeners.push(unsub);
+}
+
+let _duelCountdownTimer = null;
+
+function _showIncomingDuelPopup(duelId, challengerName){
+  const popup = document.getElementById('duelChallengePopup');
+  popup.dataset.duelId = duelId;
+  popup.dataset.challenger = challengerName;
+
+  // Try Firebase first, fall back to local
+  const _fillCard = (cd) => {
+    const color = avatarColor(challengerName);
+    const bestAura = cd.bestAura ? AURAS.find(a=>a.name===cd.bestAura) : null;
+    const prof = cd.profile || {};
+    const avEl = document.getElementById('duelChallengerAvatar');
+    if(!avEl) return;
+    if(prof.profilePic){
+      avEl.style.backgroundImage=`url(${prof.profilePic})`;
+      avEl.style.backgroundSize='cover'; avEl.textContent='';
+    } else {
+      avEl.style.backgroundImage='';
+      avEl.style.background=`linear-gradient(135deg,${color},${color}88)`;
+      avEl.textContent=avatarInitial(challengerName);
+    }
+    document.getElementById('duelChallengerName').textContent = challengerName;
+    document.getElementById('duelChallengerBest').innerHTML = bestAura
+      ? `Best: <span style="color:${bestAura.color}">${bestAura.icon} ${bestAura.name}</span>`
+      : 'Best: No rare auras yet';
+    document.getElementById('duelChallengerRolls').textContent = `${(cd.totalRolls||0).toLocaleString()} total rolls`;
+  };
+
+  // Show popup immediately with local data
+  const localUsers = getUsers();
+  _fillCard(localUsers[challengerName] || {});
+
+  // Then try to refresh from Firebase
+  const f = fb();
+  if(f){
+    f.get(f.ref(f.db, `users/${challengerName}`)).then(snap=>{
+      if(snap.exists()) _fillCard(snap.val());
+    }).catch(()=>{});
+  }
+
+  // Show popup
+  popup.style.display = 'flex';
+
+  // Countdown: 60 seconds
+  let secsLeft = 60;
+  if(_duelCountdownTimer) clearInterval(_duelCountdownTimer);
+  document.getElementById('duelCountdownFill').style.width = '100%';
+  document.getElementById('duelCountdownSecs').textContent = '60s';
+
+  _duelCountdownTimer = setInterval(()=>{
+    secsLeft--;
+    const pct = (secsLeft / 60 * 100).toFixed(1);
+    const fill = document.getElementById('duelCountdownFill');
+    const secsEl = document.getElementById('duelCountdownSecs');
+    if(fill) fill.style.width = pct + '%';
+    if(secsEl) secsEl.textContent = secsLeft + 's';
+    if(secsLeft <= 0){
+      clearInterval(_duelCountdownTimer);
+      _duelCountdownTimer = null;
+      if(popup.style.display !== 'none' && popup.dataset.duelId === duelId){
+        declineDuelChallenge();
+      }
+    }
+  }, 1000);
+
+  // Haptic + sound
+  if(navigator.vibrate) navigator.vibrate([30,20,60]);
+  sfxPlay((ctx,T)=>{
+    const o=ctx.createOscillator(), g=ctx.createGain();
+    o.type='triangle';
+    o.frequency.setValueAtTime(440,T);
+    o.frequency.linearRampToValueAtTime(660,T+0.2);
+    g.gain.setValueAtTime(0.2,T); g.gain.exponentialRampToValueAtTime(0.001,T+0.5);
+    o.connect(g); g.connect(ctx.destination);
+    o.start(T); o.stop(T+0.5);
+  });
+}
+
+
+function acceptDuelChallenge(){
+  const popup=document.getElementById('duelChallengePopup');
+  const duelId=popup.dataset.duelId;
+  const challengerName=popup.dataset.challenger;
+  popup.style.display='none';
+  if(_duelCountdownTimer){ clearInterval(_duelCountdownTimer); _duelCountdownTimer=null; }
+  if(!duelId) return;
+  const f=fb();
+  if(!f) return;
+
+  showAdminNotif('⚔️ Rolling your auras...', '#ffc800');
+
+  // Roll opponent side
+  const myRolls=[];
+  for(let i=0;i<3;i++) myRolls.push(rollAura());
+
+  // Write rolls + accepted status atomically
+  const updates={};
+  updates[`duels/${duelId}/status`]='accepted';
+  updates[`duels/${duelId}/opponentRolls`]=myRolls.map(r=>({name:r.name,color:r.color,icon:r.icon,glow:r.glow}));
+  f.update(f.ref(f.db,'/'), updates).then(()=>{
+    // Check if challenger already wrote their rolls (they do so on accept)
+    f.get(f.ref(f.db,`duels/${duelId}`)).then(snap=>{
+      if(!snap.exists()) return;
+      const data=snap.val();
+      if(data.challengerRolls){
+        _resolveAndShowDuel(duelId, data, challengerName, false);
+      } else {
+        _listenDuel(duelId, challengerName, false);
+        showAdminNotif(`✅ Rolls sent! Waiting for ${challengerName}...`, '#50dc78');
+      }
+    });
+  }).catch(e=>{ showAdminNotif('Error: '+e.message,'#ff8888'); });
+  _incomingDuelId=null;
+}
+
+function declineDuelChallenge(){
+  const popup=document.getElementById('duelChallengePopup');
+  const duelId=popup.dataset.duelId;
+  popup.style.display='none';
+  if(_duelCountdownTimer){ clearInterval(_duelCountdownTimer); _duelCountdownTimer=null; }
+  if(!duelId) return;
+  const f=fb();
+  if(f) f.set(f.ref(f.db,`duels/${duelId}/status`),'declined').then(()=>{
+    setTimeout(()=>f.remove(f.ref(f.db,`duels/${duelId}`)).catch(()=>{}), 3000);
+  }).catch(()=>{});
+  _incomingDuelId=null;
+  showAdminNotif('Duel declined.','#aaaaaa');
+}
+
+// Old startDuel kept as fallback (offline / no Firebase)
 function startDuel(opponentName){
+  const f=fb();
+  if(f && currentUser && !currentUser.guest){ sendDuelInvite(opponentName); return; }
+  // Offline fallback
   const btn = document.querySelector('.duel-btn');
   const resultEl = document.getElementById('duelResultArea');
   if(btn) btn.disabled=true;
@@ -5765,6 +6217,11 @@ function startDuel(opponentName){
     myU.duelRecord=rec;
     allUsers[currentUser.username]=myU;
     saveUsers(allUsers);
+    // Save directly to Firebase
+    const _f=fb();
+    if(_f && currentUser && !currentUser.guest){
+      _f.set(_f.ref(_f.db,`users/${currentUser.username}/duelRecord`), rec).catch(()=>{});
+    }
 
     if(navigator.vibrate) navigator.vibrate(outcome==='win'?[30,20,60,20,100]:outcome==='lose'?[80]:20);
     sfxPlay((ctx,T)=>{
