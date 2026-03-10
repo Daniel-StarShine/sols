@@ -2061,9 +2061,11 @@
       <div class="admin-section-title" style="margin-top:16px;color:#ff6b6b;">⚠ Kick / Ban</div>
       <div style="display:flex;flex-direction:column;gap:8px;">
         <div class="admin-row" style="gap:8px;">
-          <button class="admin-action-btn" style="background:rgba(255,149,0,0.15);border-color:rgba(255,149,0,0.5);color:#ff9500;flex:1;font-size:0.85rem;padding:8px;" onclick="adminCmd('kick')">🥾 Kick Player</button>
-          <button class="admin-action-btn" style="background:rgba(255,50,50,0.15);border-color:rgba(255,50,50,0.5);color:#ff4444;flex:1;font-size:0.85rem;padding:8px;" onclick="adminOpenBanMenu()">🔨 Ban Player</button>
+          <button class="admin-action-btn" style="background:rgba(255,149,0,0.15);border-color:rgba(255,149,0,0.5);color:#ff9500;flex:1;font-size:0.85rem;padding:8px;" onclick="adminCmd('kick')">🥾 Kick</button>
+          <button class="admin-action-btn" style="background:rgba(255,50,50,0.15);border-color:rgba(255,50,50,0.5);color:#ff4444;flex:1;font-size:0.85rem;padding:8px;" onclick="adminOpenBanMenu()">🔨 Ban</button>
+          <button class="admin-action-btn" id="unbanBtn" style="background:rgba(80,220,120,0.15);border-color:rgba(80,220,120,0.5);color:#50dc78;flex:1;font-size:0.85rem;padding:8px;" onclick="adminUnban()">✅ Unban</button>
         </div>
+        <div id="banInfoRow" style="display:none;background:rgba(255,50,50,0.08);border:1px solid rgba(255,50,50,0.25);border-radius:8px;padding:8px 12px;font-size:0.78rem;color:#ff8888;"></div>
         <div id="banDurationRow" style="display:none;flex-direction:column;gap:6px;background:rgba(255,50,50,0.07);border:1px solid rgba(255,50,50,0.2);border-radius:10px;padding:10px;">
           <div style="font-size:0.75rem;color:#ff6666;font-weight:700;text-transform:uppercase;letter-spacing:.06em;">Duração do Ban</div>
           <div class="admin-row" style="flex-wrap:wrap;gap:6px;">
@@ -2274,6 +2276,27 @@
       <div id="ptab-banner-content" style="display:none;flex-direction:column;gap:8px;">
         <div class="prof-section-label">Profile Banner</div>
         <div id="profBannerGrid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;"></div>
+
+        <!-- GIF Banner -->
+        <div class="prof-section-label" style="margin-top:8px;">🎞 GIF Banner <span style="font-size:0.65rem;color:var(--text-dim);font-weight:400;">— como no Discord</span></div>
+        <div style="display:flex;flex-direction:column;gap:6px;">
+          <div style="display:flex;gap:6px;">
+            <input type="text" id="gifBannerInput" class="admin-input" placeholder="Cola o URL do GIF aqui..." style="flex:1;font-size:0.8rem;"/>
+            <button class="admin-action-btn green" style="white-space:nowrap;padding:6px 12px;" onclick="applyGifBanner()">Aplicar</button>
+          </div>
+          <div id="gifBannerPreviewRow" style="display:none;flex-direction:column;gap:6px;">
+            <div style="position:relative;height:55px;border-radius:10px;overflow:hidden;border:2px solid rgba(100,140,255,0.3);">
+              <img id="gifBannerPreviewImg" style="width:100%;height:100%;object-fit:cover;" />
+              <div style="position:absolute;inset:0;background:linear-gradient(to bottom,transparent 40%,rgba(0,0,0,0.5));"></div>
+              <span style="position:absolute;bottom:4px;left:8px;font-size:0.62rem;color:rgba(255,255,255,0.9);font-weight:700;">GIF Personalizado</span>
+            </div>
+            <button class="admin-action-btn" style="font-size:0.75rem;padding:5px;" onclick="removeGifBanner()">🗑 Remover GIF</button>
+          </div>
+          <div style="font-size:0.68rem;color:var(--text-dim);line-height:1.5;background:rgba(100,140,255,0.05);border:1px solid rgba(100,140,255,0.12);border-radius:8px;padding:7px 9px;">
+            🎞 Cola o link da página do <b style="color:#a0c4ff;">Tenor</b> ou <b style="color:#a0c4ff;">Giphy</b> — o GIF é carregado automaticamente.<br>
+            Também aceita links diretos terminados em <code style="color:#a0c4ff;">.gif .png .jpg .webp</code>
+          </div>
+        </div>
       </div>
 
       <!-- BORDER -->
@@ -4536,6 +4559,7 @@ window.addEventListener('load', () => {
 });
 
 function showAdminButton(){
+  if(!currentUser || currentUser.username !== 'Daniel') return;
   const btn=document.getElementById('adminBtn');
   btn.style.display='flex';
   document.querySelector('.bottom-bar').style.gridTemplateColumns='repeat(6,1fr)';
@@ -4543,6 +4567,10 @@ function showAdminButton(){
 
 // ── LOGIN ──
 function openAdminPanel(){
+  if(currentUser && currentUser.username !== 'Daniel'){
+    showAdminNotif && showAdminNotif('Sem permissão.','#ff4444');
+    return;
+  }
   if(!adminAuthenticated){
     document.getElementById('adminLoginModal').style.display='flex';
     document.getElementById('adminPasswordInput').value='';
@@ -4646,6 +4674,24 @@ function onAdminPlayerChange(){
   document.getElementById('adminStatLuck').textContent='x'+(d.luck||1);
   document.getElementById('adminStatCreated').textContent=d.createdAt?new Date(d.createdAt).toLocaleDateString():'—';
   document.getElementById('luckInput').value=d.luck||1;
+  // Show/hide unban button and ban info
+  const unbanBtn = document.getElementById('unbanBtn');
+  const banInfoRow = document.getElementById('banInfoRow');
+  if(unbanBtn && banInfoRow){
+    const b = d.banned;
+    const isBanned = b && (b.until === -1 || Date.now() < b.until);
+    unbanBtn.style.display = 'flex';
+    unbanBtn.disabled = !isBanned;
+    unbanBtn.style.opacity = isBanned ? '1' : '0.35';
+    unbanBtn.style.cursor = isBanned ? 'pointer' : 'not-allowed';
+    if(isBanned){
+      const timeLeft = b.until === -1 ? 'Permanente' : 'Expira em ' + formatBanDur(b.until - Date.now());
+      banInfoRow.style.display = 'block';
+      banInfoRow.innerHTML = `🔨 <b style="color:#ff6666;">Banido</b> — ${timeLeft}. <span style="color:#ff9999;">Motivo: ${b.reason||'—'}</span>`;
+    } else {
+      banInfoRow.style.display = 'none';
+    }
+  }
 }
 
 function syncAdminStats(){
@@ -4826,15 +4872,13 @@ function adminCmd(cmd){
       if(!kt){ showAdminNotif('Seleciona um jogador primeiro!','#ff9500'); break; }
       const users2 = getUsers();
       if(!users2[kt]){ showAdminNotif('Jogador não encontrado!','#ff4444'); break; }
-      users2[kt].kicked = Date.now();
-      saveUsers(users2);
-      if(currentUser && currentUser.username === kt){
-        currentUser = null;
-        inventory={}; bestAura=null; totalRolls=0; luckMultiplier=1;
-        updateUI(); showLoginScreen();
-      }
-      addLog(`\U0001f9b6 Kicked "${kt}" — voltará ao login.`,'warn');
-      showAdminNotif(`\U0001f9b6 ${kt} foi kickado!`,'#ff9500');
+      // Write kick to its own localStorage key — separate from user data
+      // so saveCurrentProgress can never overwrite it
+      sendKickSignal(kt);
+      // If kicked player is current user in THIS tab, kick immediately
+      if(currentUser && currentUser.username === kt){ _doKick(); }
+      addLog(`🥾 Kicked "${kt}" — voltará ao login.`,'warn');
+      showAdminNotif(`🥾 ${kt} foi kickado!`,'#ff9500');
       break;
     }
   }
@@ -5321,6 +5365,8 @@ function doLogin(){
       // Check ban
       const banInfo = checkBanOnLogin(username);
       if(banInfo){
+        window._lastKnownUsername = username; // save so polling works
+        startKickBanPolling(username);
         errEl.textContent='';
         errEl.innerHTML=`<span style="color:#ff4444;">🔨 Conta banida ${banInfo.timeLeft}.<br><small style="color:#ff8888;">Motivo: ${banInfo.reason}</small></span>`;
         return false;
@@ -5356,6 +5402,7 @@ function doLogin(){
 }
 
 function loginUser(username){
+  window._lastKnownUsername = username; // keep track for ban polling
   currentUser={ username, color:avatarColor(username), guest:false };
   sessionStorage.setItem(SESSION_KEY, username);
   // First try to pull latest data from Firebase, then load
@@ -5754,8 +5801,16 @@ function openInspect(username){
 
   // banner
   const bannerEl = document.getElementById('inspectBanner');
-  bannerEl.style.background = banner.css;
-  if(isOwner) bannerEl.style.background = 'linear-gradient(135deg,#0a0010,#1a0030,#0d0020,#2a005a,#0a0010)';
+  if(prof.gifBanner){
+    bannerEl.style.background = '#000';
+    bannerEl.style.backgroundImage = `url(${prof.gifBanner})`;
+    bannerEl.style.backgroundSize = 'cover';
+    bannerEl.style.backgroundPosition = 'center';
+  } else {
+    bannerEl.style.backgroundImage = '';
+    bannerEl.style.background = banner.css;
+    if(isOwner) bannerEl.style.background = 'linear-gradient(135deg,#0a0010,#1a0030,#0d0020,#2a005a,#0a0010)';
+  }
 
   // avatar
   const av = document.getElementById('inspectAvatar');
@@ -6486,7 +6541,8 @@ let profileData = {
   title:      'none',
   nameColor:  '#c8d8ff',
   banner:     'space',
-  border:     'blue'
+  border:     'blue',
+  gifBanner:  null
 };
 
 function loadProfileData(){
@@ -6494,6 +6550,99 @@ function loadProfileData(){
   const d = getUserData(currentUser.username);
   if(d && d.profile) profileData = {...profileData, ...d.profile};
   applyProfileToUI();
+}
+
+function applyGifBanner(){
+  let url = (document.getElementById('gifBannerInput').value || '').trim();
+  if(!url){ return; }
+  if(!url.startsWith('http')){
+    _gifBannerError('❌ URL inválido.');
+    return;
+  }
+
+  _gifBannerError(''); // clear previous errors
+
+  // ── Tenor page URL: extract ID and fetch media via Tenor API ──
+  const tenorPageMatch = url.match(/tenor\.com\/(?:[a-z-]+\/)?view\/[^\/]+-(\d+)$/i);
+  if(tenorPageMatch){
+    const gifId = tenorPageMatch[1];
+    _gifBannerError('<span style="color:#a0c4ff;">⏳ A carregar GIF do Tenor...</span>');
+    // Use Tenor API v2 with anonymous key (works client-side for previews)
+    fetch(`https://tenor.googleapis.com/v2/posts?ids=${gifId}&key=AIzaSyAyimkuYQYF_FXVALexPqHeZD9x1Yb5I7o&media_filter=gif`)
+      .then(r=>r.json())
+      .then(data=>{
+        const result = data.results && data.results[0];
+        const gifUrl = result && result.media_formats && result.media_formats.gif && result.media_formats.gif.url;
+        if(gifUrl){
+          _setGifBanner(gifUrl);
+        } else {
+          _gifBannerError('❌ Não foi possível obter o GIF. Tenta copiar o link da imagem diretamente.');
+        }
+      })
+      .catch(()=>{
+        _gifBannerError('❌ Erro ao aceder ao Tenor. Usa um link direto terminado em .gif');
+      });
+    return;
+  }
+
+  // ── Giphy page URL: extract ID and build media URL ──
+  const giphyMatch = url.match(/giphy\.com\/gifs\/(?:[^-]+-)?([a-zA-Z0-9]+)$/);
+  if(giphyMatch){
+    const giphyId = giphyMatch[1];
+    const giphyDirect = `https://media.giphy.com/media/${giphyId}/giphy.gif`;
+    _setGifBanner(giphyDirect);
+    return;
+  }
+
+  // ── Direct image URL: test and apply ──
+  const testImg = new Image();
+  testImg.onload = () => _setGifBanner(url);
+  testImg.onerror = () => {
+    _gifBannerError('❌ Não foi possível carregar a imagem. Verifica se o link termina em .gif / .png / .jpg / .webp');
+    document.getElementById('gifBannerInput').style.borderColor='#ff4444';
+  };
+  testImg.src = url;
+}
+
+function _setGifBanner(url){
+  profileData.gifBanner = url;
+  profileData.banner = null;
+  document.getElementById('gifBannerInput').value = url;
+  document.getElementById('gifBannerInput').style.borderColor='rgba(80,220,120,0.5)';
+  const row = document.getElementById('gifBannerPreviewRow');
+  const img = document.getElementById('gifBannerPreviewImg');
+  if(row) row.style.display = 'flex';
+  if(img) img.src = url;
+  document.querySelectorAll('.prof-banner-card').forEach(c=>c.classList.remove('selected'));
+  _gifBannerError('✅ GIF aplicado com sucesso!');
+  setTimeout(()=>_gifBannerError(''), 3000);
+  updateProfPreview();
+}
+
+function _gifBannerError(msg){
+  let el = document.getElementById('gifBannerErrorMsg');
+  if(!el){
+    el = document.createElement('div');
+    el.id = 'gifBannerErrorMsg';
+    el.style.cssText = 'font-size:0.72rem;line-height:1.5;padding:6px 8px;border-radius:7px;margin-top:2px;';
+    const parent = document.getElementById('gifBannerInput').parentElement.parentElement;
+    parent.insertBefore(el, document.getElementById('gifBannerInput').parentElement.nextSibling);
+  }
+  if(!msg){ el.style.display='none'; el.innerHTML=''; return; }
+  el.style.display='block';
+  el.style.background = msg.startsWith('❌') ? 'rgba(255,50,50,0.12)' : 'rgba(255,149,0,0.12)';
+  el.style.border = msg.startsWith('❌') ? '1px solid rgba(255,50,50,0.3)' : '1px solid rgba(255,149,0,0.3)';
+  el.style.color = msg.startsWith('❌') ? '#ff8888' : '#ffb84d';
+  el.innerHTML = msg;
+}
+function removeGifBanner(){
+  profileData.gifBanner = null;
+  profileData.banner = 'default';
+  const row = document.getElementById('gifBannerPreviewRow');
+  const input = document.getElementById('gifBannerInput');
+  if(row) row.style.display = 'none';
+  if(input) input.value = '';
+  updateProfPreview();
 }
 
 function saveProfile(){
@@ -6577,10 +6726,21 @@ function renderProfPicPreview(){
 }
 
 function updateProfPreview(){
-  // banner
-  const banner = BANNERS.find(b=>b.id===profileData.banner) || BANNERS[0];
+  // banner — GIF takes priority over solid banner
   const bannerEl = document.getElementById('profBannerEl');
-  if(bannerEl) bannerEl.style.background = banner.css;
+  if(bannerEl){
+    if(profileData.gifBanner){
+      bannerEl.style.background = '#000';
+      // Set as background image if not already done
+      bannerEl.style.backgroundImage = `url(${profileData.gifBanner})`;
+      bannerEl.style.backgroundSize = 'cover';
+      bannerEl.style.backgroundPosition = 'center';
+    } else {
+      const banner = BANNERS.find(b=>b.id===profileData.banner) || BANNERS[0];
+      bannerEl.style.background = banner.css;
+      bannerEl.style.backgroundImage = '';
+    }
+  }
 
   // avatar
   const av = document.getElementById('profAvatarEl');
@@ -6679,6 +6839,16 @@ function buildProfileUI(){
       };
       cg.appendChild(sw);
     });
+  }
+
+  // ── GIF BANNER restore ──
+  const gifInput = document.getElementById('gifBannerInput');
+  const gifPreviewRow = document.getElementById('gifBannerPreviewRow');
+  const gifPreviewImg = document.getElementById('gifBannerPreviewImg');
+  if(gifInput && profileData.gifBanner){
+    gifInput.value = profileData.gifBanner;
+    if(gifPreviewRow) gifPreviewRow.style.display = 'flex';
+    if(gifPreviewImg) gifPreviewImg.src = profileData.gifBanner;
   }
 
   // ── BANNERS ──
@@ -8038,10 +8208,29 @@ function adminOpenBanMenu(){
   if(!target){ showAdminNotif('Seleciona um jogador primeiro!','#ff4444'); return; }
   document.getElementById('banDurationRow').style.display='flex';
   document.getElementById('banStatusRow').style.display='none';
-  // pre-select first btn
   document.querySelectorAll('.ban-dur-btn').forEach(b=>b.classList.remove('selected'));
   document.querySelectorAll('.ban-dur-btn')[1].classList.add('selected');
   _selectedBanDur = 15*60*1000;
+}
+
+function adminUnban(){
+  const target = getSelectedPlayer() || _selectedAdminPlayer;
+  if(!target){ showAdminNotif('Seleciona um jogador primeiro!','#ff4444'); return; }
+  const users = getUsers();
+  if(!users[target]){ showAdminNotif('Jogador não encontrado!','#ff4444'); return; }
+  delete users[target].banned;
+  saveUsers(users);
+  // Clear ban signal and send unban signal so player's screen updates instantly
+  localStorage.removeItem(BAN_SIGNAL_KEY + target);
+  localStorage.setItem(UNBAN_SIGNAL_KEY + target, Date.now().toString());
+  // Hide unban button and ban info
+  const unbanBtn = document.getElementById('unbanBtn');
+  const banInfoRow = document.getElementById('banInfoRow');
+  if(unbanBtn){ unbanBtn.style.display='none'; }
+  if(banInfoRow){ banInfoRow.style.display='none'; }
+  addLog(`✅ Unbanned "${target}" — pode voltar a entrar.`,'info');
+  showAdminNotif(`✅ ${target} foi desbanido!`,'#50dc78');
+  onAdminPlayerChange();
 }
 function adminCloseBanMenu(){
   document.getElementById('banDurationRow').style.display='none';
@@ -8073,6 +8262,8 @@ function adminConfirmBan(){
   row.style.display='flex';
   row.innerHTML=`<div class="ban-status-badge">🔨 <b>${target}</b> banido ${durLabel}</div>`;
   setTimeout(()=>{ row.style.display='none'; }, 5000);
+  // Refresh player stats panel so unban button activates immediately
+  onAdminPlayerChange();
 }
 function formatBanDur(ms){
   if(ms<60*1000) return Math.round(ms/1000)+' seg';
@@ -8087,17 +8278,20 @@ function _enforceBan(banInfo){
   clearInterval(window._autoRollInterval);
   clearInterval(window._kickBanPollInterval);
   window.removeEventListener('storage', window._kickBanStorageListener);
+  // Save username before clearing currentUser so polling can continue
+  const bannedUsername = currentUser ? currentUser.username : window._lastKnownUsername;
   sessionStorage.removeItem(SESSION_KEY);
   inventory={}; bestAura=null; lastAura=null; totalRolls=0; luckMultiplier=1;
   try{ updateUI(); }catch(e){}
   currentUser = null;
-  window._activeBanInfo = banInfo; // blocks guest/register
-  // Show login screen
+  window._activeBanInfo = banInfo;
   document.getElementById('loginModal').style.display='flex';
   document.querySelector('.ui-root').style.filter='blur(4px)';
   document.querySelector('.ui-root').style.pointerEvents='none';
   _showBanScreen(banInfo);
   _lockLoginFormIfBanned(banInfo);
+  // Restart polling with username so unban signal is detected
+  if(bannedUsername) startKickBanPolling(bannedUsername);
 }
 
 function _showBanScreen(banInfo){
@@ -8134,8 +8328,9 @@ function _lockLoginFormIfBanned(banInfo){
 }
 
 // ── KICK/BAN SIGNAL KEYS (separate from user data so saveProgress can't overwrite) ──
-const KICK_SIGNAL_KEY = 'solsrng_kick_';
-const BAN_SIGNAL_KEY  = 'solsrng_ban_';
+const KICK_SIGNAL_KEY  = 'solsrng_kick_';
+const BAN_SIGNAL_KEY   = 'solsrng_ban_';
+const UNBAN_SIGNAL_KEY = 'solsrng_unban_';
 
 function sendKickSignal(username){
   localStorage.setItem(KICK_SIGNAL_KEY + username, Date.now().toString());
@@ -8161,41 +8356,46 @@ function startKickBanPolling(username){
         if(b && (b.until === -1 || Date.now() < b.until)) _enforceBan(b);
       }catch(ex){}
     }
+    if(e.key === UNBAN_SIGNAL_KEY + username){
+      localStorage.removeItem(UNBAN_SIGNAL_KEY + username);
+      window._activeBanInfo = null;
+      clearInterval(window._banCountdownTimer);
+      document.querySelectorAll('.auth-submit-btn, .auth-guest-btn, #loginModal button').forEach(b=>{ b.disabled = false; b.style.opacity=''; b.style.cursor=''; });
+      const errEl = document.getElementById('loginError');
+      if(errEl) errEl.innerHTML = '<div style="background:rgba(80,220,120,0.12);border:1px solid rgba(80,220,120,0.4);border-radius:10px;padding:10px;text-align:center;"><div style="font-size:1rem;">✅ <b style="color:#50dc78;">Foste desbanido!</b></div><div style="color:#80e8a0;font-size:0.82rem;margin-top:3px;">Podes entrar novamente.</div></div>';
+    }
   };
   window.removeEventListener('storage', window._kickBanStorageListener);
   window.addEventListener('storage', window._kickBanStorageListener);
 
-  // Fallback polling every 1.5s (same tab / safety net)
+  // Polling every 800ms — checks dedicated signal keys (never overwritten by saveProgress)
   clearInterval(window._kickBanPollInterval);
   window._kickBanPollInterval = setInterval(()=>{
-    if(!currentUser) return;
-    // Check kick signal key
+    // Unban check runs even when logged out (banned state)
+    const us = localStorage.getItem(UNBAN_SIGNAL_KEY + username);
+    if(us){
+      localStorage.removeItem(UNBAN_SIGNAL_KEY + username);
+      window._activeBanInfo = null;
+      clearInterval(window._banCountdownTimer);
+      document.querySelectorAll('.auth-submit-btn, .auth-guest-btn, #loginModal button').forEach(b=>{ b.disabled = false; b.style.opacity=''; b.style.cursor=''; });
+      const errEl = document.getElementById('loginError');
+      if(errEl) errEl.innerHTML = '<div style="background:rgba(80,220,120,0.12);border:1px solid rgba(80,220,120,0.4);border-radius:10px;padding:10px;text-align:center;"><div style="font-size:1rem;">✅ <b style="color:#50dc78;">Foste desbanido!</b></div><div style="color:#80e8a0;font-size:0.82rem;margin-top:3px;">Podes entrar novamente.</div></div>';
+      return;
+    }
+    if(!currentUser) return; // below checks only needed while logged in
+    // Check kick signal
     const ks = localStorage.getItem(KICK_SIGNAL_KEY + username);
     if(ks){ clearKickSignal(username); _doKick(); return; }
-    // Backup: check _kickedAt in user record
-    const usersChk = getUsers();
-    const uChk = usersChk[username];
-    if(uChk && uChk._kickedAt && uChk._kickedAt > (window._lastKickAck||0)){
-      window._lastKickAck = uChk._kickedAt;
-      delete uChk._kickedAt; saveUsers(usersChk);
-      _doKick(); return;
-    }
-    // Check ban signal key
+    // Check ban signal
     const bs = localStorage.getItem(BAN_SIGNAL_KEY + username);
     if(bs){
       try{
         const b = JSON.parse(bs);
         if(b && (b.until === -1 || Date.now() < b.until)){ _enforceBan(b); return; }
+        else { localStorage.removeItem(BAN_SIGNAL_KEY + username); }
       }catch(ex){}
     }
-    // Also check users object for ban (set before signal existed)
-    const users = getUsers();
-    const u = users[username];
-    if(u && u.banned){
-      const b = u.banned;
-      if(b.until === -1 || Date.now() < b.until){ _enforceBan(b); return; }
-    }
-  }, 1500);
+  }, 800);
 }
 
 function _doKick(){
@@ -8209,6 +8409,9 @@ function _doKick(){
   window._activeBanInfo = null;
   inventory={}; bestAura=null; lastAura=null; totalRolls=0; luckMultiplier=1;
   try{ updateUI(); }catch(e){}
+  // Hide admin button
+  const adminBtn = document.getElementById('adminBtn');
+  if(adminBtn) adminBtn.style.display='none';
   // Re-enable all buttons (not banned, just kicked)
   document.querySelectorAll('.auth-submit-btn, .auth-guest-btn, #loginModal button').forEach(b=>{ b.disabled = false; });
   document.getElementById('loginModal').style.display='flex';
