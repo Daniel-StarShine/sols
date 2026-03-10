@@ -1028,6 +1028,52 @@
 
   /* ══ INSPECT PROFILE MODAL ══ */
   .inspect-box{position:relative;z-index:1;width:min(480px,94vw);background:linear-gradient(150deg,rgba(8,12,30,0.99),rgba(4,7,20,0.99));border:1px solid rgba(100,140,255,0.2);border-radius:22px;overflow:hidden;animation:popIn .35s cubic-bezier(.34,1.4,.64,1);max-height:90vh;display:flex;flex-direction:column;}
+
+  /* ── CLANS ── */
+  .clan-modal-box{background:var(--card);border:1px solid var(--border);border-radius:22px;width:min(400px,95vw);max-height:85vh;display:flex;flex-direction:column;position:relative;z-index:1;overflow:hidden;}
+  .clan-header{padding:16px 18px 12px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px;flex-shrink:0;}
+  .clan-tabs{display:flex;gap:4px;padding:8px 12px 0;flex-shrink:0;border-bottom:1px solid var(--border);}
+  .clan-tab{flex:1;padding:7px 0;border-radius:8px 8px 0 0;border:1px solid transparent;background:transparent;color:var(--text-dim);font-size:0.75rem;cursor:pointer;transition:all .15s;}
+  .clan-tab.active{background:rgba(255,180,0,0.1);border-color:rgba(255,180,0,0.25);color:#ffc800;}
+  .clan-body{flex:1;overflow-y:auto;padding:12px 14px;}
+  .clan-body::-webkit-scrollbar{width:4px;}
+  .clan-body::-webkit-scrollbar-thumb{background:rgba(255,180,0,0.2);border-radius:4px;}
+  .clan-card{background:rgba(255,180,0,0.04);border:1px solid rgba(255,180,0,0.15);border-radius:14px;padding:14px;margin-bottom:10px;cursor:pointer;transition:all .2s;}
+  .clan-card:hover{border-color:rgba(255,180,0,0.35);background:rgba(255,180,0,0.08);}
+  .clan-card-top{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+  .clan-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;flex-shrink:0;border:2px solid rgba(255,180,0,0.2);}
+  .clan-card-name{font-family:'Cinzel Decorative',serif;font-size:0.9rem;font-weight:700;color:#ffc800;}
+  .clan-card-tag{font-size:0.68rem;color:var(--text-dim);margin-top:1px;}
+  .clan-card-stats{display:flex;gap:12px;font-size:0.7rem;color:var(--text-dim);}
+  .clan-card-stat{display:flex;align-items:center;gap:4px;}
+  .clan-member-row{display:flex;align-items:center;gap:10px;padding:7px 10px;border-radius:10px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);margin-bottom:5px;}
+  .clan-member-av{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:700;flex-shrink:0;}
+  .clan-badge{font-size:0.6rem;padding:2px 6px;border-radius:20px;font-weight:700;}
+  .clan-badge.leader{background:rgba(255,180,0,0.2);color:#ffc800;border:1px solid rgba(255,180,0,0.3);}
+  .clan-badge.officer{background:rgba(100,140,255,0.15);color:#a0c4ff;border:1px solid rgba(100,140,255,0.25);}
+  .clan-badge.member{background:rgba(255,255,255,0.05);color:var(--text-dim);border:1px solid rgba(255,255,255,0.08);}
+  .clan-input{width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:10px;padding:9px 12px;color:#fff;font-size:0.85rem;outline:none;box-sizing:border-box;margin-bottom:8px;}
+  .clan-input:focus{border-color:rgba(255,180,0,0.4);}
+  .clan-input-label{font-size:0.72rem;color:var(--text-dim);margin-bottom:4px;}
+  .clan-emoji-grid{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px;}
+  .clan-emoji-opt{width:36px;height:36px;border-radius:8px;border:2px solid transparent;background:rgba(255,255,255,0.05);cursor:pointer;font-size:1.1rem;display:flex;align-items:center;justify-content:center;transition:all .15s;}
+  .clan-emoji-opt.selected{border-color:#ffc800;background:rgba(255,180,0,0.12);}
+  .my-clan-banner{background:linear-gradient(135deg,rgba(255,180,0,0.08),rgba(255,140,0,0.04));border:1px solid rgba(255,180,0,0.2);border-radius:14px;padding:14px;margin-bottom:12px;}
+  .clan-lb-row{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:10px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);margin-bottom:5px;}
+  /* ── FRIENDS ── */
+  .friends-modal-box{background:var(--card);border:1px solid var(--border);border-radius:20px;width:340px;max-height:80vh;display:flex;flex-direction:column;position:relative;z-index:1;overflow:hidden;}
+  .friends-header{padding:14px 16px 10px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;flex-shrink:0;}
+  .friends-tabs{display:flex;gap:4px;padding:8px 12px 0;flex-shrink:0;}
+  .friends-tab{flex:1;padding:6px 0;border-radius:8px 8px 0 0;border:1px solid transparent;background:transparent;color:var(--text-dim);font-size:0.75rem;cursor:pointer;transition:all .15s;}
+  .friends-tab.active{background:rgba(100,140,255,0.12);border-color:rgba(100,140,255,0.25);color:#a0c4ff;}
+  .friends-body{flex:1;overflow-y:auto;padding:10px 12px;}
+  .friend-row{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:10px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);margin-bottom:6px;}
+  .friend-row .fr-av{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.9rem;flex-shrink:0;border:2px solid rgba(100,140,255,0.3);}
+  .friend-row .fr-info{flex:1;min-width:0;}
+  .friend-row .fr-name{font-weight:700;font-size:0.82rem;color:#c8d8ff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .friend-row .fr-sub{font-size:0.65rem;color:var(--text-dim);}
+  .friend-row .fr-btns{display:flex;gap:5px;flex-shrink:0;}
+  .friend-req-input-row{display:flex;gap:6px;margin-bottom:10px;}
   .inspect-banner{position:relative;height:120px;display:flex;align-items:flex-end;justify-content:flex-start;padding:0 20px 14px;flex-shrink:0;}
   .inspect-avatar{width:64px;height:64px;border-radius:50%;border:3px solid rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;font-size:1.6rem;font-weight:900;color:#fff;flex-shrink:0;overflow:hidden;background-size:cover;background-position:center;}
   .inspect-name-block{margin-left:14px;}
@@ -1208,9 +1254,20 @@
   .fb-conn-dot.off{background:#ff6666;box-shadow:0 0 8px #ff6666;}
   .fb-conn-dot.pending{background:#ffa000;box-shadow:0 0 8px #ffa000;animation:pulse-gold 1.2s infinite;}
   .lb-row.me{border-color:rgba(255,200,0,0.3);background:rgba(255,200,0,0.06);}
-  .lb-row.top1{border-color:rgba(255,200,0,0.4);background:rgba(255,200,0,0.08);}
-  .lb-row.top2{border-color:rgba(180,180,180,0.3);background:rgba(180,180,180,0.05);}
-  .lb-row.top3{border-color:rgba(180,100,30,0.3);background:rgba(180,100,30,0.05);}
+  .lb-row{position:relative;}
+  .lb-row.top1{border-color:rgba(255,200,0,0.5);background:linear-gradient(90deg,rgba(255,200,0,0.10),rgba(255,200,0,0.03));box-shadow:0 0 18px rgba(255,200,0,0.08);position:relative;}
+  .lb-row.top2{border-color:rgba(200,210,220,0.4);background:linear-gradient(90deg,rgba(200,210,220,0.08),rgba(200,210,220,0.02));box-shadow:0 0 12px rgba(200,210,220,0.06);}
+  .lb-row.top3{border-color:rgba(200,120,40,0.4);background:linear-gradient(90deg,rgba(200,120,40,0.08),rgba(200,120,40,0.02));box-shadow:0 0 10px rgba(200,120,40,0.05);}
+  .lb-crown{position:absolute;top:-13px;left:50%;transform:translateX(-50%);font-size:1.1rem;filter:drop-shadow(0 0 6px #ffc80088);animation:crownFloat 2.5s ease-in-out infinite;}
+  @keyframes crownFloat{0%,100%{transform:translateX(-50%) translateY(0) rotate(-5deg);}50%{transform:translateX(-50%) translateY(-4px) rotate(5deg);}}
+  .lb-crown.s{font-size:0.9rem;filter:drop-shadow(0 0 4px #c8c8c888);animation-duration:3s;}
+  .lb-crown.b{font-size:0.85rem;filter:drop-shadow(0 0 4px #c87828aa);animation-duration:3.5s;}
+  .lbr-pos.top1-num{background:linear-gradient(135deg,#ffc800,#ff9500);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-size:1.1rem;font-weight:900;}
+  .lbr-pos.top2-num{background:linear-gradient(135deg,#c8d0d8,#ffffff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-weight:800;}
+  .lbr-pos.top3-num{background:linear-gradient(135deg,#c87828,#ff9500);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-weight:800;}
+  .lbr-avatar.top1-av{border-color:#ffc800!important;box-shadow:0 0 14px rgba(255,200,0,0.4);}
+  .lbr-avatar.top2-av{border-color:#c8d0d8!important;box-shadow:0 0 10px rgba(200,210,220,0.3);}
+  .lbr-avatar.top3-av{border-color:#c87828!important;box-shadow:0 0 8px rgba(200,120,40,0.3);}
   .lbr-pos{width:28px;text-align:center;font-size:0.9rem;font-weight:700;color:var(--text-dim);flex-shrink:0;}
   .lbr-avatar{
     width:32px;height:32px;border-radius:50%;flex-shrink:0;
@@ -1415,6 +1472,15 @@
   .apc-label{color:var(--text-dim);}
   .apc-val{font-weight:700;color:var(--text);}
 
+  .ban-hist-entry{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:8px;padding:7px 10px;font-size:0.72rem;display:flex;flex-direction:column;gap:2px;}
+  .ban-hist-entry .bhe-top{display:flex;align-items:center;gap:6px;}
+  .ban-hist-entry .bhe-type{font-weight:700;font-size:0.78rem;}
+  .ban-hist-entry .bhe-type.ban{color:#ff6666;}
+  .ban-hist-entry .bhe-type.kick{color:#ff9500;}
+  .ban-hist-entry .bhe-type.unban{color:#50dc78;}
+  .ban-hist-entry .bhe-user{color:#a0c4ff;font-weight:600;}
+  .ban-hist-entry .bhe-time{color:var(--text-dim);font-size:0.65rem;margin-left:auto;}
+  .ban-hist-entry .bhe-detail{color:var(--text-dim);font-size:0.68rem;padding-left:2px;}
   .admin-log{
     background:rgba(0,0,0,0.3);border:1px solid rgba(255,60,60,0.1);border-radius:10px;
     padding:10px 12px;height:200px;overflow-y:auto;display:flex;flex-direction:column;gap:4px;
@@ -1932,6 +1998,16 @@
     </div>
     </div>
     <!-- ADMIN BUTTON — hidden until authenticated -->
+    <div class="bottom-card" id="clanBtn" onclick="openClan()" style="display:none;position:relative;">
+      <span class="bottom-icon">⚔️</span>
+      <span class="bottom-label">Clã</span>
+      <span id="clanNotifDot" style="display:none;position:absolute;top:6px;right:8px;width:8px;height:8px;background:#ffc800;border-radius:50%;"></span>
+    </div>
+    <div class="bottom-card" id="friendsBtn" onclick="openFriends()" style="display:none;">
+      <span class="bottom-icon">👥</span>
+      <span class="bottom-label">Amigos</span>
+      <span id="friendsNotifDot" style="display:none;position:absolute;top:6px;right:8px;width:8px;height:8px;background:#ff4444;border-radius:50%;"></span>
+    </div>
     <div class="bottom-card admin-card" id="adminBtn" onclick="openAdminPanel()" style="display:none;">
       <span class="bc-icon">👑</span>
       <div><div class="bc-label" style="color:#ff4444;">Admin</div><div class="bc-value" style="color:#ff6666;">Panel</div></div>
@@ -2128,6 +2204,19 @@
       <div style="display:flex;gap:8px;margin-top:10px;">
         <button class="admin-action-btn" style="flex:1;" onclick="clearAdminLog()">🗑 Clear Log</button>
       </div>
+
+      <!-- Ban/Kick History -->
+      <div class="admin-section-title" style="margin-top:16px;">⚠ Histórico de Bans & Kicks</div>
+      <div style="display:flex;gap:6px;margin-bottom:8px;">
+        <button class="admin-action-btn" id="bhFilter-all"   onclick="setBanHistFilter('all')"  style="flex:1;font-size:0.72rem;background:rgba(255,80,80,0.2);border-color:rgba(255,80,80,0.5);color:#ff8888;">Todos</button>
+        <button class="admin-action-btn" id="bhFilter-ban"   onclick="setBanHistFilter('ban')"  style="flex:1;font-size:0.72rem;">🔨 Bans</button>
+        <button class="admin-action-btn" id="bhFilter-kick"  onclick="setBanHistFilter('kick')" style="flex:1;font-size:0.72rem;">🥾 Kicks</button>
+        <button class="admin-action-btn" id="bhFilter-unban" onclick="setBanHistFilter('unban')" style="flex:1;font-size:0.72rem;">✅ Unbans</button>
+      </div>
+      <div id="banHistoryList" style="display:flex;flex-direction:column;gap:5px;max-height:220px;overflow-y:auto;"></div>
+      <div style="display:flex;gap:8px;margin-top:8px;">
+        <button class="admin-action-btn" style="flex:1;font-size:0.75rem;" onclick="clearBanHistory()">🗑 Limpar Histórico</button>
+      </div>
     </div>
 
     <!-- bottom bar -->
@@ -2277,26 +2366,6 @@
         <div class="prof-section-label">Profile Banner</div>
         <div id="profBannerGrid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;"></div>
 
-        <!-- GIF Banner -->
-        <div class="prof-section-label" style="margin-top:8px;">🎞 GIF Banner <span style="font-size:0.65rem;color:var(--text-dim);font-weight:400;">— como no Discord</span></div>
-        <div style="display:flex;flex-direction:column;gap:6px;">
-          <div style="display:flex;gap:6px;">
-            <input type="text" id="gifBannerInput" class="admin-input" placeholder="Cola o URL do GIF aqui..." style="flex:1;font-size:0.8rem;"/>
-            <button class="admin-action-btn green" style="white-space:nowrap;padding:6px 12px;" onclick="applyGifBanner()">Aplicar</button>
-          </div>
-          <div id="gifBannerPreviewRow" style="display:none;flex-direction:column;gap:6px;">
-            <div style="position:relative;height:55px;border-radius:10px;overflow:hidden;border:2px solid rgba(100,140,255,0.3);">
-              <img id="gifBannerPreviewImg" style="width:100%;height:100%;object-fit:cover;" />
-              <div style="position:absolute;inset:0;background:linear-gradient(to bottom,transparent 40%,rgba(0,0,0,0.5));"></div>
-              <span style="position:absolute;bottom:4px;left:8px;font-size:0.62rem;color:rgba(255,255,255,0.9);font-weight:700;">GIF Personalizado</span>
-            </div>
-            <button class="admin-action-btn" style="font-size:0.75rem;padding:5px;" onclick="removeGifBanner()">🗑 Remover GIF</button>
-          </div>
-          <div style="font-size:0.68rem;color:var(--text-dim);line-height:1.5;background:rgba(100,140,255,0.05);border:1px solid rgba(100,140,255,0.12);border-radius:8px;padding:7px 9px;">
-            🎞 Cola o link da página do <b style="color:#a0c4ff;">Tenor</b> ou <b style="color:#a0c4ff;">Giphy</b> — o GIF é carregado automaticamente.<br>
-            Também aceita links diretos terminados em <code style="color:#a0c4ff;">.gif .png .jpg .webp</code>
-          </div>
-        </div>
       </div>
 
       <!-- BORDER -->
@@ -2333,6 +2402,72 @@
       <input class="chat-input" id="chatInput" maxlength="200"
         placeholder="Say something..." onkeydown="if(event.key==='Enter')sendChat()"/>
       <button class="chat-send-btn" onclick="sendChat()" title="Send">➤</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     CLANS MODAL
+══════════════════════════════════════ -->
+<div id="clanModal" style="display:none;position:fixed;inset:0;z-index:300;align-items:center;justify-content:center;">
+  <div class="modal-backdrop" onclick="closeClan()"></div>
+  <div class="clan-modal-box">
+    <div class="clan-header">
+      <span style="font-size:1.5rem;">⚔️</span>
+      <div>
+        <div style="font-weight:700;font-size:1rem;color:#ffc800;font-family:'Cinzel Decorative',serif;">Clãs</div>
+        <div id="clanHeaderSub" style="font-size:0.65rem;color:var(--text-dim);">Junta-te ou cria um clã</div>
+      </div>
+      <button class="modal-close-x" onclick="closeClan()" style="margin-left:auto;">✕</button>
+    </div>
+    <div class="clan-tabs">
+      <button class="clan-tab active" id="ctab-myClan"  onclick="switchClanTab('myClan')">🛡 O Meu</button>
+      <button class="clan-tab"        id="ctab-browse"  onclick="switchClanTab('browse')">🔍 Explorar</button>
+      <button class="clan-tab"        id="ctab-ranking" onclick="switchClanTab('ranking')">🏆 Ranking</button>
+      <button class="clan-tab"        id="ctab-create"  onclick="switchClanTab('create')">➕ Criar</button>
+    </div>
+    <div class="clan-body" id="clanBody"></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     FRIENDS MODAL
+══════════════════════════════════════ -->
+<div id="friendsModal" style="display:none;position:fixed;inset:0;z-index:300;align-items:center;justify-content:center;">
+  <div class="modal-backdrop" onclick="closeFriends()"></div>
+  <div class="friends-modal-box">
+    <div class="friends-header">
+      <span style="font-size:1.3rem;">👥</span>
+      <div>
+        <div style="font-weight:700;font-size:0.92rem;color:#c8d8ff;">Amigos</div>
+        <div id="friendsCount" style="font-size:0.65rem;color:var(--text-dim);">0 amigos</div>
+      </div>
+      <button class="modal-close-x" onclick="closeFriends()" style="margin-left:auto;">✕</button>
+    </div>
+    <div class="friends-tabs">
+      <button class="friends-tab active" id="ftab-list" onclick="switchFriendsTab('list')">👥 Amigos</button>
+      <button class="friends-tab" id="ftab-requests" onclick="switchFriendsTab('requests')">📩 Pedidos <span id="friendReqBadge" style="display:none;background:#ff4444;color:#fff;border-radius:50%;font-size:0.6rem;padding:1px 5px;margin-left:3px;"></span></button>
+      <button class="friends-tab" id="ftab-add" onclick="switchFriendsTab('add')">➕ Adicionar</button>
+    </div>
+    <div class="friends-body">
+      <!-- Friends list -->
+      <div id="ftab-list-content">
+        <div id="friendsList"></div>
+      </div>
+      <!-- Requests -->
+      <div id="ftab-requests-content" style="display:none;">
+        <div style="font-size:0.72rem;color:var(--text-dim);margin-bottom:8px;">Pedidos recebidos:</div>
+        <div id="friendRequestsList"></div>
+      </div>
+      <!-- Add friend -->
+      <div id="ftab-add-content" style="display:none;">
+        <div style="font-size:0.72rem;color:var(--text-dim);margin-bottom:8px;">Adiciona um jogador pelo username:</div>
+        <div class="friend-req-input-row">
+          <input class="admin-input" id="friendAddInput" placeholder="Username..." style="flex:1;font-size:0.82rem;" onkeydown="if(event.key==='Enter')sendFriendRequest()"/>
+          <button class="admin-action-btn green" onclick="sendFriendRequest()" style="padding:6px 12px;">Enviar</button>
+        </div>
+        <div id="friendAddMsg" style="font-size:0.72rem;min-height:18px;"></div>
+      </div>
     </div>
   </div>
 </div>
@@ -2475,6 +2610,7 @@
         <div class="duel-challenger-name" id="duelChallengerName">Player</div>
         <div class="duel-challenger-best" id="duelChallengerBest">Best aura: —</div>
         <div class="duel-challenger-best" id="duelChallengerRolls">0 rolls</div>
+        <div class="duel-challenger-best" id="duelChallengerBetInfo" style="color:#ffc800;"></div>
       </div>
     </div>
     <div class="duel-invite-sub">challenges you to a duel!<br>Best of 3 rolls — the rarer aura wins.</div>
@@ -4558,11 +4694,18 @@ window.addEventListener('load', () => {
   },1000);
 });
 
+function updateBottomBarCols(){
+  const bar = document.querySelector('.bottom-bar');
+  if(!bar) return;
+  const visible = bar.querySelectorAll('.bottom-card[style*="display: flex"], .bottom-card[style*="display:flex"]').length;
+  const count = Math.max(5, visible);
+  bar.style.gridTemplateColumns = `repeat(${count},1fr)`;
+}
 function showAdminButton(){
   if(!currentUser || currentUser.username !== 'Daniel') return;
   const btn=document.getElementById('adminBtn');
   btn.style.display='flex';
-  document.querySelector('.bottom-bar').style.gridTemplateColumns='repeat(6,1fr)';
+  updateBottomBarCols();
 }
 
 // ── LOGIN ──
@@ -4606,6 +4749,10 @@ function adminLogout(){
   sessionStorage.removeItem('adminAuth');
   closeAdminPanel();
   document.getElementById('adminBtn').style.display='none';
+  const fbtn = document.getElementById('friendsBtn');
+  if(fbtn) fbtn.style.display='none';
+  const cbtn2 = document.getElementById('clanBtn');
+  if(cbtn2) cbtn2.style.display='none';
   document.querySelector('.bottom-bar').style.gridTemplateColumns='repeat(5,1fr)';
   addLog('🔒 Admin logged out.','warn');
 }
@@ -4711,6 +4858,7 @@ function syncAdminStats(){
 
 // ── TABS ──
 function switchAdminTab(tab){
+  if(tab==='logs') { renderBanHistory(); }
   ['auras','players','server','logs'].forEach(t=>{
     document.getElementById('atab-'+t).classList.toggle('active',t===tab);
     document.getElementById('atab-'+t+'-content').style.display=t===tab?'block':'none';
@@ -4868,6 +5016,7 @@ function adminCmd(cmd){
       addLog('🚫 Kicked all players.','error');
       showAnnounce('\U0001f6ab All players have been kicked by Admin.','warn'); break;
     case 'kick':{
+      if(!currentUser || currentUser.username !== 'Daniel'){ showAdminNotif('❌ Sem permissão para kickar!','#ff4444'); break; }
       const kt = getSelectedPlayer() || _selectedAdminPlayer;
       if(!kt){ showAdminNotif('Seleciona um jogador primeiro!','#ff9500'); break; }
       const users2 = getUsers();
@@ -4878,6 +5027,7 @@ function adminCmd(cmd){
       // If kicked player is current user in THIS tab, kick immediately
       if(currentUser && currentUser.username === kt){ _doKick(); }
       addLog(`🥾 Kicked "${kt}" — voltará ao login.`,'warn');
+      addBanHistory('kick', kt, 'Kickado pelo admin');
       showAdminNotif(`🥾 ${kt} foi kickado!`,'#ff9500');
       break;
     }
@@ -4955,6 +5105,582 @@ function addLog(msg,type='info'){
 }
 function clearAdminLog(){
   document.getElementById('adminLog').innerHTML='<div class="log-entry log-info">🟢 Log cleared.</div>';
+}
+
+
+// ══════════════════════════════════════════════════════
+// CLAN SYSTEM
+// ══════════════════════════════════════════════════════
+const CLANS_KEY   = 'solsrng_clans';        // all clans: { clanId: {name,tag,icon,leader,members,desc,createdAt} }
+const USER_CLAN_KEY = 'solsrng_userclan_';  // solsrng_userclan_Username → clanId
+
+const CLAN_ICONS = ['⚔️','🔥','🌊','🌪️','☄️','🐉','🦅','🌙','⚡','💀','🌸','🏔️','🎯','🛡️','💎','🐺','🦁','🌑','🔮','🌈'];
+
+function getClans(){ try{ return JSON.parse(localStorage.getItem(CLANS_KEY)||'{}'); }catch(e){ return {}; } }
+function saveClans(c){ localStorage.setItem(CLANS_KEY, JSON.stringify(c)); }
+function getUserClan(username){ return localStorage.getItem(USER_CLAN_KEY+username)||null; }
+function setUserClan(username, clanId){ 
+  if(clanId) localStorage.setItem(USER_CLAN_KEY+username, clanId);
+  else localStorage.removeItem(USER_CLAN_KEY+username);
+}
+
+function openClan(){
+  if(!currentUser||currentUser.guest){ showAdminNotif('Precisas de conta para usar clãs!','#ff9500'); return; }
+  document.getElementById('clanModal').style.display='flex';
+  const myClanId = getUserClan(currentUser.username);
+  switchClanTab(myClanId ? 'myClan' : 'browse');
+}
+function closeClan(){ document.getElementById('clanModal').style.display='none'; }
+
+function switchClanTab(tab){
+  ['myClan','browse','ranking','create'].forEach(t=>{
+    document.getElementById('ctab-'+t).classList.toggle('active', t===tab);
+  });
+  const body = document.getElementById('clanBody');
+  if(tab==='myClan')   renderMyClan(body);
+  if(tab==='browse')   renderClanBrowse(body);
+  if(tab==='ranking')  renderClanRanking(body);
+  if(tab==='create')   renderClanCreate(body);
+}
+
+// ── POWER: sum of totalRolls of all members ──
+function getClanPower(clan){
+  const users = getUsers();
+  return (clan.members||[]).reduce((sum,m)=>{ const u=users[m]; return sum+(u?u.totalRolls||0:0); },0);
+}
+
+// ── MY CLAN ──
+function renderMyClan(body){
+  const me = currentUser.username;
+  const myClanId = getUserClan(me);
+  if(!myClanId){
+    body.innerHTML=`<div style="text-align:center;padding:30px 10px;color:var(--text-dim);">
+      <div style="font-size:2.5rem;margin-bottom:10px;">⚔️</div>
+      <div style="font-size:0.9rem;margin-bottom:6px;color:#c8d8ff;">Não estás em nenhum clã</div>
+      <div style="font-size:0.75rem;margin-bottom:16px;">Explora os clãs existentes ou cria o teu próprio!</div>
+      <button class="admin-action-btn green" onclick="switchClanTab('browse')" style="margin-right:6px;">🔍 Explorar</button>
+      <button class="admin-action-btn" onclick="switchClanTab('create')">➕ Criar Clã</button>
+    </div>`;
+    return;
+  }
+  const clans = getClans();
+  const clan = clans[myClanId];
+  if(!clan){ setUserClan(me,null); renderMyClan(body); return; }
+  const isLeader = clan.leader === me;
+  const isOfficer = (clan.officers||[]).includes(me);
+  const power = getClanPower(clan);
+  const users = getUsers();
+
+  body.innerHTML=`
+    <div class="my-clan-banner">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;">
+        <div class="clan-icon" style="background:rgba(255,180,0,0.1);">${clan.icon||'⚔️'}</div>
+        <div>
+          <div class="clan-card-name">${clan.name}</div>
+          <div style="font-size:0.7rem;color:var(--text-dim);">[${clan.tag}] · ${clan.members.length} membro${clan.members.length!==1?'s':''}</div>
+        </div>
+        ${isLeader?'<span class="clan-badge leader" style="margin-left:auto;">👑 Líder</span>'
+          :isOfficer?'<span class="clan-badge officer" style="margin-left:auto;">⭐ Oficial</span>'
+          :'<span class="clan-badge member" style="margin-left:auto;">Membro</span>'}
+      </div>
+      <div style="font-size:0.75rem;color:var(--text-dim);margin-bottom:8px;">${clan.desc||'Sem descrição.'}</div>
+      <div style="display:flex;gap:16px;font-size:0.72rem;color:#a0c4ff;">
+        <span>⚡ ${power.toLocaleString()} poder</span>
+        <span>👥 ${clan.members.length} membros</span>
+        <span>📅 ${new Date(clan.createdAt).toLocaleDateString('pt-PT')}</span>
+      </div>
+    </div>
+
+    <div style="font-size:0.78rem;font-weight:700;color:#ffc800;margin-bottom:8px;">👥 Membros</div>
+    <div id="clanMembersList"></div>
+
+    ${isLeader ? `
+    <div style="margin-top:14px;padding-top:12px;border-top:1px solid var(--border);">
+      <div style="font-size:0.72rem;color:var(--text-dim);margin-bottom:6px;">⚙️ Gestão do Clã</div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;">
+        <button class="admin-action-btn" style="font-size:0.72rem;" onclick="clanEditDesc()">✏️ Editar descrição</button>
+        <button class="admin-action-btn red" style="font-size:0.72rem;" onclick="clanDisband()">💀 Dissolver clã</button>
+      </div>
+    </div>` : `
+    <div style="margin-top:14px;">
+      <button class="admin-action-btn red" style="width:100%;font-size:0.78rem;" onclick="clanLeave()">🚪 Sair do Clã</button>
+    </div>`}
+  `;
+
+  // Render members
+  const membersList = document.getElementById('clanMembersList');
+  if(membersList){
+    membersList.innerHTML = clan.members.map(m=>{
+      const u = users[m];
+      const col = avatarColor(m);
+      const isLdr = clan.leader===m;
+      const isOff = (clan.officers||[]).includes(m);
+      const badge = isLdr?'<span class="clan-badge leader">👑 Líder</span>'
+                  :isOff?'<span class="clan-badge officer">⭐ Oficial</span>'
+                  :'<span class="clan-badge member">Membro</span>';
+      const rolls = u?(u.totalRolls||0).toLocaleString():'?';
+      const kickBtn = isLeader && m!==me ? `<button class="admin-action-btn" style="font-size:0.6rem;padding:3px 7px;color:#ff6666;" onclick="clanKickMember('${m}')">Expulsar</button>` : '';
+      const promoteBtn = isLeader && m!==me && !isOff ? `<button class="admin-action-btn" style="font-size:0.6rem;padding:3px 7px;" onclick="clanPromote('${m}')">Promover</button>` : '';
+      return `<div class="clan-member-row">
+        <div class="clan-member-av" style="background:linear-gradient(135deg,${col},${col}88);color:#fff;">${m.charAt(0).toUpperCase()}</div>
+        <div style="flex:1;min-width:0;">
+          <div style="font-size:0.78rem;font-weight:600;color:#c8d8ff;">${m}${m===me?' <span style="color:#ffc800;font-size:0.65rem;">(tu)</span>':''}</div>
+          <div style="font-size:0.65rem;color:var(--text-dim);">🎲 ${rolls} rolls</div>
+        </div>
+        ${badge}
+        ${promoteBtn}${kickBtn}
+      </div>`;
+    }).join('');
+  }
+}
+
+// ── BROWSE ──
+function renderClanBrowse(body){
+  const clans = getClans();
+  const list = Object.entries(clans).sort((a,b)=>getClanPower(b[1])-getClanPower(a[1]));
+  const myClanId = getUserClan(currentUser.username);
+
+  if(!list.length){
+    body.innerHTML=`<div style="text-align:center;padding:30px;color:var(--text-dim);">
+      <div style="font-size:2rem;margin-bottom:8px;">🏜️</div>
+      <div>Ainda não há clãs. Sê o primeiro a criar um!</div>
+      <button class="admin-action-btn" style="margin-top:12px;" onclick="switchClanTab('create')">➕ Criar Clã</button>
+    </div>`;
+    return;
+  }
+
+  body.innerHTML = list.map(([id,clan])=>{
+    const power = getClanPower(clan);
+    const isMine = id===myClanId;
+    return `<div class="clan-card" onclick="clanViewDetail('${id}')">
+      <div class="clan-card-top">
+        <div class="clan-icon" style="background:rgba(255,180,0,0.08);">${clan.icon||'⚔️'}</div>
+        <div style="flex:1;min-width:0;">
+          <div class="clan-card-name">${clan.name} ${isMine?'<span style="font-size:0.65rem;color:#ffc800;">(O teu)</span>':''}</div>
+          <div class="clan-card-tag">[${clan.tag}] — ${clan.desc||'Sem descrição'}</div>
+        </div>
+        <button class="admin-action-btn green" style="font-size:0.7rem;padding:4px 10px;" onclick="event.stopPropagation();clanJoin('${id}')">${isMine?'✔ Membro':'Entrar'}</button>
+      </div>
+      <div class="clan-card-stats">
+        <span class="clan-card-stat">👥 ${clan.members.length} membros</span>
+        <span class="clan-card-stat">⚡ ${power.toLocaleString()} poder</span>
+        <span class="clan-card-stat">👑 ${clan.leader}</span>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ── RANKING ──
+function renderClanRanking(body){
+  const clans = getClans();
+  const list = Object.entries(clans).map(([id,c])=>({id,clan:c,power:getClanPower(c)}))
+    .sort((a,b)=>b.power-a.power);
+  const medals=['🥇','🥈','🥉'];
+  const myClanId = getUserClan(currentUser.username);
+
+  if(!list.length){ body.innerHTML='<div style="color:var(--text-dim);text-align:center;padding:30px;">Sem clãs ainda.</div>'; return; }
+
+  body.innerHTML = `<div style="font-size:0.72rem;color:var(--text-dim);margin-bottom:10px;text-align:center;">Ranking por poder total (soma de rolls de todos os membros)</div>`
+  + list.map(({id,clan,power},i)=>{
+    const isMine = id===myClanId;
+    return `<div class="clan-lb-row" style="${isMine?'border-color:rgba(255,180,0,0.3);background:rgba(255,180,0,0.06);':''}">
+      <div style="font-size:${i<3?'1.2':'0.85'}rem;width:28px;text-align:center;flex-shrink:0;">${i<3?medals[i]:i+1}</div>
+      <div class="clan-icon" style="width:34px;height:34px;font-size:1.1rem;border-radius:8px;background:rgba(255,180,0,0.08);">${clan.icon||'⚔️'}</div>
+      <div style="flex:1;min-width:0;">
+        <div style="font-size:0.82rem;font-weight:700;color:${i===0?'#ffc800':i===1?'#c8d0d8':i===2?'#c87828':'#c8d8ff'};">${clan.name} <span style="font-size:0.65rem;color:var(--text-dim);">[${clan.tag}]</span></div>
+        <div style="font-size:0.65rem;color:var(--text-dim);">👥 ${clan.members.length} membros</div>
+      </div>
+      <div style="font-size:0.78rem;color:#a0c4ff;font-weight:700;">⚡ ${power.toLocaleString()}</div>
+    </div>`;
+  }).join('');
+}
+
+// ── CREATE ──
+let _clanSelectedIcon = '⚔️';
+function renderClanCreate(body){
+  const myClanId = getUserClan(currentUser.username);
+  if(myClanId){
+    body.innerHTML=`<div style="text-align:center;padding:20px;color:var(--text-dim);">Já pertences a um clã.<br>Sai primeiro para poderes criar um novo.</div>`;
+    return;
+  }
+  body.innerHTML=`
+    <div style="font-size:0.78rem;font-weight:700;color:#ffc800;margin-bottom:12px;">🏗 Criar Novo Clã</div>
+    <div class="clan-input-label">Nome do Clã *</div>
+    <input class="clan-input" id="clanNameInput" maxlength="24" placeholder="Ex: Os Lendários"/>
+    <div class="clan-input-label">Tag [3 letras] *</div>
+    <input class="clan-input" id="clanTagInput" maxlength="3" placeholder="Ex: LEG" style="text-transform:uppercase;"/>
+    <div class="clan-input-label">Descrição</div>
+    <input class="clan-input" id="clanDescInput" maxlength="80" placeholder="Uma frase sobre o clã..."/>
+    <div class="clan-input-label">Ícone</div>
+    <div class="clan-emoji-grid" id="clanIconGrid"></div>
+    <div id="clanCreateMsg" style="font-size:0.72rem;min-height:16px;margin-bottom:8px;"></div>
+    <button class="admin-action-btn green" style="width:100%;padding:10px;" onclick="clanCreate()">⚔️ Criar Clã</button>
+  `;
+  // Icon grid
+  const grid = document.getElementById('clanIconGrid');
+  CLAN_ICONS.forEach(ico=>{
+    const btn = document.createElement('button');
+    btn.className='clan-emoji-opt'+(ico===_clanSelectedIcon?' selected':'');
+    btn.textContent=ico;
+    btn.onclick=()=>{ _clanSelectedIcon=ico; grid.querySelectorAll('.clan-emoji-opt').forEach(b=>b.classList.remove('selected')); btn.classList.add('selected'); };
+    grid.appendChild(btn);
+  });
+}
+
+function clanCreate(){
+  const name = (document.getElementById('clanNameInput').value||'').trim();
+  const tag  = (document.getElementById('clanTagInput').value||'').trim().toUpperCase();
+  const desc = (document.getElementById('clanDescInput').value||'').trim();
+  const msg  = document.getElementById('clanCreateMsg');
+
+  if(!name){ msg.style.color='#ff6666'; msg.textContent='O nome é obrigatório.'; return; }
+  if(tag.length!==3||!/^[A-Z0-9]+$/.test(tag)){ msg.style.color='#ff6666'; msg.textContent='A tag deve ter exatamente 3 letras/números.'; return; }
+
+  const clans = getClans();
+  // Check tag unique
+  if(Object.values(clans).some(c=>c.tag===tag)){ msg.style.color='#ff6666'; msg.textContent='Esta tag já está em uso.'; return; }
+
+  const clanId = 'clan_'+Date.now();
+  clans[clanId] = { name, tag, desc, icon:_clanSelectedIcon, leader:currentUser.username, officers:[], members:[currentUser.username], createdAt:Date.now() };
+  saveClans(clans);
+  setUserClan(currentUser.username, clanId);
+  updateClanNotifDot();
+  showAdminNotif(`⚔️ Clã "${name}" criado!`,'#ffc800');
+  switchClanTab('myClan');
+}
+
+function clanJoin(clanId){
+  const me = currentUser.username;
+  const myClanId = getUserClan(me);
+  if(myClanId===clanId){ showAdminNotif('Já és membro deste clã!','#ff9500'); return; }
+  if(myClanId){ showAdminNotif('Sai do teu clã atual primeiro!','#ff9500'); return; }
+  const clans = getClans();
+  if(!clans[clanId]){ showAdminNotif('Clã não encontrado.','#ff4444'); return; }
+  if(!clans[clanId].members.includes(me)) clans[clanId].members.push(me);
+  saveClans(clans);
+  setUserClan(me, clanId);
+  updateClanNotifDot();
+  showAdminNotif(`⚔️ Entraste no clã "${clans[clanId].name}"!`,'#ffc800');
+  switchClanTab('myClan');
+}
+
+function clanLeave(){
+  const me = currentUser.username;
+  const clanId = getUserClan(me);
+  if(!clanId) return;
+  const clans = getClans();
+  const clan = clans[clanId];
+  if(clan.leader===me){ showAdminNotif('O líder não pode sair — transfere a liderança ou dissolve o clã.','#ff9500'); return; }
+  clan.members = clan.members.filter(m=>m!==me);
+  clan.officers = (clan.officers||[]).filter(o=>o!==me);
+  saveClans(clans);
+  setUserClan(me,null);
+  updateClanNotifDot();
+  showAdminNotif('Saíste do clã.','#ff9500');
+  switchClanTab('browse');
+}
+
+function clanDisband(){
+  const me = currentUser.username;
+  const clanId = getUserClan(me);
+  if(!clanId) return;
+  const clans = getClans();
+  const clan = clans[clanId];
+  if(clan.leader!==me){ showAdminNotif('Só o líder pode dissolver o clã.','#ff4444'); return; }
+  // Remove all members from clan
+  clan.members.forEach(m=>setUserClan(m,null));
+  delete clans[clanId];
+  saveClans(clans);
+  updateClanNotifDot();
+  showAdminNotif('💀 Clã dissolvido.','#ff4444');
+  switchClanTab('browse');
+}
+
+function clanKickMember(username){
+  const me = currentUser.username;
+  const clanId = getUserClan(me);
+  if(!clanId) return;
+  const clans = getClans();
+  const clan = clans[clanId];
+  if(clan.leader!==me) return;
+  clan.members = clan.members.filter(m=>m!==username);
+  clan.officers = (clan.officers||[]).filter(o=>o!==username);
+  saveClans(clans);
+  setUserClan(username, null);
+  showAdminNotif(`🥾 ${username} expulso do clã.`,'#ff9500');
+  switchClanTab('myClan');
+}
+
+function clanPromote(username){
+  const me = currentUser.username;
+  const clanId = getUserClan(me);
+  if(!clanId) return;
+  const clans = getClans();
+  const clan = clans[clanId];
+  if(clan.leader!==me) return;
+  if(!clan.officers) clan.officers=[];
+  if(!clan.officers.includes(username)) clan.officers.push(username);
+  saveClans(clans);
+  showAdminNotif(`⭐ ${username} promovido a Oficial!`,'#a0c4ff');
+  switchClanTab('myClan');
+}
+
+function clanEditDesc(){
+  const me = currentUser.username;
+  const clanId = getUserClan(me);
+  if(!clanId) return;
+  const clans = getClans();
+  const clan = clans[clanId];
+  const newDesc = prompt('Nova descrição do clã (máx 80 caracteres):', clan.desc||'');
+  if(newDesc===null) return;
+  clan.desc = newDesc.slice(0,80);
+  saveClans(clans);
+  showAdminNotif('✅ Descrição atualizada!','#50dc78');
+  switchClanTab('myClan');
+}
+
+function updateClanNotifDot(){
+  if(!currentUser||currentUser.guest) return;
+  const hasClan = !!getUserClan(currentUser.username);
+  const dot = document.getElementById('clanNotifDot');
+  // Show golden dot if in a clan (indicator of membership)
+  if(dot) dot.style.display = hasClan ? 'block' : 'none';
+  // Update header sub
+  const sub = document.getElementById('clanHeaderSub');
+  if(sub){
+    if(hasClan){
+      const clans = getClans();
+      const clan = clans[getUserClan(currentUser.username)];
+      if(sub && clan) sub.textContent = clan.name + ' [' + clan.tag + ']';
+    } else {
+      if(sub) sub.textContent = 'Junta-te ou cria um clã';
+    }
+  }
+}
+
+// ══════════════════════════════════════════════════════
+// FRIENDS SYSTEM
+// ══════════════════════════════════════════════════════
+const FRIENDS_KEY = 'solsrng_friends_';    // solsrng_friends_Username → {friends:[], requests:[]}
+
+function getFriendData(username){
+  try{ return JSON.parse(localStorage.getItem(FRIENDS_KEY+username)||'{"friends":[],"requests":[]}'); }
+  catch(e){ return {friends:[],requests:[]}; }
+}
+function saveFriendData(username, data){
+  localStorage.setItem(FRIENDS_KEY+username, JSON.stringify(data));
+}
+
+function openFriends(){
+  if(!currentUser||currentUser.guest){ return; }
+  document.getElementById('friendsModal').style.display='flex';
+  switchFriendsTab('list');
+}
+function closeFriends(){ document.getElementById('friendsModal').style.display='none'; }
+
+function switchFriendsTab(tab){
+  ['list','requests','add'].forEach(t=>{
+    document.getElementById('ftab-'+t).classList.toggle('active', t===tab);
+    document.getElementById('ftab-'+t+'-content').style.display = t===tab ? 'block' : 'none';
+  });
+  if(tab==='list') renderFriendsList();
+  if(tab==='requests') renderFriendRequests();
+  if(tab==='add') document.getElementById('friendAddMsg').textContent='';
+}
+
+function renderFriendsList(){
+  const me = currentUser.username;
+  const data = getFriendData(me);
+  const list = document.getElementById('friendsList');
+  const countEl = document.getElementById('friendsCount');
+  if(countEl) countEl.textContent = data.friends.length + ' amigo' + (data.friends.length!==1?'s':'');
+  if(!data.friends.length){
+    list.innerHTML='<div style="color:var(--text-dim);font-size:0.78rem;text-align:center;padding:20px;">Ainda não tens amigos.<br>Adiciona alguém na aba <b>➕ Adicionar</b>.</div>';
+    return;
+  }
+  const users = getUsers();
+  list.innerHTML = data.friends.map(name=>{
+    const u = users[name];
+    const col = u ? avatarColor(name) : '#666';
+    const initial = name.charAt(0).toUpperCase();
+    const rolls = u ? (u.totalRolls||0).toLocaleString() : '?';
+    return `<div class="friend-row">
+      <div class="fr-av" style="background:linear-gradient(135deg,${col},${col}88);border-color:${col}66;">${initial}</div>
+      <div class="fr-info">
+        <div class="fr-name">${name}</div>
+        <div class="fr-sub">🎲 ${rolls} rolls</div>
+      </div>
+      <div class="fr-btns">
+        <button class="admin-action-btn" style="font-size:0.65rem;padding:4px 8px;" onclick="inspectPlayerByName('${name}')">👁</button>
+        <button class="admin-action-btn" style="font-size:0.65rem;padding:4px 8px;color:#ff6666;border-color:rgba(255,80,80,0.3);" onclick="removeFriend('${name}')">✕</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function renderFriendRequests(){
+  const me = currentUser.username;
+  const data = getFriendData(me);
+  const list = document.getElementById('friendRequestsList');
+  const badge = document.getElementById('friendReqBadge');
+  if(!data.requests||!data.requests.length){
+    list.innerHTML='<div style="color:var(--text-dim);font-size:0.78rem;text-align:center;padding:20px;">Sem pedidos pendentes.</div>';
+    if(badge) badge.style.display='none';
+    return;
+  }
+  if(badge){ badge.style.display='inline'; badge.textContent=data.requests.length; }
+  list.innerHTML = data.requests.map(name=>{
+    const col = avatarColor(name);
+    const initial = name.charAt(0).toUpperCase();
+    return `<div class="friend-row">
+      <div class="fr-av" style="background:linear-gradient(135deg,${col},${col}88);border-color:${col}66;">${initial}</div>
+      <div class="fr-info">
+        <div class="fr-name">${name}</div>
+        <div class="fr-sub">Quer ser teu amigo</div>
+      </div>
+      <div class="fr-btns">
+        <button class="admin-action-btn" style="font-size:0.65rem;padding:4px 8px;background:rgba(80,220,120,0.15);border-color:rgba(80,220,120,0.4);color:#50dc78;" onclick="acceptFriendRequest('${name}')">✔</button>
+        <button class="admin-action-btn" style="font-size:0.65rem;padding:4px 8px;color:#ff6666;border-color:rgba(255,80,80,0.3);" onclick="declineFriendRequest('${name}')">✕</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function sendFriendRequest(){
+  const target = (document.getElementById('friendAddInput').value||'').trim();
+  const msgEl = document.getElementById('friendAddMsg');
+  const me = currentUser.username;
+  if(!target){ msgEl.style.color='#ff6666'; msgEl.textContent='Escreve um username.'; return; }
+  if(target===me){ msgEl.style.color='#ff6666'; msgEl.textContent='Não podes adicionar-te a ti mesmo!'; return; }
+  const users = getUsers();
+  if(!users[target]){ msgEl.style.color='#ff6666'; msgEl.textContent='Jogador não encontrado.'; return; }
+  const myData = getFriendData(me);
+  if(myData.friends.includes(target)){ msgEl.style.color='#ff9500'; msgEl.textContent='Já são amigos!'; return; }
+  // Add request to target's data
+  const targetData = getFriendData(target);
+  if(targetData.requests && targetData.requests.includes(me)){ msgEl.style.color='#ff9500'; msgEl.textContent='Já enviaste um pedido.'; return; }
+  if(!targetData.requests) targetData.requests=[];
+  targetData.requests.push(me);
+  saveFriendData(target, targetData);
+  document.getElementById('friendAddInput').value='';
+  msgEl.style.color='#50dc78';
+  msgEl.textContent=`✅ Pedido enviado a ${target}!`;
+}
+
+function acceptFriendRequest(from){
+  const me = currentUser.username;
+  const myData = getFriendData(me);
+  myData.requests = (myData.requests||[]).filter(r=>r!==from);
+  if(!myData.friends.includes(from)) myData.friends.push(from);
+  saveFriendData(me, myData);
+  // Also add me to their friends list
+  const theirData = getFriendData(from);
+  if(!theirData.friends.includes(me)) theirData.friends.push(me);
+  saveFriendData(from, theirData);
+  renderFriendRequests();
+  updateFriendsNotifDot();
+}
+
+function declineFriendRequest(from){
+  const me = currentUser.username;
+  const myData = getFriendData(me);
+  myData.requests = (myData.requests||[]).filter(r=>r!==from);
+  saveFriendData(me, myData);
+  renderFriendRequests();
+  updateFriendsNotifDot();
+}
+
+function removeFriend(name){
+  const me = currentUser.username;
+  const myData = getFriendData(me);
+  myData.friends = myData.friends.filter(f=>f!==name);
+  saveFriendData(me, myData);
+  // Also remove from their side
+  const theirData = getFriendData(name);
+  theirData.friends = (theirData.friends||[]).filter(f=>f!==me);
+  saveFriendData(name, theirData);
+  renderFriendsList();
+}
+
+function updateFriendsNotifDot(){
+  if(!currentUser||currentUser.guest) return;
+  const data = getFriendData(currentUser.username);
+  const count = (data.requests||[]).length;
+  const dot = document.getElementById('friendsNotifDot');
+  const badge = document.getElementById('friendReqBadge');
+  if(dot) dot.style.display = count>0 ? 'block' : 'none';
+  if(badge){ badge.style.display=count>0?'inline':'none'; if(count>0)badge.textContent=count; }
+}
+
+function inspectPlayerByName(name){
+  closeFriends();
+  // reuse existing inspect if available
+  if(typeof openInspect === 'function') openInspect(name);
+}
+
+// ── BAN / KICK HISTORY ──
+const BAN_HISTORY_KEY = 'solsrng_banhistory';
+let _banHistFilter = 'all';
+
+function addBanHistory(type, username, detail){
+  try{
+    const hist = JSON.parse(localStorage.getItem(BAN_HISTORY_KEY)||'[]');
+    hist.unshift({ type, username, detail, time: Date.now() });
+    if(hist.length > 100) hist.pop(); // keep max 100
+    localStorage.setItem(BAN_HISTORY_KEY, JSON.stringify(hist));
+  }catch(e){}
+  renderBanHistory();
+}
+
+function renderBanHistory(){
+  const list = document.getElementById('banHistoryList');
+  if(!list) return;
+  try{
+    const hist = JSON.parse(localStorage.getItem(BAN_HISTORY_KEY)||'[]');
+    const filtered = _banHistFilter === 'all' ? hist : hist.filter(h=>h.type===_banHistFilter);
+    if(filtered.length === 0){
+      list.innerHTML = '<div style="color:var(--text-dim);font-size:0.75rem;text-align:center;padding:16px;">Sem registos.</div>';
+      return;
+    }
+    list.innerHTML = filtered.map(h=>{
+      const d = new Date(h.time);
+      const timeStr = d.toLocaleDateString('pt-PT',{day:'2-digit',month:'2-digit'}) + ' ' + d.toLocaleTimeString('pt-PT',{hour:'2-digit',minute:'2-digit'});
+      const icons = { ban:'🔨', kick:'🥾', unban:'✅' };
+      const labels = { ban:'BAN', kick:'KICK', unban:'UNBAN' };
+      return `<div class="ban-hist-entry">
+        <div class="bhe-top">
+          <span class="bhe-type ${h.type}">${icons[h.type]||'•'} ${labels[h.type]||h.type}</span>
+          <span class="bhe-user">${h.username}</span>
+          <span class="bhe-time">${timeStr}</span>
+        </div>
+        ${h.detail ? `<div class="bhe-detail">${h.detail}</div>` : ''}
+      </div>`;
+    }).join('');
+  }catch(e){ list.innerHTML='<div style="color:#ff6666;font-size:0.72rem;">Erro ao carregar histórico.</div>'; }
+}
+
+function setBanHistFilter(f){
+  _banHistFilter = f;
+  ['all','ban','kick','unban'].forEach(id=>{
+    const btn = document.getElementById('bhFilter-'+id);
+    if(!btn) return;
+    if(id===f){
+      btn.style.background='rgba(255,80,80,0.2)';
+      btn.style.borderColor='rgba(255,80,80,0.5)';
+      btn.style.color='#ff8888';
+    } else {
+      btn.style.background='';
+      btn.style.borderColor='';
+      btn.style.color='';
+    }
+  });
+  renderBanHistory();
+}
+
+function clearBanHistory(){
+  localStorage.removeItem(BAN_HISTORY_KEY);
+  renderBanHistory();
+  addLog('🗑 Histórico de bans limpo.','info');
 }
 
 // ── NOTIF FLASH ──
@@ -5404,6 +6130,13 @@ function doLogin(){
 function loginUser(username){
   window._lastKnownUsername = username; // keep track for ban polling
   currentUser={ username, color:avatarColor(username), guest:false };
+  // Show friends + clan buttons for logged-in (non-guest) users
+  const fbtn = document.getElementById('friendsBtn');
+  if(fbtn){ fbtn.style.display='flex'; }
+  const cbtn = document.getElementById('clanBtn');
+  if(cbtn){ cbtn.style.display='flex'; }
+  setTimeout(updateBottomBarCols, 50);
+  setTimeout(updateClanNotifDot, 100);
   sessionStorage.setItem(SESSION_KEY, username);
   // First try to pull latest data from Firebase, then load
   const startGame = () => {
@@ -5505,6 +6238,10 @@ function applyUserToUI(){
 
 // ── AUTO-LOGIN FROM SESSION ──
 window.addEventListener('load',()=>{
+  // Always make sure the preview modal is closed on page load/refresh
+  const pm = document.getElementById('previewModal');
+  if(pm){ pm.classList.remove('open'); pm.style.display='none'; }
+
   try{
     const saved = sessionStorage.getItem(SESSION_KEY);
     if(saved && getUserData(saved)){
@@ -5588,15 +6325,21 @@ function buildLeaderboard(tab){
       ? `<img src="${e.profilePic}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;" />`
       : avatarInitial(e.username);
     const lbAvBg = e.profilePic ? 'background:#000' : `background:linear-gradient(135deg,${e.color},${e.color}88)`;
+    const crownEmoji = ['👑','🥈','🥉'];
+    const crownClass = ['','s','b'];
+    const posClass = i===0?'top1-num':i===1?'top2-num':i===2?'top3-num':'';
+    const avClass  = i===0?'top1-av':i===1?'top2-av':i===2?'top3-av':'';
+    const crownHtml = i<3 ? `<div class="lb-crown ${crownClass[i]}">${crownEmoji[i]}</div>` : '';
     row.innerHTML=`
-      <div class="lbr-pos" style="color:${i<3?'#ffc800':'var(--text-dim)'}">${i<3?medals[i]:i+1}</div>
-      <div class="lbr-avatar" style="${lbAvBg};border-color:${e.color}66;overflow:hidden;">${lbAvContent}</div>
+      ${crownHtml}
+      <div class="lbr-pos ${posClass}">${i<3?medals[i]:i+1}</div>
+      <div class="lbr-avatar ${avClass}" style="${lbAvBg};border-color:${e.color}66;overflow:hidden;">${lbAvContent}</div>
       <div class="lbr-info">
-        <div class="lbr-name" style="color:${isMe?'#ffc800':'var(--text)'}">${e.username}${isMe?' (You)':''}</div>
+        <div class="lbr-name" style="color:${i===0?'#ffc800':i===1?'#c8d0d8':i===2?'#c87828':isMe?'#ffc800':'var(--text)'}">${e.username}${isMe?' (tu)':''}</div>
         <div class="lbr-sub">${e.totalRolls.toLocaleString()} rolls · ${e.uniqueCount} unique</div>
       </div>
       <div class="lbr-score">${score}</div>
-      <div style="font-size:0.7rem;color:var(--text-dim);flex-shrink:0;padding-left:4px;" title="View profile">👁</div>
+      <div style="font-size:0.7rem;color:var(--text-dim);flex-shrink:0;padding-left:4px;" title="Ver perfil">👁</div>
     `;
     row.onclick = ()=>{ closeLeaderboard(); openInspect(e.username); };
     list.appendChild(row);
@@ -5801,16 +6544,8 @@ function openInspect(username){
 
   // banner
   const bannerEl = document.getElementById('inspectBanner');
-  if(prof.gifBanner){
-    bannerEl.style.background = '#000';
-    bannerEl.style.backgroundImage = `url(${prof.gifBanner})`;
-    bannerEl.style.backgroundSize = 'cover';
-    bannerEl.style.backgroundPosition = 'center';
-  } else {
-    bannerEl.style.backgroundImage = '';
-    bannerEl.style.background = banner.css;
-    if(isOwner) bannerEl.style.background = 'linear-gradient(135deg,#0a0010,#1a0030,#0d0020,#2a005a,#0a0010)';
-  }
+  bannerEl.style.background = banner.css;
+  if(isOwner) bannerEl.style.background = 'linear-gradient(135deg,#0a0010,#1a0030,#0d0020,#2a005a,#0a0010)';
 
   // avatar
   const av = document.getElementById('inspectAvatar');
@@ -5905,8 +6640,16 @@ function openInspect(username){
     duelEl.innerHTML='<div style="color:var(--text-dim);font-size:0.75rem;text-align:center;padding:8px;">'+(isMe?'Cannot duel yourself.':'Login to challenge players.')+'</div>';
   } else {
     duelEl.innerHTML=`
-      <div style="font-size:0.75rem;color:var(--text-dim);margin-bottom:8px;line-height:1.5;">Challenge <strong style="color:var(--text);">${username}</strong> to 3 rolls each. Best aura wins!</div>
-      <button class="duel-btn" onclick="sendDuelInvite('${username}')">⚔️ Challenge ${username}</button>
+      <div style="font-size:0.75rem;color:var(--text-dim);margin-bottom:8px;line-height:1.5;">Desafia <strong style="color:var(--text);">${username}</strong> — 3 rolls cada, melhor aura ganha!</div>
+      <div style="background:rgba(255,140,0,0.06);border:1px solid rgba(255,140,0,0.18);border-radius:10px;padding:10px;margin-bottom:8px;">
+        <div style="font-size:0.7rem;color:#ffc800;font-weight:700;margin-bottom:6px;">🎰 Aposta (opcional)</div>
+        <div style="font-size:0.68rem;color:var(--text-dim);margin-bottom:6px;">Escolhe uma aura do teu inventário para apostar. Se perderes, o adversário fica com ela!</div>
+        <select id="duelBetSelect" style="width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(255,140,0,0.25);border-radius:8px;padding:6px 8px;color:#fff;font-size:0.75rem;margin-bottom:0;">
+          <option value="">— Sem aposta —</option>
+          ${Object.entries(inventory||{}).filter(([n,q])=>q>0).sort((a,b)=>{const ai=RARITY_ORDER.indexOf(a[0]),bi=RARITY_ORDER.indexOf(b[0]);return ai-bi;}).map(([n,q])=>{const a=AURAS.find(x=>x.name===n);return `<option value="${n}">${a?a.icon||'✨':''} ${n} (x${q})</option>`;}).join('')}
+        </select>
+      </div>
+      <button class="duel-btn" onclick="sendDuelInviteWithBet('${username}')">⚔️ Desafiar ${username}</button>
       <div id="duelResultArea"></div>`;
   }
   // Duel record — show local first, then refresh from Firebase
@@ -5966,31 +6709,46 @@ let _duelListener    = null;  // Firebase listener for active duel
 let _incomingDuelId  = null;  // ID of an incoming challenge we haven't answered
 let _duelResultShown = null;  // ID of last duel result shown — prevents double-counting
 
-function sendDuelInvite(opponentName){
+function sendDuelInviteWithBet(opponentName){
+  const betEl = document.getElementById('duelBetSelect');
+  const betAura = betEl ? betEl.value : '';
+  sendDuelInvite(opponentName, betAura||null);
+}
+
+function sendDuelInvite(opponentName, betAura=null){
   const f=fb();
   if(!f){ showAdminNotif('Firebase required for real-time duels','#ff8888'); return; }
   if(!currentUser||currentUser.guest){ showAdminNotif('Login to send a duel invite','#ff8888'); return; }
+
+  // Validate bet aura still in inventory
+  if(betAura && (!inventory[betAura] || inventory[betAura]<=0)){
+    showAdminNotif('Já não tens essa aura no inventário!','#ff4444'); return;
+  }
 
   const duelId = `${currentUser.username}_vs_${opponentName}_${Date.now()}`;
   const duelRef = f.ref(f.db, `duels/${duelId}`);
   const payload = {
     challenger: currentUser.username,
     opponent:   opponentName,
-    status:     'pending',   // pending → accepted / declined / playing → done
+    status:     'pending',
     ts:         Date.now(),
     challengerRolls: null,
     opponentRolls:   null,
+    challengerBet: betAura||null,
+    opponentBet:   null,
   };
 
   f.set(duelRef, payload).then(()=>{
     _pendingDuelId = duelId;
     // Update UI to "waiting"
+    const betLabel = betAura ? `<div style="font-size:0.68rem;color:#ffc800;margin-bottom:6px;">🎰 Apostaste: <b>${betAura}</b></div>` : '';
     const duelEl = document.getElementById('inspectDuelArea');
     if(duelEl) duelEl.innerHTML=`
       <div class="duel-waiting-box">
         <div class="duel-wait-icon">⏳</div>
-        <div style="font-size:0.88rem;font-weight:700;color:#ffc800;margin-bottom:4px;">Waiting for ${opponentName}...</div>
-        <div style="font-size:0.68rem;color:var(--text-dim);margin-bottom:10px;">Invite sent! Expires in <span id="duelSendSecs">60</span>s</div>
+        <div style="font-size:0.88rem;font-weight:700;color:#ffc800;margin-bottom:4px;">À espera de ${opponentName}...</div>
+        ${betLabel}
+        <div style="font-size:0.68rem;color:var(--text-dim);margin-bottom:10px;">Convite enviado! Expira em <span id="duelSendSecs">60</span>s</div>
         <div style="height:3px;border-radius:2px;background:rgba(255,255,255,0.07);overflow:hidden;margin-bottom:12px;">
           <div id="duelSendCountdownFill" style="height:100%;border-radius:2px;background:linear-gradient(90deg,#ffc800,#ff8060);width:100%;transition:width 1s linear;"></div>
         </div>
@@ -6024,6 +6782,7 @@ function cancelDuelInvite(duelId, expired=false){
 
 // Compute and show result for both players from Firebase duel data
 function _resolveAndShowDuel(duelId, data, opponentName, isChallenger){
+  window._lastDuelData = data; // store for bet transfer in _showDuelResult
   const myRolls    = isChallenger ? data.challengerRolls : data.opponentRolls;
   const theirRolls = isChallenger ? data.opponentRolls   : data.challengerRolls;
   if(!myRolls || !theirRolls) return false;
@@ -6108,6 +6867,34 @@ function _showDuelResult(outcome, myName, theirName, myRolls, theirRolls, myBest
   else if(outcome==='lose') rec.losses++;
   else rec.ties++;
   myU.duelRecord=rec;
+
+  // ── BET TRANSFER ──
+  // data passed via _lastDuelData set in _resolveAndShowDuel
+  const ld = window._lastDuelData;
+  if(ld && outcome !== 'tie'){
+    const winnerBet = outcome==='win' ? ld.opponentBet : ld.challengerBet;   // what winner receives
+    const loserBet  = outcome==='win' ? ld.challengerBet : ld.opponentBet;   // what loser loses (already theirs)
+    // Winner receives opponent's bet aura
+    if(winnerBet){
+      myU.inventory = myU.inventory||{};
+      myU.inventory[winnerBet] = (myU.inventory[winnerBet]||0) + 1;
+      // Update local inventory too
+      if(outcome==='win'){
+        inventory[winnerBet] = (inventory[winnerBet]||0) + 1;
+        showAdminNotif(`🏆 Ganhaste a aposta! +1 ${winnerBet}`,'#ffc800');
+      }
+    }
+    // Loser loses their bet aura
+    if(loserBet && outcome==='lose'){
+      myU.inventory = myU.inventory||{};
+      if(myU.inventory[loserBet] && myU.inventory[loserBet]>0){
+        myU.inventory[loserBet]--;
+        inventory[loserBet] = Math.max(0,(inventory[loserBet]||0)-1);
+      }
+      showAdminNotif(`💀 Perdeste a aposta! -1 ${loserBet}`,'#ff4444');
+    }
+  }
+
   allUsers[currentUser.username]=myU;
   saveUsers(allUsers);
   // Save duelRecord directly to Firebase right now (don't wait for saveCurrentProgress)
@@ -6129,9 +6916,15 @@ function _showDuelResult(outcome, myName, theirName, myRolls, theirRolls, myBest
   const txtCols={win:'#50dc78',lose:'#ff8888',tie:'#ffc800'};
   const cls=outcome;
 
+  // Bet summary line
+  const ld2 = window._lastDuelData;
+  const myBetLine = ld2 ? (outcome==='win' && ld2.opponentBet ? `<div style="font-size:0.75rem;background:rgba(255,180,0,0.1);border:1px solid rgba(255,180,0,0.25);border-radius:8px;padding:6px 10px;margin-bottom:10px;">🏆 Ganhaste a aposta! <b style="color:#ffc800;">+1 ${ld2.opponentBet}</b></div>`
+    : outcome==='lose' && ld2.challengerBet ? `<div style="font-size:0.75rem;background:rgba(255,50,50,0.08);border:1px solid rgba(255,50,50,0.2);border-radius:8px;padding:6px 10px;margin-bottom:10px;">💀 Perdeste a aposta! <b style="color:#ff8888;">-1 ${ld2.challengerBet}</b></div>` : '') : '';
+
   const resultHTML=`
     <div style="background:${bgCols[cls]};border:1px solid ${borderCols[cls]};border-radius:14px;padding:16px;text-align:center;">
       <div style="font-size:1.4rem;font-weight:900;color:${txtCols[cls]};margin-bottom:12px;font-family:'Cinzel Decorative',serif;">${titles[outcome]}</div>
+      ${myBetLine}
       <div style="font-size:0.68rem;color:var(--text-dim);margin-bottom:5px;">${myName}'s rolls:</div>
       <div style="display:flex;gap:5px;justify-content:center;flex-wrap:wrap;margin-bottom:10px;">
         ${myRolls.map((r,i)=>`<div class="duel-roll-card" style="color:${r.color};border-color:${r.color}55;background:${r.color}14;animation-delay:${i*0.12}s">${r.icon||'✨'} ${r.name}</div>`).join('')}
@@ -6142,7 +6935,7 @@ function _showDuelResult(outcome, myName, theirName, myRolls, theirRolls, myBest
       </div>
       <div style="font-size:0.8rem;">Best: <strong style="color:${myBest.color}">${myBest.icon||'✨'} ${myBest.name}</strong> <span style="color:var(--text-dim)">vs</span> <strong style="color:${theirBest.color}">${theirBest.icon||'✨'} ${theirBest.name}</strong></div>
     </div>
-    <button class="duel-btn" onclick="sendDuelInvite('${opponentName}')" style="margin-top:10px;">⚔️ Rematch</button>`;
+    <button class="duel-btn" onclick="sendDuelInvite('${opponentName}')" style="margin-top:10px;">⚔️ Revanche</button>`;
 
   // ── Show in inspect modal if open, otherwise show full-screen overlay ──
   const duelEl=document.getElementById('inspectDuelArea');
@@ -6228,6 +7021,8 @@ function _showIncomingDuelPopup(duelId, challengerName){
       ? `Best: <span style="color:${bestAura.color}">${bestAura.icon} ${bestAura.name}</span>`
       : 'Best: No rare auras yet';
     document.getElementById('duelChallengerRolls').textContent = `${(cd.totalRolls||0).toLocaleString()} total rolls`;
+    const betInfoEl = document.getElementById('duelChallengerBetInfo');
+    if(betInfoEl) betInfoEl.textContent = data.challengerBet ? `🎰 Aposta em jogo: ${data.challengerBet}` : '';
   };
 
   // Show popup immediately with local data
@@ -6507,30 +7302,47 @@ const NAME_COLORS = [
   '#ffffff','#aaffaa'
 ];
 const BANNERS = [
-  { id:'default', css:'linear-gradient(135deg,#0d1f5c,#1a0a3a)', label:'Default' },
-  { id:'blue',    css:'linear-gradient(135deg,#0a1a4a,#1a3a8f,#0a2060)', label:'Blue' },
-  { id:'gold',    css:'linear-gradient(135deg,#3a2000,#8a5500,#3a2000)', label:'Gold' },
-  { id:'void',    css:'linear-gradient(135deg,#1a0030,#4a0090,#1a0030)', label:'Void' },
-  { id:'fire',    css:'linear-gradient(135deg,#3a0000,#8a2000,#ff4400,#8a2000)', label:'Fire' },
-  { id:'cosmic',  css:'linear-gradient(135deg,#000818,#002040,#004080,#002040)', label:'Cosmic' },
-  { id:'forest',  css:'linear-gradient(135deg,#001a00,#004400,#002200)', label:'Forest' },
-  { id:'chaos',   css:'linear-gradient(135deg,#1a0000,#440000,#880000,#ff3200,#880000)', label:'Chaos' },
+  { id:'default',     css:'linear-gradient(135deg,#0d1f5c,#1a0a3a)', label:'Default' },
+  { id:'blue',        css:'linear-gradient(135deg,#0a1a4a,#1a3a8f,#0a2060)', label:'Blue' },
+  { id:'gold',        css:'linear-gradient(135deg,#3a2000,#8a5500,#3a2000)', label:'Gold' },
+  { id:'void',        css:'linear-gradient(135deg,#1a0030,#4a0090,#1a0030)', label:'Void' },
+  { id:'fire',        css:'linear-gradient(135deg,#3a0000,#8a2000,#ff4400,#8a2000)', label:'Fire' },
+  { id:'cosmic',      css:'linear-gradient(135deg,#000818,#002040,#004080,#002040)', label:'Cosmic' },
+  { id:'forest',      css:'linear-gradient(135deg,#001a00,#004400,#002200)', label:'Forest' },
+  { id:'chaos',       css:'linear-gradient(135deg,#1a0000,#440000,#880000,#ff3200,#880000)', label:'Chaos' },
   { id:'singularity', css:'radial-gradient(ellipse at 50% 40%,#ff9500 0%,#1a0800 40%,#000 70%)', label:'Singularity' },
-  { id:'storm',   css:'linear-gradient(135deg,#001830,#003060,#5082ff44,#003060)', label:'Storm' },
-  { id:'nature',  css:'linear-gradient(135deg,#002200,#00440022,#50dc7833,#002200)', label:'Nature' },
-  { id:'night',   css:'linear-gradient(135deg,#050810,#0a1020,#050810)', label:'Night' },
-  { id:'owner',   css:'linear-gradient(135deg,#0a0010 0%,#1a0030 25%,#0d0020 50%,#2a005a 75%,#0a0010 100%)', label:'👑 Owner', ownerOnly:true },
+  { id:'storm',       css:'linear-gradient(135deg,#001830,#003060,#5082ff44,#003060)', label:'Storm' },
+  { id:'nature',      css:'linear-gradient(135deg,#002200,#00440022,#50dc7833,#002200)', label:'Nature' },
+  { id:'night',       css:'linear-gradient(135deg,#050810,#0a1020,#050810)', label:'Night' },
+  { id:'aurora',      css:'linear-gradient(135deg,#001a10,#004030,#00a86088,#004030,#001a10)', label:'Aurora' },
+  { id:'sakura',      css:'linear-gradient(135deg,#2a0010,#880044,#ff88aa55,#880044,#2a0010)', label:'Sakura' },
+  { id:'ocean',       css:'linear-gradient(135deg,#000a18,#001840,#0050a0,#00a0c8,#0050a0)', label:'Ocean' },
+  { id:'lava',        css:'linear-gradient(135deg,#1a0000,#600000,#ff2200,#ff8800,#ff2200)', label:'Lava' },
+  { id:'galaxy',      css:'radial-gradient(ellipse at 30% 70%,#6600cc44 0%,#000010 50%,#000428 100%)', label:'Galaxy' },
+  { id:'toxic',       css:'linear-gradient(135deg,#001000,#003300,#00ff4422,#003300)', label:'Toxic' },
+  { id:'ice',         css:'linear-gradient(135deg,#001830,#004468,#88ddff44,#004468,#001830)', label:'Ice' },
+  { id:'sunset',      css:'linear-gradient(135deg,#200010,#800030,#ff6600,#ffaa00,#ff6600)', label:'Sunset' },
+  { id:'abyss',       css:'radial-gradient(ellipse at 50% 100%,#0a0020 0%,#000005 60%,#000000 100%)', label:'Abyss' },
+  { id:'neon',        css:'linear-gradient(135deg,#000820,#001040,#0044ff22,#ff004422,#000820)', label:'Neon' },
+  { id:'owner',       css:'linear-gradient(135deg,#0a0010 0%,#1a0030 25%,#0d0020 50%,#2a005a 75%,#0a0010 100%)', label:'👑 Owner', ownerOnly:true },
 ];
 const AVATAR_BORDERS = [
-  { id:'default', css:'rgba(100,140,255,0.5)' },
-  { id:'gold',    css:'#f0c060' },
-  { id:'purple',  css:'#b432ff' },
-  { id:'red',     css:'#ff4444' },
-  { id:'green',   css:'#50dc78' },
-  { id:'orange',  css:'#ff9500' },
-  { id:'white',   css:'#ffffff' },
-  { id:'rainbow', css:'linear-gradient(135deg,#ff0000,#ff9500,#ffff00,#00ff00,#0000ff,#9500ff)' },
-  { id:'owner',   css:'linear-gradient(135deg,#6600cc,#cc44ff,#9900ee,#ff88ff,#6600cc)', ownerOnly:true },
+  { id:'default', css:'rgba(100,140,255,0.5)',  label:'Blue' },
+  { id:'gold',    css:'#f0c060',                label:'Gold' },
+  { id:'purple',  css:'#b432ff',                label:'Purple' },
+  { id:'red',     css:'#ff4444',                label:'Red' },
+  { id:'green',   css:'#50dc78',                label:'Green' },
+  { id:'orange',  css:'#ff9500',                label:'Orange' },
+  { id:'white',   css:'#ffffff',                label:'White' },
+  { id:'cyan',    css:'#00e5ff',                label:'Cyan' },
+  { id:'pink',    css:'#ff44aa',                label:'Pink' },
+  { id:'yellow',  css:'#ffee00',                label:'Yellow' },
+  { id:'silver',  css:'linear-gradient(135deg,#aaaaaa,#ffffff,#888888,#cccccc)', label:'Silver' },
+  { id:'fire',    css:'linear-gradient(135deg,#ff2200,#ff9500,#ff2200)',          label:'Fire' },
+  { id:'ocean',   css:'linear-gradient(135deg,#0066ff,#00ccff,#0066ff)',          label:'Ocean' },
+  { id:'toxic',   css:'linear-gradient(135deg,#00ff44,#88ff00,#00ff44)',          label:'Toxic' },
+  { id:'rainbow', css:'linear-gradient(135deg,#ff0000,#ff9500,#ffff00,#00ff00,#0000ff,#9500ff)', label:'Rainbow' },
+  { id:'owner',   css:'linear-gradient(135deg,#6600cc,#cc44ff,#9900ee,#ff88ff,#6600cc)', label:'👑 Owner', ownerOnly:true },
 ];
 
 
@@ -6541,8 +7353,7 @@ let profileData = {
   title:      'none',
   nameColor:  '#c8d8ff',
   banner:     'space',
-  border:     'blue',
-  gifBanner:  null
+  border:     'blue'
 };
 
 function loadProfileData(){
@@ -6552,98 +7363,8 @@ function loadProfileData(){
   applyProfileToUI();
 }
 
-function applyGifBanner(){
-  let url = (document.getElementById('gifBannerInput').value || '').trim();
-  if(!url){ return; }
-  if(!url.startsWith('http')){
-    _gifBannerError('❌ URL inválido.');
-    return;
-  }
 
-  _gifBannerError(''); // clear previous errors
 
-  // ── Tenor page URL: extract ID and fetch media via Tenor API ──
-  const tenorPageMatch = url.match(/tenor\.com\/(?:[a-z-]+\/)?view\/[^\/]+-(\d+)$/i);
-  if(tenorPageMatch){
-    const gifId = tenorPageMatch[1];
-    _gifBannerError('<span style="color:#a0c4ff;">⏳ A carregar GIF do Tenor...</span>');
-    // Use Tenor API v2 with anonymous key (works client-side for previews)
-    fetch(`https://tenor.googleapis.com/v2/posts?ids=${gifId}&key=AIzaSyAyimkuYQYF_FXVALexPqHeZD9x1Yb5I7o&media_filter=gif`)
-      .then(r=>r.json())
-      .then(data=>{
-        const result = data.results && data.results[0];
-        const gifUrl = result && result.media_formats && result.media_formats.gif && result.media_formats.gif.url;
-        if(gifUrl){
-          _setGifBanner(gifUrl);
-        } else {
-          _gifBannerError('❌ Não foi possível obter o GIF. Tenta copiar o link da imagem diretamente.');
-        }
-      })
-      .catch(()=>{
-        _gifBannerError('❌ Erro ao aceder ao Tenor. Usa um link direto terminado em .gif');
-      });
-    return;
-  }
-
-  // ── Giphy page URL: extract ID and build media URL ──
-  const giphyMatch = url.match(/giphy\.com\/gifs\/(?:[^-]+-)?([a-zA-Z0-9]+)$/);
-  if(giphyMatch){
-    const giphyId = giphyMatch[1];
-    const giphyDirect = `https://media.giphy.com/media/${giphyId}/giphy.gif`;
-    _setGifBanner(giphyDirect);
-    return;
-  }
-
-  // ── Direct image URL: test and apply ──
-  const testImg = new Image();
-  testImg.onload = () => _setGifBanner(url);
-  testImg.onerror = () => {
-    _gifBannerError('❌ Não foi possível carregar a imagem. Verifica se o link termina em .gif / .png / .jpg / .webp');
-    document.getElementById('gifBannerInput').style.borderColor='#ff4444';
-  };
-  testImg.src = url;
-}
-
-function _setGifBanner(url){
-  profileData.gifBanner = url;
-  profileData.banner = null;
-  document.getElementById('gifBannerInput').value = url;
-  document.getElementById('gifBannerInput').style.borderColor='rgba(80,220,120,0.5)';
-  const row = document.getElementById('gifBannerPreviewRow');
-  const img = document.getElementById('gifBannerPreviewImg');
-  if(row) row.style.display = 'flex';
-  if(img) img.src = url;
-  document.querySelectorAll('.prof-banner-card').forEach(c=>c.classList.remove('selected'));
-  _gifBannerError('✅ GIF aplicado com sucesso!');
-  setTimeout(()=>_gifBannerError(''), 3000);
-  updateProfPreview();
-}
-
-function _gifBannerError(msg){
-  let el = document.getElementById('gifBannerErrorMsg');
-  if(!el){
-    el = document.createElement('div');
-    el.id = 'gifBannerErrorMsg';
-    el.style.cssText = 'font-size:0.72rem;line-height:1.5;padding:6px 8px;border-radius:7px;margin-top:2px;';
-    const parent = document.getElementById('gifBannerInput').parentElement.parentElement;
-    parent.insertBefore(el, document.getElementById('gifBannerInput').parentElement.nextSibling);
-  }
-  if(!msg){ el.style.display='none'; el.innerHTML=''; return; }
-  el.style.display='block';
-  el.style.background = msg.startsWith('❌') ? 'rgba(255,50,50,0.12)' : 'rgba(255,149,0,0.12)';
-  el.style.border = msg.startsWith('❌') ? '1px solid rgba(255,50,50,0.3)' : '1px solid rgba(255,149,0,0.3)';
-  el.style.color = msg.startsWith('❌') ? '#ff8888' : '#ffb84d';
-  el.innerHTML = msg;
-}
-function removeGifBanner(){
-  profileData.gifBanner = null;
-  profileData.banner = 'default';
-  const row = document.getElementById('gifBannerPreviewRow');
-  const input = document.getElementById('gifBannerInput');
-  if(row) row.style.display = 'none';
-  if(input) input.value = '';
-  updateProfPreview();
-}
 
 function saveProfile(){
   if(!currentUser||currentUser.guest){
@@ -6726,21 +7447,10 @@ function renderProfPicPreview(){
 }
 
 function updateProfPreview(){
-  // banner — GIF takes priority over solid banner
+  // banner
+  const banner = BANNERS.find(b=>b.id===profileData.banner) || BANNERS[0];
   const bannerEl = document.getElementById('profBannerEl');
-  if(bannerEl){
-    if(profileData.gifBanner){
-      bannerEl.style.background = '#000';
-      // Set as background image if not already done
-      bannerEl.style.backgroundImage = `url(${profileData.gifBanner})`;
-      bannerEl.style.backgroundSize = 'cover';
-      bannerEl.style.backgroundPosition = 'center';
-    } else {
-      const banner = BANNERS.find(b=>b.id===profileData.banner) || BANNERS[0];
-      bannerEl.style.background = banner.css;
-      bannerEl.style.backgroundImage = '';
-    }
-  }
+  if(bannerEl){ bannerEl.style.background = banner.css; bannerEl.style.backgroundImage = ''; }
 
   // avatar
   const av = document.getElementById('profAvatarEl');
@@ -6839,16 +7549,6 @@ function buildProfileUI(){
       };
       cg.appendChild(sw);
     });
-  }
-
-  // ── GIF BANNER restore ──
-  const gifInput = document.getElementById('gifBannerInput');
-  const gifPreviewRow = document.getElementById('gifBannerPreviewRow');
-  const gifPreviewImg = document.getElementById('gifBannerPreviewImg');
-  if(gifInput && profileData.gifBanner){
-    gifInput.value = profileData.gifBanner;
-    if(gifPreviewRow) gifPreviewRow.style.display = 'flex';
-    if(gifPreviewImg) gifPreviewImg.src = profileData.gifBanner;
   }
 
   // ── BANNERS ──
@@ -8214,6 +8914,7 @@ function adminOpenBanMenu(){
 }
 
 function adminUnban(){
+  if(!currentUser || currentUser.username !== 'Daniel'){ showAdminNotif('❌ Sem permissão para desbanir!','#ff4444'); return; }
   const target = getSelectedPlayer() || _selectedAdminPlayer;
   if(!target){ showAdminNotif('Seleciona um jogador primeiro!','#ff4444'); return; }
   const users = getUsers();
@@ -8229,6 +8930,7 @@ function adminUnban(){
   if(unbanBtn){ unbanBtn.style.display='none'; }
   if(banInfoRow){ banInfoRow.style.display='none'; }
   addLog(`✅ Unbanned "${target}" — pode voltar a entrar.`,'info');
+  addBanHistory('unban', target, 'Desbanido pelo admin');
   showAdminNotif(`✅ ${target} foi desbanido!`,'#50dc78');
   onAdminPlayerChange();
 }
@@ -8241,6 +8943,7 @@ function selectBanDur(btn, ms){
   _selectedBanDur = ms;
 }
 function adminConfirmBan(){
+  if(!currentUser || currentUser.username !== 'Daniel'){ showAdminNotif('❌ Sem permissão para banir!','#ff4444'); return; }
   const target = getSelectedPlayer();
   if(!target){ showAdminNotif('Seleciona um jogador primeiro!','#ff4444'); return; }
   const reason = document.getElementById('banReasonInput').value.trim() || 'Banido pelo Admin';
@@ -8257,6 +8960,7 @@ function adminConfirmBan(){
   if(currentUser && currentUser.username === target){ _enforceBan({ until, reason }); }
   const durLabel = _selectedBanDur === -1 ? 'permanentemente' : formatBanDur(_selectedBanDur);
   addLog(`🔨 Banned "${target}" ${durLabel}. Motivo: ${reason}`,'error');
+  addBanHistory('ban', target, `${durLabel} — ${reason}`);
   showAdminNotif(`🔨 ${target} foi banido ${durLabel}!`,'#ff4444');
   const row = document.getElementById('banStatusRow');
   row.style.display='flex';
@@ -8370,6 +9074,13 @@ function startKickBanPolling(username){
 
   // Polling every 800ms — checks dedicated signal keys (never overwritten by saveProgress)
   clearInterval(window._kickBanPollInterval);
+  // Friend requests notification dot poll
+  clearInterval(window._friendsNotifPoll);
+  window._friendsNotifPoll = setInterval(()=>{
+    if(currentUser && !currentUser.guest) updateFriendsNotifDot();
+  }, 5000);
+  updateFriendsNotifDot();
+
   window._kickBanPollInterval = setInterval(()=>{
     // Unban check runs even when logged out (banned state)
     const us = localStorage.getItem(UNBAN_SIGNAL_KEY + username);
